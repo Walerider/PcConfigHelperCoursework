@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home">Главная</string>
+    <string name="rating">Рейтинг</string>
+    <string name="add">Добавить</string>
+    <string name="choice">Выбрать</string>
+</resources>
