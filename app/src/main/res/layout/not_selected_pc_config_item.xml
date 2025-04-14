@@ -5,43 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="125dp">
 
-    <Button
+    <ImageButton
         android:id="@+id/addButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/add_button_design"
-        android:text="@string/add"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.35"
-        app:layout_constraintHorizontal_bias="0.944"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.3" />
-
-    <TextView
-        android:id="@+id/productName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/choice"
-        android:textAlignment="textStart"
-        android:textColor="?colorSecondary"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/button_design"
         app:layout_constraintHeight_percent="0.5"
-        app:layout_constraintHorizontal_bias="0.434"
+        app:layout_constraintHorizontal_bias="0.979"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.495"
-        app:layout_constraintWidth_percent="0.35" />
+        app:layout_constraintVertical_bias="0.492"
+        app:layout_constraintWidth_percent="0.15"
+        android:src="@drawable/add"/>
 
     <TextView
         android:id="@+id/componentName"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Процессор"
+        android:text="@string/not_loaded"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

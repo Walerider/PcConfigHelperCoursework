@@ -3,5 +3,6 @@
     <string name="home">Главная</string>
     <string name="rating">Рейтинг</string>
     <string name="add">Добавить</string>
-    <string name="choice">Выбрать</string>
+    <string name="choice">Выбор</string>
+    <string name="not_loaded">Не загружено</string>
 </resources>

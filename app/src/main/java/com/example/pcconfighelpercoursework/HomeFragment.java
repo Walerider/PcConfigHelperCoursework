@@ -10,10 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
+import java.util.Map;
 
 public class HomeFragment extends Fragment {
 
-    private List<ConfigurerItem> components;
+    private Map<String,ConfigurerItem> components;
     MainActivity activity;
     RecyclerView recyclerView;
     ConfigurerAdapter configurerAdapter;
@@ -27,15 +28,13 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        components = MainActivity.getComponents();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.fragment_home, container, false);
-        activity = (MainActivity) getActivity();
-        components = activity != null ? activity.getComponents() : null;
         configurerAdapter = new ConfigurerAdapter(components,getContext());
         recyclerView = mainView.findViewById(R.id.compView);
         recyclerView.setAdapter(configurerAdapter);

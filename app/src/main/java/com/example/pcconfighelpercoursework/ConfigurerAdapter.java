@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,35 +13,49 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Map;
 
-public class ConfigurerAdapter extends RecyclerView.Adapter<ConfigurerAdapter.ViewHolder>{
+public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public static final int SL_TYPE_NOT = 0;
     public static final int SL_TYPE_YES = 1;
-    private List<ConfigurerItem> components;
+    private Map<String,ConfigurerItem> components;
     private final LayoutInflater inflater;
 
-    public ConfigurerAdapter(List<ConfigurerItem> components, Context context) {
+    public ConfigurerAdapter(Map<String,ConfigurerItem> components, Context context) {
         this.components = components;
         this.inflater = LayoutInflater.from(context);
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType == SL_TYPE_NOT){
+
             View view = inflater.inflate(R.layout.not_selected_pc_config_item,parent,false);
-            return new ViewHolder(view,SL_TYPE_NOT);
+            NotSelectedViewHolder viewHolder = new NotSelectedViewHolder(view);
+            return viewHolder;
         }
         else{
             View view = inflater.inflate(R.layout.selected_pc_config_item,parent,false);
-            return new ViewHolder(view,SL_TYPE_YES);
+            SelectedViewHolder viewHolder = new SelectedViewHolder(view);
+            return viewHolder;
         }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) { // TODO: 20.09.2024 написать определение того, выбрал ли человек комплектуху
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        switch (holder.getItemViewType()){
+            case SL_TYPE_YES:
+                SelectedViewHolder selectedViewHolder = (SelectedViewHolder)holder;
+                break;
+            case SL_TYPE_NOT:
+                NotSelectedViewHolder notSelectedViewHolder = (NotSelectedViewHolder)holder;
+
+                break;
+        }
 
     }
+
 
     @Override
     public int getItemCount() {
@@ -53,10 +69,26 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<ConfigurerAdapter.Vi
             return SL_TYPE_NOT;
         }
     }
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView
-        ViewHolder(View view,int type){
+    public static class NotSelectedViewHolder extends RecyclerView.ViewHolder {
+        public TextView componentType;
+        public ImageButton addButton;
+        NotSelectedViewHolder(View view){
             super(view);
+            componentType = view.findViewById(R.id.componentName);
+            addButton = view.findViewById(R.id.addButton);
+        }
+    }
+    public static class SelectedViewHolder extends RecyclerView.ViewHolder {
+        public TextView productName;
+        public ImageButton clearButton;
+        public ImageButton changeButton;
+        public ImageView imageView;
+        SelectedViewHolder(View view){
+            super(view);
+            productName = view.findViewById(R.id.productName);
+            clearButton = view.findViewById(R.id.clearButton);
+            changeButton = view.findViewById(R.id.changeButton);
+            imageView = view.findViewById(R.id.imageView);
         }
     }
 }
