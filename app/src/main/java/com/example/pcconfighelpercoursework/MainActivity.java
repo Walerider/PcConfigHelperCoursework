@@ -1,6 +1,7 @@
 package com.example.pcconfighelpercoursework;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,20 +33,26 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     protected BottomNavigationView bottomNavigationView;
     protected FragmentContainerView fragmentContainerView;
-    public static Map<String,ConfigurerItem> components;
+    public static List<ConfigurerItem> components;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        components = new ArrayList<>();
+        fillComponents(components,getResources());
         setContentView(R.layout.activity_main);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         fragmentContainerView = findViewById(R.id.fragmentContainerView);
         NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
-        components = new HashMap<>();
     }
 
-    public static Map<String,ConfigurerItem> getComponents() {
+    public static List<ConfigurerItem> getComponents() {
         return components;
+    }
+    public static void fillComponents(List<ConfigurerItem> components, Resources resources){
+        components.add(new ConfigurerItem(resources.getString(R.string.cpu)));
+        components.add(new ConfigurerItem(resources.getString(R.string.videocard)));
+
     }
     protected void getComponentsFromTXT(){//а кто запрещает?
         InputStream fin = null;
@@ -74,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
     }
     private void saveComponentsInTxt(Context context, String fileName) {
         String data = "";
-        for (String key:getComponents().keySet()){
+        /*for (String key:getComponents().keySet()){
             data += key + "/" + getComponents().get(key) + "$";
-        }
+        }*/
         try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(fileName +".txt",MODE_PRIVATE));
             outputStreamWriter.write(data);

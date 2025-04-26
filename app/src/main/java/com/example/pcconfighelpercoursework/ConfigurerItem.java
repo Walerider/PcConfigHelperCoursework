@@ -1,14 +1,17 @@
 package com.example.pcconfighelpercoursework;
 
 public class ConfigurerItem {
-    private long id;
+    private int id;
     private String type;
     private String name;
-    private int image;
+    private String image;
     private String componentType;
     private boolean selected;
+    {
+        selected = false;
+    }
 
-    public ConfigurerItem(long id, String type, String name, int image, String componentType, boolean selected) {
+    public ConfigurerItem(int id, String type, String name, String image, String componentType, boolean selected) {
         this.id = id;
         this.type = type;
         this.name = name;
@@ -17,8 +20,11 @@ public class ConfigurerItem {
         this.selected = selected;
     }
 
-    public long getId() {
-        return id;
+    public ConfigurerItem() {
+    }
+
+    public ConfigurerItem(String componentType) {
+        this.componentType = componentType;
     }
 
     public String getType() {
@@ -37,12 +43,20 @@ public class ConfigurerItem {
         this.name = name;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getComponentType() {
@@ -59,5 +73,16 @@ public class ConfigurerItem {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigurerItem{" +
+                "type='" + type + '\'' +
+                ", name='" + name + '\'' +
+                ", image='" + image + '\'' +
+                ", componentType='" + componentType + '\'' +
+                ", selected=" + selected +
+                '}';
     }
 }

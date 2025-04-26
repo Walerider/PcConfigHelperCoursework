@@ -5,4 +5,7 @@
     <string name="add">Добавить</string>
     <string name="choice">Выбор</string>
     <string name="not_loaded">Не загружено</string>
+    <string name="cpu">Процессор</string>
+    <string name="videocard">Видеокарта</string>
+
 </resources>

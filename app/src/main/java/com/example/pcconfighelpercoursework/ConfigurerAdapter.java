@@ -1,7 +1,10 @@
 package com.example.pcconfighelpercoursework;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,20 +15,26 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public static final int SL_TYPE_NOT = 0;
     public static final int SL_TYPE_YES = 1;
-    private Map<String,ConfigurerItem> components;
+    private List<ConfigurerItem> components;
     private final LayoutInflater inflater;
 
-    public ConfigurerAdapter(Map<String,ConfigurerItem> components, Context context) {
+    public ConfigurerAdapter(List<ConfigurerItem> components, Context context) {
         this.components = components;
+        //Collections.reverse(this.components);
+        Log.e("asdasd",Arrays.toString(components.toArray()));
         this.inflater = LayoutInflater.from(context);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -33,6 +42,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             View view = inflater.inflate(R.layout.not_selected_pc_config_item,parent,false);
             NotSelectedViewHolder viewHolder = new NotSelectedViewHolder(view);
+            
             return viewHolder;
         }
         else{
@@ -47,10 +57,13 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         switch (holder.getItemViewType()){
             case SL_TYPE_YES:
                 SelectedViewHolder selectedViewHolder = (SelectedViewHolder)holder;
+
                 break;
             case SL_TYPE_NOT:
                 NotSelectedViewHolder notSelectedViewHolder = (NotSelectedViewHolder)holder;
-
+                notSelectedViewHolder.componentType.setText(components.get(position).getComponentType());
+                Log.e("asdasd",components.get(position).getComponentType());
+                Log.e("asdasd", String.valueOf(position));
                 break;
         }
 
@@ -59,7 +72,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        return 0;
+        return components.size();
     }
     @Override
     public int getItemViewType(int position) { // TODO: 20.09.2024 написать определение того, выбрал ли человек комплектуху 
@@ -70,8 +83,8 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
     public static class NotSelectedViewHolder extends RecyclerView.ViewHolder {
-        public TextView componentType;
-        public ImageButton addButton;
+        final TextView componentType;
+        final ImageButton addButton;
         NotSelectedViewHolder(View view){
             super(view);
             componentType = view.findViewById(R.id.componentName);
@@ -79,10 +92,10 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
     public static class SelectedViewHolder extends RecyclerView.ViewHolder {
-        public TextView productName;
-        public ImageButton clearButton;
-        public ImageButton changeButton;
-        public ImageView imageView;
+        final TextView productName;
+        final ImageButton clearButton;
+        final ImageButton changeButton;
+        final ImageView imageView;
         SelectedViewHolder(View view){
             super(view);
             productName = view.findViewById(R.id.productName);
