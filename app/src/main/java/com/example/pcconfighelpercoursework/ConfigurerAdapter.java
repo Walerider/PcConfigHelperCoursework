@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -50,7 +52,6 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 break;
             case SL_TYPE_NOT:
                 NotSelectedViewHolder notSelectedViewHolder = (NotSelectedViewHolder)holder;
-
                 break;
         }
 
@@ -76,6 +77,11 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(view);
             componentType = view.findViewById(R.id.componentName);
             addButton = view.findViewById(R.id.addButton);
+            addButton.setOnClickListener(v -> {
+                FragmentManager fragmentManager = FragmentManager.findFragment(view).getParentFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.add(R.id.fragmentContainerView,);
+            });
         }
     }
     public static class SelectedViewHolder extends RecyclerView.ViewHolder {
