@@ -12,12 +12,17 @@ import com.example.pcconfighelpercoursework.R;
 
 public class CatalogFragment extends Fragment {
 
+    private String componentType;
 
     public CatalogFragment() {
     }
 
-    public static CatalogFragment newInstance() {
-        CatalogFragment fragment = new CatalogFragment();
+    public CatalogFragment(String componentType) {
+        this.componentType = componentType;
+    }
+
+    public static CatalogFragment newInstance(String componentType) {
+        CatalogFragment fragment = new CatalogFragment(componentType);
         Bundle args = new Bundle();
         return fragment;
     }

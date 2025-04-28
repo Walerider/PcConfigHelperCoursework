@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/ratingFragment"
-        android:name="com.example.pcconfighelpercoursework.RatingFragment"
+        android:name="com.example.pcconfighelpercoursework.Rating.RatingFragment"
         android:label="fragment_rating"
         tools:layout="@layout/fragment_rating" />
 </navigation>

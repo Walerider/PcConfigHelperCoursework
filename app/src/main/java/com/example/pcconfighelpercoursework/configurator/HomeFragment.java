@@ -12,10 +12,11 @@ import android.widget.TextView;
 
 import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
+import com.example.pcconfighelpercoursework.catalog.CatalogFragment;
 
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddButtonClickListener{
 
     private List<ConfigurerItem> components;
     RecyclerView recyclerView;
@@ -39,8 +40,18 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.fragment_home, container, false);
         configurerAdapter = new ConfigurerAdapter(components,getContext());
+        configurerAdapter.setOnAddButtonClickListener(this::onAddClick);
         recyclerView = mainView.findViewById(R.id.compView);
         recyclerView.setAdapter(configurerAdapter);
         return mainView;
+    }
+
+    @Override
+    public void onAddClick(String componentType) {
+        CatalogFragment catalogFragment = CatalogFragment.newInstance(componentType);
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainerView, catalogFragment)
+                .addToBackStack("fragmentContainerView")
+                .commit();
     }
 }

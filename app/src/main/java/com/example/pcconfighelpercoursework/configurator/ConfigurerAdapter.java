@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pcconfighelpercoursework.R;
@@ -18,16 +20,17 @@ import com.example.pcconfighelpercoursework.R;
 import java.util.Arrays;
 import java.util.List;
 
-public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int SL_TYPE_NOT = 0;
     public static final int SL_TYPE_YES = 1;
     private List<ConfigurerItem> components;
     private final LayoutInflater inflater;
+    private OnAddButtonClickListener onAddButtonClickListener;
 
     public ConfigurerAdapter(List<ConfigurerItem> components, Context context) {
         this.components = components;
         //Collections.reverse(this.components);
-        Log.e("asdasd",Arrays.toString(components.toArray()));
+        Log.e("asdasd", Arrays.toString(components.toArray()));
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -35,15 +38,14 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(viewType == SL_TYPE_NOT){
+        if (viewType == SL_TYPE_NOT) {
 
-            View view = inflater.inflate(R.layout.not_selected_pc_config_item,parent,false);
+            View view = inflater.inflate(R.layout.not_selected_pc_config_item, parent, false);
             NotSelectedViewHolder viewHolder = new NotSelectedViewHolder(view);
-            
+
             return viewHolder;
-        }
-        else{
-            View view = inflater.inflate(R.layout.selected_pc_config_item,parent,false);
+        } else {
+            View view = inflater.inflate(R.layout.selected_pc_config_item, parent, false);
             SelectedViewHolder viewHolder = new SelectedViewHolder(view);
             return viewHolder;
         }
@@ -51,16 +53,17 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        switch (holder.getItemViewType()){
+        switch (holder.getItemViewType()) {
             case SL_TYPE_YES:
-                SelectedViewHolder selectedViewHolder = (SelectedViewHolder)holder;
+                SelectedViewHolder selectedViewHolder = (SelectedViewHolder) holder;
 
                 break;
             case SL_TYPE_NOT:
-                NotSelectedViewHolder notSelectedViewHolder = (NotSelectedViewHolder)holder;
+                NotSelectedViewHolder notSelectedViewHolder = (NotSelectedViewHolder) holder;
                 notSelectedViewHolder.componentType.setText(components.get(position).getComponentType());
-                Log.e("asdasd",components.get(position).getComponentType());
-                Log.e("asdasd", String.valueOf(position));
+                notSelectedViewHolder.addButton.setOnClickListener(v -> {
+                    onAddButtonClickListener.onAddClick(components.get(position).getComponentType());
+                });
                 break;
         }
 
@@ -71,34 +74,52 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public int getItemCount() {
         return components.size();
     }
+
     @Override
     public int getItemViewType(int position) { // TODO: 20.09.2024 написать определение того, выбрал ли человек комплектуху 
-        if(components.get(position).isSelected()){
+        if (components.get(position).isSelected()) {
             return SL_TYPE_YES;
-        }else{
+        } else {
             return SL_TYPE_NOT;
         }
     }
+
+    public void setOnAddButtonClickListener(OnAddButtonClickListener AddButtonListener) {
+        this.onAddButtonClickListener = AddButtonListener;
+    }
+
+    public OnAddButtonClickListener getOnAddButtonClickListener() {
+        return onAddButtonClickListener;
+    }
+
     public static class NotSelectedViewHolder extends RecyclerView.ViewHolder {
         final TextView componentType;
         final ImageButton addButton;
-        NotSelectedViewHolder(View view){
+
+        NotSelectedViewHolder(View view) {
             super(view);
             componentType = view.findViewById(R.id.productNameTextView);
             addButton = view.findViewById(R.id.addButton);
         }
     }
+
     public static class SelectedViewHolder extends RecyclerView.ViewHolder {
         final TextView productName;
         final ImageButton clearButton;
         final ImageButton changeButton;
         final ImageView imageView;
-        SelectedViewHolder(View view){
+
+        SelectedViewHolder(View view) {
             super(view);
             productName = view.findViewById(R.id.productNameTextView);
             clearButton = view.findViewById(R.id.clearButton);
             changeButton = view.findViewById(R.id.changeButton);
             imageView = view.findViewById(R.id.imageView);
         }
+
+    }
+
+    public interface OnAddButtonClickListener {
+        void onAddClick(String componentType);
     }
 }
