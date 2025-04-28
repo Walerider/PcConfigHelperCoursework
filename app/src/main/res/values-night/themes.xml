@@ -3,5 +3,7 @@
     <style name="Base.Theme.PcConfigHelperCoursework" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/gray</item>
         <item name="colorSecondary">@color/lightgreen</item>
+        <item name="colorPrimaryInverse">@color/white</item>
+        <item name="colorPrimaryContainer">@color/black</item>
     </style>
 </resources>

@@ -4,5 +4,13 @@
     <string name="rating">Рейтинг</string>
     <string name="add">Добавить</string>
     <string name="choice">Выбор</string>
+    <string name="cpu">Процессор</string>
+    <string name="videocard">Видеокарта</string>
+    <string name="motherboard">Материнская плата</string>
+    <string name="ram">Оперативная память</string>
+    <string name="power_supply">Блок питания</string>
+    <string name="storage">Накопители</string>
     <string name="not_loaded">Не загружено</string>
+    <string name="name">Название</string>
+    <string name="text">[AM5, 6 x 3.7 ГГц, L2 - 6 МБ, L3 - 32 МБ, 2 х DDR5-5200 МГц, TDP 65 Вт]</string>
 </resources>
