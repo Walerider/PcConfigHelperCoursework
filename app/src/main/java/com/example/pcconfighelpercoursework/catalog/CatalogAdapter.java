@@ -20,11 +20,14 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public static final int SL_TYPE_NOT = 0;
     public static final int SL_TYPE_YES = 1;
     private final LayoutInflater inflater;
-    private List<ConfigurerItem> components;
+    private List<CatalogItem> components;
+    private boolean isConfigAdd;
 
-    public CatalogAdapter(LayoutInflater inflater, List<ConfigurerItem> components) {
+
+    public CatalogAdapter(LayoutInflater inflater, List<CatalogItem> components, boolean isConfigAdd) {
         this.inflater = inflater;
         this.components = components;
+        this.isConfigAdd = isConfigAdd;
     }
 
     @NonNull
@@ -33,24 +36,22 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if(viewType == SL_TYPE_NOT){
 
             View view = inflater.inflate(R.layout.not_selected_pc_config_item,parent,false);
-            ConfigurerAdapter.NotSelectedViewHolder viewHolder = new ConfigurerAdapter.NotSelectedViewHolder(view);
-            return viewHolder;
+            return new CatalogViewHolder(view);
         }
         else{
             View view = inflater.inflate(R.layout.selected_pc_config_item,parent,false);
-            ConfigurerAdapter.SelectedViewHolder viewHolder = new ConfigurerAdapter.SelectedViewHolder(view);
-            return viewHolder;
+            return new AddCatalogViewHolder(view);
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (holder.getItemViewType()){
-            case SL_TYPE_YES:
-                ConfigurerAdapter.SelectedViewHolder selectedViewHolder = (ConfigurerAdapter.SelectedViewHolder)holder;
-                break;
             case SL_TYPE_NOT:
-                ConfigurerAdapter.NotSelectedViewHolder notSelectedViewHolder = (ConfigurerAdapter.NotSelectedViewHolder)holder;
+                CatalogAdapter.CatalogViewHolder catalogViewHolder = (CatalogAdapter.CatalogViewHolder)holder;
+                break;
+            case SL_TYPE_YES:
+                CatalogAdapter.AddCatalogViewHolder addCatalogViewHolder = (CatalogAdapter.AddCatalogViewHolder)holder;
                 break;
         }
 
@@ -63,29 +64,35 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
     @Override
     public int getItemViewType(int position) {
-        if(components.get(position).isSelected()){
+        if(isConfigAdd){
             return SL_TYPE_YES;
         }else{
             return SL_TYPE_NOT;
         }
     }
     public static class CatalogViewHolder extends RecyclerView.ViewHolder {
-        public TextView componentType;
-        public ImageButton addButton;
+        public TextView productNameTextView;
+        public TextView productDescriptionTextView;
+        public ImageView imageView;
         CatalogViewHolder(View view){
             super(view);
-            componentType = view.findViewById(R.id.componentName);
-            addButton = view.findViewById(R.id.addButton);
+            productNameTextView = view.findViewById(R.id.productNameTextView);
+            productDescriptionTextView = view.findViewById(R.id.productDescriptionTextView);
+            imageView = view.findViewById(R.id.imageView);
             //todo Доделать каталог 28/29!!!!!!!
         }
     }
-    public static class AddViewHolder extends RecyclerView.ViewHolder {
+    public static class AddCatalogViewHolder extends RecyclerView.ViewHolder {
         public TextView priceTextView;
+        public TextView productNameTextView;
+        public TextView productDescriptionTextView;
         public ImageButton addButton;
         public ImageView imageView;
-        AddViewHolder(View view){
+        AddCatalogViewHolder(View view){
             super(view);
             priceTextView = view.findViewById(R.id.priceCatalogTextView);
+            productNameTextView = view.findViewById(R.id.productNameTextView);
+            productDescriptionTextView = view.findViewById(R.id.productDescriptionTextView);
             addButton = view.findViewById(R.id.addButtonCatalog);
             imageView = view.findViewById(R.id.imageView);
         }
