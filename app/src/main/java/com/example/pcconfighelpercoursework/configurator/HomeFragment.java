@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,7 @@ public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddBut
     @Override
     public void onAddClick(String componentType) {
         CatalogFragment catalogFragment = CatalogFragment.newInstance(componentType);
-
+        Log.e("asdasdfgfg",componentType);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragmentContainerView, catalogFragment)
