@@ -1,4 +1,4 @@
-package com.example.pcconfighelpercoursework;
+package com.example.pcconfighelpercoursework.configurator;
 
 public class ConfigurerItem {
     private int id;

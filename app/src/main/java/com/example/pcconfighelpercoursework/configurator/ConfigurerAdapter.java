@@ -1,13 +1,11 @@
-package com.example.pcconfighelpercoursework;
+package com.example.pcconfighelpercoursework.configurator;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,11 +13,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import com.example.pcconfighelpercoursework.R;
+
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public static final int SL_TYPE_NOT = 0;
@@ -87,7 +84,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         final ImageButton addButton;
         NotSelectedViewHolder(View view){
             super(view);
-            componentType = view.findViewById(R.id.componentName);
+            componentType = view.findViewById(R.id.productNameTextView);
             addButton = view.findViewById(R.id.addButton);
         }
     }
@@ -98,7 +95,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         final ImageView imageView;
         SelectedViewHolder(View view){
             super(view);
-            productName = view.findViewById(R.id.productName);
+            productName = view.findViewById(R.id.productNameTextView);
             clearButton = view.findViewById(R.id.clearButton);
             changeButton = view.findViewById(R.id.changeButton);
             imageView = view.findViewById(R.id.imageView);

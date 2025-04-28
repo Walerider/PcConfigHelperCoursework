@@ -1,4 +1,4 @@
-package com.example.pcconfighelpercoursework;
+package com.example.pcconfighelpercoursework.catalog;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pcconfighelpercoursework.configurator.ConfigurerAdapter;
+import com.example.pcconfighelpercoursework.configurator.ConfigurerItem;
+import com.example.pcconfighelpercoursework.R;
+
 import java.util.List;
-import java.util.Map;
 
 public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public static final int SL_TYPE_NOT = 0;
