@@ -1,10 +1,8 @@
 package com.example.pcconfighelpercoursework;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,15 +15,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import java.util.Map;
 
-public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public static final int SL_TYPE_NOT = 0;
     public static final int SL_TYPE_YES = 1;
-    private Map<String,ConfigurerItem> components;
     private final LayoutInflater inflater;
+    private List<ConfigurerItem> components;
 
-    public ConfigurerAdapter(Map<String,ConfigurerItem> components, Context context) {
+    public CatalogAdapter(LayoutInflater inflater, List<ConfigurerItem> components) {
+        this.inflater = inflater;
         this.components = components;
-        this.inflater = LayoutInflater.from(context);
     }
 
     @NonNull
@@ -34,12 +32,12 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if(viewType == SL_TYPE_NOT){
 
             View view = inflater.inflate(R.layout.not_selected_pc_config_item,parent,false);
-            NotSelectedViewHolder viewHolder = new NotSelectedViewHolder(view);
+            ConfigurerAdapter.NotSelectedViewHolder viewHolder = new ConfigurerAdapter.NotSelectedViewHolder(view);
             return viewHolder;
         }
         else{
             View view = inflater.inflate(R.layout.selected_pc_config_item,parent,false);
-            SelectedViewHolder viewHolder = new SelectedViewHolder(view);
+            ConfigurerAdapter.SelectedViewHolder viewHolder = new ConfigurerAdapter.SelectedViewHolder(view);
             return viewHolder;
         }
     }
@@ -48,10 +46,10 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (holder.getItemViewType()){
             case SL_TYPE_YES:
-                SelectedViewHolder selectedViewHolder = (SelectedViewHolder)holder;
+                ConfigurerAdapter.SelectedViewHolder selectedViewHolder = (ConfigurerAdapter.SelectedViewHolder)holder;
                 break;
             case SL_TYPE_NOT:
-                NotSelectedViewHolder notSelectedViewHolder = (NotSelectedViewHolder)holder;
+                ConfigurerAdapter.NotSelectedViewHolder notSelectedViewHolder = (ConfigurerAdapter.NotSelectedViewHolder)holder;
                 break;
         }
 
@@ -70,30 +68,24 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             return SL_TYPE_NOT;
         }
     }
-    public static class NotSelectedViewHolder extends RecyclerView.ViewHolder {
+    public static class CatalogViewHolder extends RecyclerView.ViewHolder {
         public TextView componentType;
         public ImageButton addButton;
-        NotSelectedViewHolder(View view){
+        CatalogViewHolder(View view){
             super(view);
             componentType = view.findViewById(R.id.componentName);
             addButton = view.findViewById(R.id.addButton);
-            addButton.setOnClickListener(v -> {
-                FragmentManager fragmentManager = FragmentManager.findFragment(view).getParentFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                //transaction.add(R.id.fragmentContainerView,R.layout.fragment_catalog);
-            });
+            //todo Доделать каталог 28/29!!!!!!!
         }
     }
-    public static class SelectedViewHolder extends RecyclerView.ViewHolder {
-        public TextView productName;
-        public ImageButton clearButton;
-        public ImageButton changeButton;
+    public static class AddViewHolder extends RecyclerView.ViewHolder {
+        public TextView priceTextView;
+        public ImageButton addButton;
         public ImageView imageView;
-        SelectedViewHolder(View view){
+        AddViewHolder(View view){
             super(view);
-            productName = view.findViewById(R.id.productName);
-            clearButton = view.findViewById(R.id.clearButton);
-            changeButton = view.findViewById(R.id.changeButton);
+            priceTextView = view.findViewById(R.id.priceCatalogTextView);
+            addButton = view.findViewById(R.id.addButtonCatalog);
             imageView = view.findViewById(R.id.imageView);
         }
     }

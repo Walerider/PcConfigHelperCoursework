@@ -3,8 +3,8 @@
     <string name="home">Home</string>
     <string name="rating">Comp Rating</string>
     <string name="add">Add</string>
+    <string name="name">Name</string>
     <string name="choice">Choice</string>
+    <string name="text">[AM5, 6 x 3.7 ГГц, L2 - 6 МБ, L3 - 32 МБ, 2 х DDR5-5200 МГц, TDP 65 Вт]</string>
     <string name="not_loaded">Not loaded</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
