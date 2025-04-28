@@ -1,5 +1,6 @@
 package com.example.pcconfighelpercoursework.catalog;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +26,8 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private boolean isConfigAdd;
 
 
-    public CatalogAdapter(LayoutInflater inflater, List<CatalogItem> components, boolean isConfigAdd) {
-        this.inflater = inflater;
+    public CatalogAdapter(Context context, List<CatalogItem> components, boolean isConfigAdd) {
+        this.inflater = LayoutInflater.from(context);
         this.components = components;
         this.isConfigAdd = isConfigAdd;
     }

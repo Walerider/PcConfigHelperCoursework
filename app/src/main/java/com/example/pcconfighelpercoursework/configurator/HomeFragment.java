@@ -49,7 +49,9 @@ public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddBut
     @Override
     public void onAddClick(String componentType) {
         CatalogFragment catalogFragment = CatalogFragment.newInstance(componentType);
-        getParentFragmentManager().beginTransaction()
+
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
                 .replace(R.id.fragmentContainerView, catalogFragment)
                 .addToBackStack("fragmentContainerView")
                 .commit();

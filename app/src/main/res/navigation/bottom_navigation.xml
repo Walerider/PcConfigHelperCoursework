@@ -9,10 +9,23 @@
         android:id="@+id/homeFragment"
         android:name="com.example.pcconfighelpercoursework.configurator.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_catalogFragment"
+            app:destination="@id/catalogFragment" />
+    </fragment>
     <fragment
         android:id="@+id/ratingFragment"
         android:name="com.example.pcconfighelpercoursework.Rating.RatingFragment"
         android:label="fragment_rating"
         tools:layout="@layout/fragment_rating" />
+    <fragment
+        android:id="@+id/catalogFragment"
+        android:name="com.example.pcconfighelpercoursework.catalog.CatalogFragment"
+        android:label="fragment_catalog"
+        tools:layout="@layout/fragment_catalog" >
+        <action
+            android:id="@+id/action_catalogFragment_to_homeFragment2"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>

@@ -8,12 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
+
+import java.util.ArrayList;
 
 public class CatalogFragment extends Fragment {
 
     private String componentType;
-
+    private CatalogAdapter catalogAdapter;
     public CatalogFragment() {
     }
 
@@ -36,7 +39,8 @@ public class CatalogFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.fragment_catalog, container, false);
-
+        catalogAdapter = new CatalogAdapter(getContext(), new ArrayList<CatalogItem>(),false);
+        //todo доделать
         return view;
     }
 }
