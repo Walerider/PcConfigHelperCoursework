@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.configurator.ConfigurerAdapter;
 import com.example.pcconfighelpercoursework.configurator.ConfigurerItem;
 import com.example.pcconfighelpercoursework.R;
@@ -52,6 +53,23 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 break;
             case SL_TYPE_YES:
                 CatalogAdapter.AddCatalogViewHolder addCatalogViewHolder = (CatalogAdapter.AddCatalogViewHolder)holder;
+                addCatalogViewHolder.productNameTextView.setText(components.get(position).getName());
+                addCatalogViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
+                addCatalogViewHolder.priceTextView.setText("От " + components.get(position).getPrice());
+                addCatalogViewHolder.addButton.setOnClickListener(v -> {
+                    MainActivity.getComponents()
+                            .stream()
+                            .filter(c -> c.getComponentType().equals(components.get(position).getComponentType()) && c.getId() == 0)
+                            .forEach(c -> {
+                                c.setId(components.get(position).getId());
+                                c.setName(components.get(position).getName());
+                                c.setType(components.get(position).getType());
+                                c.setImage(components.get(position).getImage());
+                                c.setComponentType(components.get(position).getComponentType());
+                                c.setSelected(true);
+                                c.setPrice(components.get(position).getPrice());
+                            });
+                });
                 break;
         }
 

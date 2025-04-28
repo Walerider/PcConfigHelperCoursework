@@ -18,10 +18,9 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private List<ConfigurerItem> components;
-    MainActivity activity;
     RecyclerView recyclerView;
     ConfigurerAdapter configurerAdapter;
-    TextView componentLength;
+
     public HomeFragment() {
     }
     public static HomeFragment newInstance() {

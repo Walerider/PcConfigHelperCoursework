@@ -6,6 +6,7 @@ public class CatalogItem {
     private String name;
     private String image;
     private String componentType;
+    private String description;
     private int price;
 
     public int getId() {
@@ -54,5 +55,13 @@ public class CatalogItem {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

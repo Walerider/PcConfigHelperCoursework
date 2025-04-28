@@ -17,7 +17,7 @@
         app:layout_constraintHorizontal_bias="0.961"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.707"
+        app:layout_constraintVertical_bias="0.672"
         app:layout_constraintWidth_percent="0.15"
         app:srcCompat="@drawable/clear" />
 
@@ -29,10 +29,10 @@
         app:layout_constraintBottom_toTopOf="@+id/clearButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.3"
-        app:layout_constraintHorizontal_bias="0.964"
+        app:layout_constraintHorizontal_bias="0.961"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.857"
+        app:layout_constraintVertical_bias="0.724"
         app:layout_constraintWidth_percent="0.15"
         app:srcCompat="@drawable/change" />
 
@@ -84,5 +84,19 @@
         app:layout_constraintWidth_percent="0.3"
         app:srcCompat="@android:drawable/ic_dialog_alert" />
 
+    <TextView
+        android:id="@+id/priceCatalogTextView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="314990р"
+        android:textColor="?colorPrimaryInverse"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.15"
+        app:layout_constraintHorizontal_bias="0.984"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.953"
+        app:layout_constraintWidth_percent="0.2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

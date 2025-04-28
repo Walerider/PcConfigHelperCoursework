@@ -6,17 +6,19 @@ public class ConfigurerItem {
     private String name;
     private String image;
     private String componentType;
+    private int price;
     private boolean selected;
     {
         selected = false;
     }
 
-    public ConfigurerItem(int id, String type, String name, String image, String componentType, boolean selected) {
+    public ConfigurerItem(int id, String type, String name, String image, String componentType, int price, boolean selected) {
         this.id = id;
         this.type = type;
         this.name = name;
         this.image = image;
         this.componentType = componentType;
+        this.price = price;
         this.selected = selected;
     }
 
@@ -75,13 +77,23 @@ public class ConfigurerItem {
         this.selected = selected;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     @Override
     public String toString() {
         return "ConfigurerItem{" +
-                "type='" + type + '\'' +
+                "id=" + id +
+                ", type='" + type + '\'' +
                 ", name='" + name + '\'' +
                 ", image='" + image + '\'' +
                 ", componentType='" + componentType + '\'' +
+                ", price=" + price +
                 ", selected=" + selected +
                 '}';
     }
