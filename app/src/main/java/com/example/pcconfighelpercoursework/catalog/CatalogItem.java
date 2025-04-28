@@ -9,6 +9,16 @@ public class CatalogItem {
     private String description;
     private int price;
 
+    public CatalogItem(int id, String type, String name, String image, String componentType, String description, int price) {
+        this.id = id;
+        this.type = type;
+        this.name = name;
+        this.image = image;
+        this.componentType = componentType;
+        this.description = description;
+        this.price = price;
+    }
+
     public int getId() {
         return id;
     }

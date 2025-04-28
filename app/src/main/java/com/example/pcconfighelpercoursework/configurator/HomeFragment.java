@@ -53,6 +53,7 @@ public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddBut
         Log.e("asdasdfgfg",componentType);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right)
                 .replace(R.id.fragmentContainerView, catalogFragment)
                 .addToBackStack("fragmentContainerView")
                 .commit();

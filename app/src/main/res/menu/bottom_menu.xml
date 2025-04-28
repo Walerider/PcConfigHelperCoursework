@@ -2,6 +2,6 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Home" android:icon="@drawable/home" android:id="@+id/homeFragment" />
-    <item android:title="Rating" android:icon="@drawable/rating" android:id="@+id/ratingFragment"/>
+    <item android:title="Home" android:icon="@drawable/home" android:id="@+id/nav_home" />
+    <item android:title="Rating" android:icon="@drawable/rating" android:id="@+id/nav_rating"/>
 </menu>

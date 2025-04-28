@@ -1,6 +1,7 @@
 package com.example.pcconfighelpercoursework.catalog;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 CatalogAdapter.AddCatalogViewHolder addCatalogViewHolder = (CatalogAdapter.AddCatalogViewHolder)holder;
                 addCatalogViewHolder.productNameTextView.setText(components.get(position).getName());
                 addCatalogViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
-                addCatalogViewHolder.priceTextView.setText("От " + components.get(position).getPrice());
+                addCatalogViewHolder.priceTextView.setText("От " + components.get(position).getPrice() + "p");
                 addCatalogViewHolder.addButton.setOnClickListener(v -> {
                     MainActivity.getComponents()
                             .stream()
@@ -70,7 +71,8 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                 c.setSelected(true);
                                 c.setPrice(components.get(position).getPrice());
                             });
-                });
+                });//todo Он не видит кнопку. сделать так, чтобы видел
+                Log.e("aa", String.valueOf(getItemCount()));
                 break;
         }
 
@@ -79,7 +81,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-        return 0;
+        return components.size();
     }
     @Override
     public int getItemViewType(int position) {

@@ -1,5 +1,6 @@
 package com.example.pcconfighelpercoursework;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected BottomNavigationView bottomNavigationView;
     protected FragmentContainerView fragmentContainerView;
     public static List<ConfigurerItem> components;
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +41,23 @@ public class MainActivity extends AppCompatActivity {
         fragmentContainerView = findViewById(R.id.fragmentContainerView);
         NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if(item.getItemId() == R.id.nav_home){
+                navController.navigate(R.id.homeFragment);
+
+                return true;
+            }
+            if (item.getItemId() == R.id.nav_rating){
+                navController.navigate(R.id.ratingFragment);
+                return true;
+            }
+            return false;
+        });
+
+        Log.e("asd", String.valueOf(bottomNavigationView.getSelectedItemId()));
+        Log.e("asd", String.valueOf(R.id.nav_home));
+        Log.e("asd", String.valueOf(R.id.nav_rating));
     }
 
     public static List<ConfigurerItem> getComponents() {
