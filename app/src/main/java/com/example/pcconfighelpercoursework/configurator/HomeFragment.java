@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
+import com.example.pcconfighelpercoursework.catalog.CatalogAdapter;
 import com.example.pcconfighelpercoursework.catalog.CatalogFragment;
 
 import java.util.List;
@@ -49,13 +50,14 @@ public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddBut
 
     @Override
     public void onAddClick(String componentType) {
-        CatalogFragment catalogFragment = CatalogFragment.newInstance(componentType);
+
+        CatalogFragment catalogFragment = CatalogFragment.newInstance(componentType, CatalogAdapter.ADD_CONFIG);
         Log.e("asdasdfgfg",componentType);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right)
                 .replace(R.id.fragmentContainerView, catalogFragment)
-                .addToBackStack("fragmentContainerView")
+                .addToBackStack("catalog_fragment_backstack")
                 .commit();
     }
 }

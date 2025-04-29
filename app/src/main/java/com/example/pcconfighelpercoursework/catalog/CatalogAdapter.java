@@ -18,51 +18,65 @@ import com.example.pcconfighelpercoursework.configurator.ConfigurerItem;
 import com.example.pcconfighelpercoursework.R;
 
 import java.util.List;
+import java.util.Optional;
 
-public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-    public static final int SL_TYPE_NOT = 0;
-    public static final int SL_TYPE_YES = 1;
+public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public static final int CATALOG = 0;
+    public static final int ADD_CONFIG = 1;//Константы для определения, каталог для добавления, изменения или просто просмотра
+    public static final int CHANGE_CONFIG = 2;
     private final LayoutInflater inflater;
     private List<CatalogItem> components;
-    private boolean isConfigAdd;
+    private int choice;
+    private OnAddButtonClickListener onAddButtonClickListener;
 
-
-    public CatalogAdapter(Context context, List<CatalogItem> components, boolean isConfigAdd) {
+    public CatalogAdapter(Context context, List<CatalogItem> components, int choice) {
         this.inflater = LayoutInflater.from(context);
         this.components = components;
-        this.isConfigAdd = isConfigAdd;
+        this.choice = choice;
+    }
+
+    public CatalogAdapter(Context context,List<CatalogItem> components, int choice, OnAddButtonClickListener onAddButtonClickListener) {
+        this.inflater = LayoutInflater.from(context);
+        this.components = components;
+        this.choice = choice;
+        this.onAddButtonClickListener = onAddButtonClickListener;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(viewType == SL_TYPE_NOT){
-
-            View view = inflater.inflate(R.layout.not_selected_pc_config_item,parent,false);
+        View view;
+        switch (viewType){
+            case CHANGE_CONFIG:
+            view = inflater.inflate(R.layout.catalog_item,parent,false);
             return new CatalogViewHolder(view);
-        }
-        else{
-            View view = inflater.inflate(R.layout.selected_pc_config_item,parent,false);
+
+            case ADD_CONFIG:
+            view = inflater.inflate(R.layout.add_catalog_item,parent,false);
             return new AddCatalogViewHolder(view);
+            default:
+                view = inflater.inflate(R.layout.catalog_item,parent,false);
+                return new CatalogViewHolder(view);
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (holder.getItemViewType()){
-            case SL_TYPE_NOT:
+            case CATALOG:
                 CatalogAdapter.CatalogViewHolder catalogViewHolder = (CatalogAdapter.CatalogViewHolder)holder;
                 break;
-            case SL_TYPE_YES:
+            case ADD_CONFIG:
                 CatalogAdapter.AddCatalogViewHolder addCatalogViewHolder = (CatalogAdapter.AddCatalogViewHolder)holder;
                 addCatalogViewHolder.productNameTextView.setText(components.get(position).getName());
                 addCatalogViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
                 addCatalogViewHolder.priceTextView.setText("От " + components.get(position).getPrice() + "p");
                 addCatalogViewHolder.addButton.setOnClickListener(v -> {
-                    MainActivity.getComponents()
-                            .stream()
-                            .filter(c -> c.getComponentType().equals(components.get(position).getComponentType()) && c.getId() == 0)
-                            .forEach(c -> {
+                     Optional<ConfigurerItem> optional =
+                             MainActivity.getComponents()
+                                .stream()
+                                .filter(c -> c.getComponentType().equals(components.get(position).getComponentType()) && c.getId() == 0).findFirst();
+                            /*.forEach(c -> {
                                 c.setId(components.get(position).getId());
                                 c.setName(components.get(position).getName());
                                 c.setType(components.get(position).getType());
@@ -70,7 +84,9 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                 c.setComponentType(components.get(position).getComponentType());
                                 c.setSelected(true);
                                 c.setPrice(components.get(position).getPrice());
-                            });
+                            onAddButtonClickListener.onAddButtonClick();
+                            });*/
+                    /*MainActivity.setComponents(l);*/
                 });//todo Он не видит кнопку. сделать так, чтобы видел
                 Log.e("aa", String.valueOf(getItemCount()));
                 break;
@@ -85,10 +101,13 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
     @Override
     public int getItemViewType(int position) {
-        if(isConfigAdd){
-            return SL_TYPE_YES;
-        }else{
-            return SL_TYPE_NOT;
+        switch (choice){
+            case ADD_CONFIG:
+                return ADD_CONFIG;
+            case CHANGE_CONFIG:
+                return CHANGE_CONFIG;
+            default:
+                return CATALOG;
         }
     }
     public static class CatalogViewHolder extends RecyclerView.ViewHolder {
@@ -114,8 +133,11 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             priceTextView = view.findViewById(R.id.priceCatalogTextView);
             productNameTextView = view.findViewById(R.id.productNameTextView);
             productDescriptionTextView = view.findViewById(R.id.productDescriptionTextView);
-            addButton = view.findViewById(R.id.addButtonCatalog);
+            addButton = view.findViewById(R.id.addButtonCatalogImageView);
             imageView = view.findViewById(R.id.imageView);
         }
+    }
+    public interface OnAddButtonClickListener{
+        void onAddButtonClick();
     }
 }

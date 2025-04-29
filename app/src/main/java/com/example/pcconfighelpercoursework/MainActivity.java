@@ -29,7 +29,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     protected BottomNavigationView bottomNavigationView;
     protected FragmentContainerView fragmentContainerView;
-    public static List<ConfigurerItem> components;
+    private NavController navController;
+    private static List<ConfigurerItem> components;
+
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,15 +61,22 @@ public class MainActivity extends AppCompatActivity {
         Log.e("asd", String.valueOf(R.id.nav_home));
         Log.e("asd", String.valueOf(R.id.nav_rating));
     }
-
     public static List<ConfigurerItem> getComponents() {
         return components;
+    }
+
+    public static void setComponents(List<ConfigurerItem> components) {
+        MainActivity.components = components;
     }
     public static void fillComponents(List<ConfigurerItem> components, Resources resources){
         components.add(new ConfigurerItem(resources.getString(R.string.cpu)));
         components.add(new ConfigurerItem(resources.getString(R.string.videocard)));
+        components.add(new ConfigurerItem(resources.getString(R.string.videocard)));
+        components.add(new ConfigurerItem(resources.getString(R.string.videocard)));
 
     }
+
+
     protected void getComponentsFromTXT(){//а кто запрещает?
         InputStream fin = null;
         try {
