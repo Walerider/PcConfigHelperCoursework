@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,7 +35,7 @@ public class CatalogFragment extends Fragment{
     public static CatalogFragment newInstance(ConfigurerItem param1, int param2) {
         CatalogFragment fragment = new CatalogFragment();
         Bundle args = new Bundle();
-        args.putParcelable(COMPOTENT,param1);//то
+        args.putParcelable(COMPOTENT,param1);
         args.putInt(ARG_CHOICE,param2);
         fragment.setArguments(args);
         return fragment;
@@ -71,6 +72,6 @@ public class CatalogFragment extends Fragment{
         }
     }
     private void onAddButtonClickListener() {
-        this.onDestroy();
+        getActivity().getSupportFragmentManager().popBackStack("catalog_fragment_backstack",FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 }

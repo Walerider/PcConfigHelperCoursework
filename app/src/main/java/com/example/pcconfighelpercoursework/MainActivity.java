@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.CalendarView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.navigation.NavController;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
     protected BottomNavigationView bottomNavigationView;
     protected FragmentContainerView fragmentContainerView;
     private NavController navController;
+
     private static List<ConfigurerItem> components;
 
-    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,11 +63,17 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.components = components;
     }
     public static void fillComponents(List<ConfigurerItem> components, Resources resources){
-        components.add(new ConfigurerItem(resources.getString(R.string.cpu)));
-        components.add(new ConfigurerItem(resources.getString(R.string.videocard)));
+        if(components.isEmpty()){
+            components.add(new ConfigurerItem(resources.getString(R.string.cpu)));
+            components.add(new ConfigurerItem(resources.getString(R.string.videocard)));
+        }
 
     }
+    private static void checkComponents(){
+        for (ConfigurerItem i : getComponents()) {
 
+        }
+    }
 
     protected void getComponentsFromTXT(){//а кто запрещает?
         InputStream fin = null;

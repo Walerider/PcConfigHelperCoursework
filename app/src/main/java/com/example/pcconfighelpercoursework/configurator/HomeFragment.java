@@ -15,6 +15,7 @@ import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
 import com.example.pcconfighelpercoursework.catalog.CatalogAdapter;
 import com.example.pcconfighelpercoursework.catalog.CatalogFragment;
+import com.example.pcconfighelpercoursework.utils.ItemDecoration;
 
 import java.util.List;
 
@@ -41,12 +42,20 @@ public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddBut
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.fragment_home, container, false);
-        configurerAdapter = new ConfigurerAdapter(components,getContext());
-        configurerAdapter.setOnAddButtonClickListener(this::onAddClick);
+        int spacingInPixels = getActivity().getResources().getDimensionPixelSize(R.dimen.item_spacing);
         recyclerView = mainView.findViewById(R.id.compView);
-        recyclerView.setAdapter(configurerAdapter);
+        recyclerView.addItemDecoration(new ItemDecoration(spacingInPixels));
         return mainView;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        configurerAdapter = new ConfigurerAdapter(components,getContext());
+        configurerAdapter.setOnAddButtonClickListener(this::onAddClick);
+        recyclerView.setAdapter(configurerAdapter);
+    }
+
 
     @Override
     public void onAddClick( ConfigurerItem item) {
