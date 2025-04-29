@@ -49,10 +49,10 @@ public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddBut
     }
 
     @Override
-    public void onAddClick(String componentType) {
+    public void onAddClick( ConfigurerItem item) {
 
-        CatalogFragment catalogFragment = CatalogFragment.newInstance(componentType, CatalogAdapter.ADD_CONFIG);
-        Log.e("asdasdfgfg",componentType);
+        CatalogFragment catalogFragment = CatalogFragment.newInstance(item, CatalogAdapter.ADD_CONFIG);
+        Log.e("asdasdfgfg",item.getComponentType());
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right)

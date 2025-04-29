@@ -37,30 +37,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         components = new ArrayList<>();
-        fillComponents(components,getResources());
         setContentView(R.layout.activity_main);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         fragmentContainerView = findViewById(R.id.fragmentContainerView);
         NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            if(item.getItemId() == R.id.nav_home){
-                navController.navigate(R.id.homeFragment);
-
-                return true;
-            }
-            if (item.getItemId() == R.id.nav_rating){
-                navController.navigate(R.id.ratingFragment);
-                return true;
-            }
-            return false;
-        });
-
-        Log.e("asd", String.valueOf(bottomNavigationView.getSelectedItemId()));
-        Log.e("asd", String.valueOf(R.id.nav_home));
-        Log.e("asd", String.valueOf(R.id.nav_rating));
+        bottomNavigationLogic(bottomNavigationView,navController);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        fillComponents(components,getResources());
+
+    }
+
     public static List<ConfigurerItem> getComponents() {
         return components;
     }
@@ -70,8 +61,6 @@ public class MainActivity extends AppCompatActivity {
     }
     public static void fillComponents(List<ConfigurerItem> components, Resources resources){
         components.add(new ConfigurerItem(resources.getString(R.string.cpu)));
-        components.add(new ConfigurerItem(resources.getString(R.string.videocard)));
-        components.add(new ConfigurerItem(resources.getString(R.string.videocard)));
         components.add(new ConfigurerItem(resources.getString(R.string.videocard)));
 
     }
@@ -115,5 +104,19 @@ public class MainActivity extends AppCompatActivity {
         catch (IOException e) {
             Log.e("Exception", "File write failed: " + e);
         }
+    }
+    private void bottomNavigationLogic(BottomNavigationView bottomNavigationView,NavController navController){
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if(item.getItemId() == R.id.nav_home){
+                navController.navigate(R.id.homeFragment);
+
+                return true;
+            }
+            if (item.getItemId() == R.id.nav_rating){
+                navController.navigate(R.id.ratingFragment);
+                return true;
+            }
+            return false;
+        });
     }
 }

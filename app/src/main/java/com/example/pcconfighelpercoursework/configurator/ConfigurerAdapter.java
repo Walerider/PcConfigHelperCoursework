@@ -11,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pcconfighelpercoursework.R;
@@ -56,13 +54,16 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         switch (holder.getItemViewType()) {
             case SL_TYPE_YES:
                 SelectedViewHolder selectedViewHolder = (SelectedViewHolder) holder;
+                selectedViewHolder.productNameTextView.setText(components.get(position).getName());
+                selectedViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
+                /*selectedViewHolder.priceCatalogTextView.setText(components.get(position).getPrice());*/
 
                 break;
             case SL_TYPE_NOT:
                 NotSelectedViewHolder notSelectedViewHolder = (NotSelectedViewHolder) holder;
                 notSelectedViewHolder.componentType.setText(components.get(position).getComponentType());
                 notSelectedViewHolder.addButton.setOnClickListener(v -> {
-                    onAddButtonClickListener.onAddClick(components.get(position).getComponentType());
+                    onAddButtonClickListener.onAddClick(components.get(position));
                 });
                 break;
         }
@@ -104,14 +105,18 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public static class SelectedViewHolder extends RecyclerView.ViewHolder {
-        final TextView productName;
+        final TextView productNameTextView;
+        final TextView productDescriptionTextView;
+        final TextView priceCatalogTextView;
         final ImageButton clearButton;
         final ImageButton changeButton;
         final ImageView imageView;
 
         SelectedViewHolder(View view) {
             super(view);
-            productName = view.findViewById(R.id.productNameTextView);
+            productNameTextView = view.findViewById(R.id.productNameTextView);
+            productDescriptionTextView = view.findViewById(R.id.productDescriptionTextView);
+            priceCatalogTextView = view.findViewById(R.id.priceCatalogTextView);
             clearButton = view.findViewById(R.id.clearButton);
             changeButton = view.findViewById(R.id.changeButton);
             imageView = view.findViewById(R.id.imageView);
@@ -120,6 +125,6 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public interface OnAddButtonClickListener {
-        void onAddClick(String componentType);
+        void onAddClick(ConfigurerItem item);
     }
 }
