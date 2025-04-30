@@ -1,4 +1,4 @@
-package com.example.pcconfighelpercoursework.catalog;
+package com.example.pcconfighelpercoursework.catalog.items;
 
 public class CatalogItem {
     private int id;

@@ -130,7 +130,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         NotSelectedViewHolder(View view) {
             super(view);
             componentType = view.findViewById(R.id.productNameTextView);
-            addButton = view.findViewById(R.id.addButton);
+            addButton = view.findViewById(R.id.addImageButton);
         }
     }
 

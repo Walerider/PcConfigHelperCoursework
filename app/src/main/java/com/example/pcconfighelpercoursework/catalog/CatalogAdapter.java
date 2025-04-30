@@ -1,6 +1,7 @@
 package com.example.pcconfighelpercoursework.catalog;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pcconfighelpercoursework.MainActivity;
-import com.example.pcconfighelpercoursework.configurator.items.ConfigurerItem;
+import com.example.pcconfighelpercoursework.catalog.items.CatalogItem;
+import com.example.pcconfighelpercoursework.configurator.items.*;
 import com.example.pcconfighelpercoursework.R;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -60,35 +63,20 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 return new CatalogViewHolder(view);
         }
     }
-
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (holder.getItemViewType()){
             case CATALOG:
-                CatalogAdapter.CatalogViewHolder catalogViewHolder = (CatalogAdapter.CatalogViewHolder)holder;
+                CatalogViewHolder catalogViewHolder = (CatalogViewHolder)holder;
                 break;
             case ADD_CONFIG:
-                CatalogAdapter.AddCatalogViewHolder addCatalogViewHolder = (CatalogAdapter.AddCatalogViewHolder)holder;
+                AddCatalogViewHolder addCatalogViewHolder = (AddCatalogViewHolder)holder;
                 addCatalogViewHolder.productNameTextView.setText(components.get(position).getName());
                 addCatalogViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
                 addCatalogViewHolder.priceTextView.setText("От " + components.get(position).getPrice() + "p");
-                Log.e("aaaa",configurerComponent.toString());
                 addCatalogViewHolder.addButton.setOnClickListener(v -> {
-                    List<ConfigurerItem> l = MainActivity.getComponents();
-                    //Log.e("list change", Arrays.toString(l.toArray()));
-                    l.stream()
-                        .filter(c -> c.equals(configurerComponent))
-                        .forEach(c -> {
-                            c.setId(components.get(position).getId());
-                            c.setName(components.get(position).getName());
-                            c.setImage(components.get(position).getImage());
-                            c.setComponentType(components.get(position).getComponentType());
-                            c.setSelected(true);
-                            c.setPrice(components.get(position).getPrice());
-                            c.setDescription(components.get(position).getDescription());
-                            Log.e("aaa",c.toString());
-                        });
-                    //Log.e("list change", Arrays.toString(l.toArray()));
+                    Log.e("configurerComponent",configurerComponent.toString());
+                    List<ConfigurerItem> l = addConfigurerItem(MainActivity.getComponents(),configurerComponent,position);;
                     MainActivity.setComponents(l);
 
                     onAddButtonClickListener.onAddButtonClick();
@@ -127,6 +115,71 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             //todo Доделать каталог 28/29!!!!!!!
         }
     }
+    private List<ConfigurerItem> addConfigurerItem(List<ConfigurerItem> list,ConfigurerItem configurerComponent,int position){
+        String cpu = MainActivity.resources.getString(R.string.cpu);
+        String videocard = MainActivity.resources.getString(R.string.videocard);
+        String cpuCooler = MainActivity.resources.getString(R.string.cpu_cooler);
+        String motherboard = MainActivity.resources.getString(R.string.motherboard);
+        String powerSupply = MainActivity.resources.getString(R.string.power_supply);
+        String storageDevice = MainActivity.resources.getString(R.string.storage_devices);
+        String pcCase = MainActivity.resources.getString(R.string.pc_case);
+        String ram = MainActivity.resources.getString(R.string.ram);
+        if (configurerComponent.getComponentType().equals(cpu)) {
+            list.stream()
+                    .filter(c -> c.equals(configurerComponent))
+                    .forEach(c -> {
+                        c = new CPU(
+                                components.get(position).getId(),
+                                components.get(position).getName(),
+                                components.get(position).getImage(),
+                                components.get(position).getComponentType(),
+                                components.get(position).getDescription(),
+                                components.get(position).getPrice(),
+                                true,
+                                8,
+                                "AM5");
+
+                        Log.e("aaa", c.toString());
+                    });
+            Log.e("list change", Arrays.toString(list.toArray()));
+
+            return list;
+        } else if (configurerComponent.getComponentType().equals(videocard)) {
+            list.stream()
+                    .filter(c -> c.equals(configurerComponent))
+                    .forEach(c -> {
+                        c = new Videocard(
+                                components.get(position).getId(),
+                                components.get(position).getName(),
+                                components.get(position).getImage(),
+                                components.get(position).getComponentType(),
+                                components.get(position).getDescription(),
+                                components.get(position).getPrice(),
+                                true,
+                                8,
+                                "RTX 20");
+
+                        Log.e("aaa", c.toString());
+                    });
+            Log.e("list change", Arrays.toString(list.toArray()));
+            return list;
+        } else {
+            list.stream()
+                    .filter(c -> c.equals(configurerComponent))
+                    .forEach(c -> {
+                        c.setId(components.get(position).getId());
+                        c.setName(components.get(position).getName());
+                        c.setImage(components.get(position).getImage());
+                        c.setComponentType(components.get(position).getComponentType());
+                        c.setSelected(true);
+                        c.setPrice(components.get(position).getPrice());
+                        c.setDescription(components.get(position).getDescription());
+                        Log.e("aaa",c.toString());
+                    });
+            Log.e("list change", Arrays.toString(list.toArray()));
+            return list;
+        }
+    }
     public static class AddCatalogViewHolder extends RecyclerView.ViewHolder {
         public TextView priceTextView;
         public TextView productNameTextView;
@@ -140,9 +193,11 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             productDescriptionTextView = view.findViewById(R.id.productDescriptionTextView);
             addButton = view.findViewById(R.id.addButtonCatalogImageView);
             imageView = view.findViewById(R.id.imageView);
+
         }
     }
     public interface OnAddButtonClickListener{
         void onAddButtonClick();
     }
+
 }

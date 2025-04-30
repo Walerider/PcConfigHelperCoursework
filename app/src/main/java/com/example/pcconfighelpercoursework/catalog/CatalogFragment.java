@@ -2,7 +2,6 @@ package com.example.pcconfighelpercoursework.catalog;
 
 import android.os.Bundle;
 
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.pcconfighelpercoursework.R;
+import com.example.pcconfighelpercoursework.catalog.items.CatalogItem;
 import com.example.pcconfighelpercoursework.configurator.items.ConfigurerItem;
 import com.example.pcconfighelpercoursework.configurator.HomeFragment;
 import com.example.pcconfighelpercoursework.utils.ItemDecoration;

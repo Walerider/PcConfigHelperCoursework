@@ -3,101 +3,113 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="?colorPrimaryContainer"
-    android:layout_height="175dp">
+    android:background="?colorPrimary"
+    android:layout_height="250dp">
 
 
-    <ImageButton
-        android:id="@+id/clearButton"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_design"
+        android:background="@drawable/shadow"
+        app:layout_constraintWidth_percent="0.93"
+        app:layout_constraintHeight_percent="0.95"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.3"
-        app:layout_constraintHorizontal_bias="0.961"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.672"
-        app:layout_constraintWidth_percent="0.15"
-        app:srcCompat="@drawable/clear" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageButton
-        android:id="@+id/changeButton"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/button_design"
-        app:layout_constraintBottom_toTopOf="@+id/clearButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.3"
-        app:layout_constraintHorizontal_bias="0.961"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.724"
-        app:layout_constraintWidth_percent="0.15"
-        app:srcCompat="@drawable/change" />
+        <TextView
+            android:id="@+id/priceCatalogTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="?colorPrimary"
+            android:text=" от 314990р"
+            android:textSize="18sp"
+            android:textColor="?colorPrimaryInverse"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.15"
+            app:layout_constraintHorizontal_bias="0.055"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.876"
+            app:layout_constraintWidth_percent="0.2" />
 
-    <TextView
-        android:id="@+id/productNameTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/name"
-        android:textAlignment="textStart"
-        android:textColor="?colorPrimaryInverse"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.5"
-        app:layout_constraintHorizontal_bias="0.597"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.172"
-        app:layout_constraintWidth_percent="0.4" />
+        <TextView
+            android:id="@+id/productDescriptionTextView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/text"
+            android:textAlignment="textStart"
+            android:textColor="?colorPrimaryInverse"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintHorizontal_bias="0.598"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.352"
+            app:layout_constraintWidth_percent="0.4" />
 
-    <TextView
-        android:id="@+id/productDescriptionTextView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="@string/text"
-        android:textAlignment="textStart"
-        android:textColor="?colorPrimaryInverse"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.6"
-        app:layout_constraintHorizontal_bias="0.597"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9"
-        app:layout_constraintWidth_percent="0.4" />
+        <TextView
+            android:id="@+id/productNameTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:textAlignment="textStart"
+            android:textColor="?colorPrimaryInverse"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintHorizontal_bias="0.598"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.084"
+            app:layout_constraintWidth_percent="0.4" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.7"
-        app:layout_constraintHorizontal_bias="0.021"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.49"
-        app:layout_constraintWidth_percent="0.3"
-        app:srcCompat="@android:drawable/ic_dialog_alert" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintHorizontal_bias="0.062"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.128"
+            app:layout_constraintWidth_percent="0.3"
+            app:srcCompat="@android:drawable/ic_dialog_alert"/>
+        <ImageButton
+            android:id="@+id/clearButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/button_design"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.25"
+            app:layout_constraintHorizontal_bias="0.961"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.672"
+            app:layout_constraintWidth_percent="0.15"
+            app:srcCompat="@drawable/clear" />
 
-    <TextView
-        android:id="@+id/priceCatalogTextView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="314990р"
-        android:textColor="?colorPrimaryInverse"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.15"
-        app:layout_constraintHorizontal_bias="0.961"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.953"
-        app:layout_constraintWidth_percent="0.15" />
-
+        <ImageButton
+            android:id="@+id/changeButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/button_design"
+            app:layout_constraintBottom_toTopOf="@+id/clearButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.25"
+            app:layout_constraintHorizontal_bias="0.961"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.724"
+            app:layout_constraintWidth_percent="0.15"
+            app:srcCompat="@drawable/change" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
