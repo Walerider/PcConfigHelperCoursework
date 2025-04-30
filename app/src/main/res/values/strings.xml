@@ -10,9 +10,12 @@
     <string name="ram">RAM</string>
     <string name="power_supply">Power supply</string>
     <string name="not_loaded">Not loaded</string>
-    <string name="storage">Storage</string>
+    <string name="storage_devices">Storage</string>
+    <string name="cpu_cooler">CPU cooler</string>
     <string name="name">Name</string>
     <string name="assembly">PC assembly</string>
     <string name="text">[AM5, 6 x 3.7 ГГц, L2 - 6 МБ, L3 - 32 МБ, 2 х DDR5-5200 МГц, TDP 65 Вт]</string>
+    <string name="pc_case">Case</string>
+    <string name="task_video_edit">Video editing</string>
 
 </resources>

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
+import com.example.pcconfighelpercoursework.configurator.items.ConfigurerItem;
 
 import java.util.Arrays;
 import java.util.List;
@@ -89,7 +90,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public int getItemViewType(int position) { // TODO: 20.09.2024 написать определение того, выбрал ли человек комплектуху 
+    public int getItemViewType(int position) {
         if (components.get(position).isSelected()) {
             return SL_TYPE_YES;
         } else {

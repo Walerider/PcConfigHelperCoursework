@@ -13,15 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pcconfighelpercoursework.MainActivity;
-import com.example.pcconfighelpercoursework.configurator.ConfigurerAdapter;
-import com.example.pcconfighelpercoursework.configurator.ConfigurerItem;
+import com.example.pcconfighelpercoursework.configurator.items.ConfigurerItem;
 import com.example.pcconfighelpercoursework.R;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int CATALOG = 0;
@@ -86,7 +81,6 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         .forEach(c -> {
                             c.setId(components.get(position).getId());
                             c.setName(components.get(position).getName());
-                            c.setType(components.get(position).getType());
                             c.setImage(components.get(position).getImage());
                             c.setComponentType(components.get(position).getComponentType());
                             c.setSelected(true);

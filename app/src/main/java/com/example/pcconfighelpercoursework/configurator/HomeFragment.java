@@ -10,15 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
 import com.example.pcconfighelpercoursework.catalog.CatalogAdapter;
 import com.example.pcconfighelpercoursework.catalog.CatalogFragment;
+import com.example.pcconfighelpercoursework.configurator.items.ConfigurerItem;
 import com.example.pcconfighelpercoursework.utils.ItemDecoration;
-
-import java.util.List;
 
 public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddButtonClickListener{
 

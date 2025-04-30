@@ -12,7 +12,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.pcconfighelpercoursework.configurator.ConfigurerItem;
+import com.example.pcconfighelpercoursework.configurator.items.*;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.BufferedReader;
@@ -67,8 +67,13 @@ public class MainActivity extends AppCompatActivity {
     }
     public static void fillComponents(List<ConfigurerItem> components){
         if(components.isEmpty()){
-            components.add(new ConfigurerItem(resources.getString(R.string.cpu)));
-            components.add(new ConfigurerItem(resources.getString(R.string.videocard)));
+            components.add(new CPU(resources.getString(R.string.cpu)));
+            components.add(new Videocard(resources.getString(R.string.videocard)));
+            components.add(new Motherboard(resources.getString(R.string.motherboard)));
+            components.add(new RAM(resources.getString(R.string.ram)));
+            components.add(new PowerSupply(resources.getString(R.string.power_supply)));
+            components.add(new ConfigurerItem(resources.getString(R.string.cpu_cooler)));
+            components.add(new Cases(resources.getString(R.string.pc_case)));
         }
     }
     public static boolean checkComponents(List<ConfigurerItem> components){

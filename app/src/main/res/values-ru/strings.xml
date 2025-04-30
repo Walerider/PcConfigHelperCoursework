@@ -9,10 +9,12 @@
     <string name="motherboard">Материнская плата</string>
     <string name="ram">Оперативная память</string>
     <string name="power_supply">Блок питания</string>
-    <string name="storage">Накопители</string>
+    <string name="storage_devices">Накопители</string>
+    <string name="cpu_cooler">Процессорный кулер</string>
     <string name="not_loaded">Не загружено</string>
     <string name="name">Название</string>
     <string name="assembly">Сборка</string>
-
+    <string name="pc_case">Корпус</string>
     <string name="text">[AM5, 6 x 3.7 ГГц, L2 - 6 МБ, L3 - 32 МБ, 2 х DDR5-5200 МГц, TDP 65 Вт]</string>
+    <string name="task_video_edit">Монтаж видео</string>
 </resources>

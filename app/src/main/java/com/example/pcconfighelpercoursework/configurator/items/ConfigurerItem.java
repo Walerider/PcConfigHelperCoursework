@@ -1,4 +1,4 @@
-package com.example.pcconfighelpercoursework.configurator;
+package com.example.pcconfighelpercoursework.configurator.items;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 
 public class ConfigurerItem implements Parcelable {
     private int id;
-    private String type;
     private String name;
     private String image;
     private String componentType;
@@ -18,9 +17,8 @@ public class ConfigurerItem implements Parcelable {
         selected = false;
     }
 
-    public ConfigurerItem(int id, String type, String name, String image, String componentType, String description, int price, boolean selected) {
+    public ConfigurerItem(int id, String name, String image, String componentType, String description, int price, boolean selected) {
         this.id = id;
-        this.type = type;
         this.name = name;
         this.image = image;
         this.componentType = componentType;
@@ -35,7 +33,6 @@ public class ConfigurerItem implements Parcelable {
 
         this.id = in.readInt();
         this.name = in.readString();
-        this.type = in.readString();
         this.image = in.readString();
         this.componentType = in.readString();
         this.description = in.readString();
@@ -47,13 +44,6 @@ public class ConfigurerItem implements Parcelable {
         this.componentType = componentType;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public String getName() {
         return name;
@@ -115,7 +105,6 @@ public class ConfigurerItem implements Parcelable {
     public String toString() {
         return "ConfigurerItem{" +
                 "id=" + id +
-                ", type='" + type + '\'' +
                 ", name='" + name + '\'' +
                 ", image='" + image + '\'' +
                 ", componentType='" + componentType + '\'' +
@@ -145,7 +134,6 @@ public class ConfigurerItem implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(name);
-        dest.writeString(type);
         dest.writeString(image);
         dest.writeString(componentType);
         dest.writeString(description);

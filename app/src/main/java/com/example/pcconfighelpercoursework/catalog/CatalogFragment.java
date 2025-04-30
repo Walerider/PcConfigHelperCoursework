@@ -1,11 +1,8 @@
 package com.example.pcconfighelpercoursework.catalog;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -13,10 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
-import com.example.pcconfighelpercoursework.configurator.ConfigurerAdapter;
-import com.example.pcconfighelpercoursework.configurator.ConfigurerItem;
+import com.example.pcconfighelpercoursework.configurator.items.ConfigurerItem;
 import com.example.pcconfighelpercoursework.configurator.HomeFragment;
 
 import java.util.ArrayList;
