@@ -17,6 +17,7 @@ import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
 import com.example.pcconfighelpercoursework.configurator.ConfigurerAdapter;
 import com.example.pcconfighelpercoursework.configurator.ConfigurerItem;
+import com.example.pcconfighelpercoursework.configurator.HomeFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,28 +51,53 @@ public class CatalogFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         products = new ArrayList<>();
-        ConfigurerItem item = getArguments().getParcelable(COMPOTENT);
-        fillproducts(item);
         View view =inflater.inflate(R.layout.fragment_catalog, container, false);
-        catalogAdapter = new CatalogAdapter(getContext(), products ,getArguments().getInt(ARG_CHOICE),this::onAddButtonClickListener,item);
         catalogRecyclerView = view.findViewById(R.id.catalogRecyclerView);
-        catalogRecyclerView.setAdapter(catalogAdapter);
+
         return view;//todo подумать, убивать фрагмент или нет. Скорее всего да, чтобы адаптер менять
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ConfigurerItem item = getArguments().getParcelable(COMPOTENT);
+        fillproducts(item);
+        switch (getArguments().getInt(ARG_CHOICE)){
+            case 1:
+                Log.e("choice",ARG_CHOICE);
+                catalogAdapter = new CatalogAdapter(getContext(), products ,getArguments().getInt(ARG_CHOICE),this::onAddButtonClickListener,item);
+                break;
+            default:
+                catalogAdapter = new CatalogAdapter(getContext(), products ,getArguments().getInt(ARG_CHOICE));
+        }
+        catalogRecyclerView.setAdapter(catalogAdapter);
+    }
 
     private void fillproducts(ConfigurerItem item){
         if (item.getComponentType().equals(getActivity().getResources().getString(R.string.videocard))) {
-            products.add(new CatalogItem(1, "Videocard", "1050ti", "", "Videocard", "description", 20000));
-            products.add(new CatalogItem(2, "Videocard", "2060 super", "", "Videocard", "description", 40000));
+            products.add(new CatalogItem(1, "Videocard", "1050ti", "", getActivity().getResources().getString(R.string.videocard), "description", 20000));
+            products.add(new CatalogItem(2, "Videocard", "2060 super", "", getActivity().getResources().getString(R.string.videocard), "description", 40000));
         } else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.cpu))) {
-            products.add(new CatalogItem(1, "CPU", "Ryzen 5 5700x", "", "CPU", "[AM5, 6 x 3.7 ГГц, L2 - 6 МБ, L3 - 32 МБ, 2 х DDR5-5200 МГц, TDP 65 Вт]", 20000));
+            products.add(new CatalogItem(1, "CPU", "Ryzen 5 5700x", "", getActivity().getResources().getString(R.string.cpu), "[AM5, 6 x 3.7 ГГц, L2 - 6 МБ, L3 - 32 МБ, 2 х DDR5-5200 МГц, TDP 65 Вт]", 20000));
             Log.e("getting item", item.toString());
         } else {
             Log.e("getting item", item.toString());
-        }
+        }//todo Переместить это в utils и заполнять через запросы к api
     }
     private void onAddButtonClickListener() {
-        getActivity().getSupportFragmentManager().popBackStack("catalog_fragment_backstack",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        HomeFragment homeFragment = (HomeFragment) getActivity().getSupportFragmentManager().findFragmentByTag("home_fragment");
+        if(homeFragment != null){
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContainerView, homeFragment, "home_fragment")
+                    .addToBackStack("home_fragment_backstack")
+                    .commit();
+
+        }
     }
 }

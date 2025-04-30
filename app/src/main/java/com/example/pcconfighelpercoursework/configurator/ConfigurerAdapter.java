@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
 
 import java.util.Arrays;
@@ -22,6 +23,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public static final int SL_TYPE_NOT = 0;
     public static final int SL_TYPE_YES = 1;
     private List<ConfigurerItem> components;
+    private ConfigurerItem emptyComponent;
     private final LayoutInflater inflater;
     private OnAddButtonClickListener onAddButtonClickListener;
 
@@ -30,6 +32,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         //Collections.reverse(this.components);
         Log.e("asdasd", Arrays.toString(components.toArray()));
         this.inflater = LayoutInflater.from(context);
+        emptyComponent = new ConfigurerItem();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -57,7 +60,16 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 selectedViewHolder.productNameTextView.setText(components.get(position).getName());
                 selectedViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
                 selectedViewHolder.priceCatalogTextView.setText(String.valueOf(components.get(position).getPrice()) + "р");
-
+                selectedViewHolder.clearButton.setOnClickListener(v ->{
+                    emptyComponent.setComponentType(MainActivity.getComponents().get(position).getComponentType());
+                    MainActivity.getComponents().set(position,emptyComponent);
+                    //Log.e("components in delete button adapter",Arrays.toString(components.toArray()));
+                    if(!MainActivity.checkComponents(components)){
+                        MainActivity.fillComponents(components);
+                    }
+                    MainActivity.setComponents(components);
+                    notifyDataSetChanged();
+                });
                 break;
             case SL_TYPE_NOT:
                 NotSelectedViewHolder notSelectedViewHolder = (NotSelectedViewHolder) holder;
@@ -127,4 +139,5 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public interface OnAddButtonClickListener {
         void onAddClick(ConfigurerItem item);
     }
+
 }

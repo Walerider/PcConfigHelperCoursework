@@ -96,6 +96,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         });
                     //Log.e("list change", Arrays.toString(l.toArray()));
                     MainActivity.setComponents(l);
+
                     onAddButtonClickListener.onAddButtonClick();
                 });
                 Log.e("aa", String.valueOf(getItemCount()));

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.pcconfighelpercoursework.MainActivity;
@@ -21,9 +22,9 @@ import java.util.List;
 
 public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddButtonClickListener{
 
-    private List<ConfigurerItem> components;
     RecyclerView recyclerView;
     ConfigurerAdapter configurerAdapter;
+    ImageButton profileButton;
 
     public HomeFragment() {
     }
@@ -35,7 +36,6 @@ public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddBut
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        components = MainActivity.getComponents();
     }
 
     @Override
@@ -51,9 +51,13 @@ public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddBut
     @Override
     public void onResume() {
         super.onResume();
-        configurerAdapter = new ConfigurerAdapter(components,getContext());
+        configurerAdapter = new ConfigurerAdapter(MainActivity.getComponents(),getContext());
         configurerAdapter.setOnAddButtonClickListener(this::onAddClick);
         recyclerView.setAdapter(configurerAdapter);
+        configurerAdapter.notifyDataSetChanged();
+        if(!MainActivity.checkComponents(MainActivity.getComponents())){
+            MainActivity.fillComponents(MainActivity.getComponents());
+        }
     }
 
 
@@ -65,8 +69,9 @@ public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddBut
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right)
-                .replace(R.id.fragmentContainerView, catalogFragment)
+                .replace(R.id.fragmentContainerView, catalogFragment,"catalog_fragment")
                 .addToBackStack("catalog_fragment_backstack")
                 .commit();
     }
+
 }
