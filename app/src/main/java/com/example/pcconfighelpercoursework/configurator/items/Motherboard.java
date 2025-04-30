@@ -14,6 +14,9 @@ public class Motherboard extends ConfigurerItem{
         this.formFactor = formFactor;
     }
 
+    public Motherboard() {
+    }
+
     public Motherboard(Parcel in) {
         super(in);
         this.socket = in.readString();

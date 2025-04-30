@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
     protected BottomNavigationView bottomNavigationView;
     protected FragmentContainerView fragmentContainerView;
     private NavController navController;
-    private static Resources resources;
+    public static Resources resources;
+
     private static List<ConfigurerItem> components;
 
     @Override
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             components.add(new Motherboard(resources.getString(R.string.motherboard)));
             components.add(new RAM(resources.getString(R.string.ram)));
             components.add(new PowerSupply(resources.getString(R.string.power_supply)));
-            components.add(new ConfigurerItem(resources.getString(R.string.cpu_cooler)));
+            components.add(new CPUCooler(resources.getString(R.string.cpu_cooler)));
             components.add(new Cases(resources.getString(R.string.pc_case)));
         }
     }

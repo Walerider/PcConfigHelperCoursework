@@ -21,6 +21,9 @@ public class Cases extends ConfigurerItem{
         super(componentType);
     }
 
+    public Cases() {
+    }
+
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         super.writeToParcel(dest, flags);

@@ -14,6 +14,9 @@ public class PowerSupply extends ConfigurerItem{
         this.certificate = certificate;
     }
 
+    public PowerSupply() {
+    }
+
     public PowerSupply(String componentType) {
         super(componentType);
     }

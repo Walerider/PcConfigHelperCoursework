@@ -24,10 +24,29 @@ public class CPUCooler extends ConfigurerItem{
         super(componentType);
     }
 
+    public CPUCooler() {
+    }
+
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeString(socket);
         dest.writeInt(dissipation);
+    }
+
+    public String getSocket() {
+        return socket;
+    }
+
+    public void setSocket(String socket) {
+        this.socket = socket;
+    }
+
+    public int getDissipation() {
+        return dissipation;
+    }
+
+    public void setDissipation(int dissipation) {
+        this.dissipation = dissipation;
     }
 }

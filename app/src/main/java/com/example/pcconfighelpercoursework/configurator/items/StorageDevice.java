@@ -20,6 +20,13 @@ public class StorageDevice extends ConfigurerItem{
         this.capacity = in.readInt();
     }
 
+    public StorageDevice() {
+    }
+
+    public StorageDevice(String componentType) {
+        super(componentType);
+    }
+
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         super.writeToParcel(dest, flags);

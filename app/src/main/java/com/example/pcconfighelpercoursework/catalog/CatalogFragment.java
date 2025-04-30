@@ -2,6 +2,7 @@ package com.example.pcconfighelpercoursework.catalog;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,10 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.pcconfighelpercoursework.R;
 import com.example.pcconfighelpercoursework.configurator.items.ConfigurerItem;
 import com.example.pcconfighelpercoursework.configurator.HomeFragment;
+import com.example.pcconfighelpercoursework.utils.ItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,7 @@ public class CatalogFragment extends Fragment{
     private static final String COMPOTENT = "";
     private CatalogAdapter catalogAdapter;
     private RecyclerView catalogRecyclerView;
+    TextView toolbarTitleTextView;
     List<CatalogItem> products;
     private static final String ARG_CHOICE = "0";
     public CatalogFragment() {
@@ -47,7 +51,10 @@ public class CatalogFragment extends Fragment{
                              Bundle savedInstanceState) {
         products = new ArrayList<>();
         View view =inflater.inflate(R.layout.fragment_catalog, container, false);
+        int spacingInPixels = getActivity().getResources().getDimensionPixelSize(R.dimen.item_spacing);
         catalogRecyclerView = view.findViewById(R.id.catalogRecyclerView);
+        catalogRecyclerView.addItemDecoration(new ItemDecoration(spacingInPixels));
+        toolbarTitleTextView = view.findViewById(R.id.toolbarTitleTextView);
 
         return view;//todo подумать, убивать фрагмент или нет. Скорее всего да, чтобы адаптер менять
     }
@@ -63,6 +70,7 @@ public class CatalogFragment extends Fragment{
         super.onResume();
         ConfigurerItem item = getArguments().getParcelable(COMPOTENT);
         fillproducts(item);
+        toolbarTitleTextView.setText(item.getComponentType());
         switch (getArguments().getInt(ARG_CHOICE)){
             case 1:
                 Log.e("choice",ARG_CHOICE);

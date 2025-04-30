@@ -2,6 +2,7 @@ package com.example.pcconfighelpercoursework.configurator;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +16,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
+import com.example.pcconfighelpercoursework.configurator.items.CPU;
+import com.example.pcconfighelpercoursework.configurator.items.CPUCooler;
+import com.example.pcconfighelpercoursework.configurator.items.Cases;
 import com.example.pcconfighelpercoursework.configurator.items.ConfigurerItem;
+import com.example.pcconfighelpercoursework.configurator.items.Motherboard;
+import com.example.pcconfighelpercoursework.configurator.items.PowerSupply;
+import com.example.pcconfighelpercoursework.configurator.items.RAM;
+import com.example.pcconfighelpercoursework.configurator.items.StorageDevice;
+import com.example.pcconfighelpercoursework.configurator.items.Videocard;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int SL_TYPE_NOT = 0;
     public static final int SL_TYPE_YES = 1;
     private List<ConfigurerItem> components;
-    private ConfigurerItem emptyComponent;
+    private Map<String,ConfigurerItem> emptyComponents;
     private final LayoutInflater inflater;
     private OnAddButtonClickListener onAddButtonClickListener;
 
@@ -33,7 +44,15 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         //Collections.reverse(this.components);
         Log.e("asdasd", Arrays.toString(components.toArray()));
         this.inflater = LayoutInflater.from(context);
-        emptyComponent = new ConfigurerItem();
+        emptyComponents = new HashMap<>();
+        emptyComponents.put(MainActivity.resources.getString(R.string.cpu),new CPU(MainActivity.resources.getString(R.string.cpu)));
+        emptyComponents.put(MainActivity.resources.getString(R.string.videocard),new Videocard(MainActivity.resources.getString(R.string.videocard)));
+        emptyComponents.put(MainActivity.resources.getString(R.string.motherboard),new Motherboard(MainActivity.resources.getString(R.string.motherboard)));
+        emptyComponents.put(MainActivity.resources.getString(R.string.ram),new RAM(MainActivity.resources.getString(R.string.ram)));
+        emptyComponents.put(MainActivity.resources.getString(R.string.power_supply),new PowerSupply(MainActivity.resources.getString(R.string.power_supply)));
+        emptyComponents.put(MainActivity.resources.getString(R.string.storage_devices),new StorageDevice(MainActivity.resources.getString(R.string.storage_devices)));
+        emptyComponents.put(MainActivity.resources.getString(R.string.cpu_cooler),new CPUCooler(MainActivity.resources.getString(R.string.cpu_cooler)));
+        emptyComponents.put(MainActivity.resources.getString(R.string.pc_case),new Cases(MainActivity.resources.getString(R.string.pc_case)));
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -62,8 +81,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 selectedViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
                 selectedViewHolder.priceCatalogTextView.setText(String.valueOf(components.get(position).getPrice()) + "р");
                 selectedViewHolder.clearButton.setOnClickListener(v ->{
-                    emptyComponent.setComponentType(MainActivity.getComponents().get(position).getComponentType());
-                    MainActivity.getComponents().set(position,emptyComponent);
+                    components.set(position,emptyComponents.get(MainActivity.getComponents().get(position).getComponentType()));
                     //Log.e("components in delete button adapter",Arrays.toString(components.toArray()));
                     if(!MainActivity.checkComponents(components)){
                         MainActivity.fillComponents(components);

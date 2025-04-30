@@ -14,6 +14,9 @@ public class Videocard extends ConfigurerItem{
         this.series = series;
     }
 
+    public Videocard() {
+    }
+
     public Videocard(Parcel in) {
         super(in);
         this.vramSize = in.readInt();

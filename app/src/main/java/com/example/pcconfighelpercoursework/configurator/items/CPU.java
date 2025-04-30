@@ -13,7 +13,10 @@ public class CPU extends ConfigurerItem{
         this.socket = in.readString();
     }
 
-    public CPU(int id,  String name, String image, String componentType, String description, int price, boolean selected, int cores, String socket) {
+    public CPU() {
+    }
+
+    public CPU(int id, String name, String image, String componentType, String description, int price, boolean selected, int cores, String socket) {
         super(id, name, image, componentType, description, price, selected);
         this.cores = cores;
         this.socket = socket;

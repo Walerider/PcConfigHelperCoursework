@@ -14,6 +14,9 @@ public class RAM extends ConfigurerItem{
         this.memoryType = memoryType;
     }
 
+    public RAM() {
+    }
+
     public RAM(Parcel in) {
         super(in);
         this.capacity = in.readInt();
