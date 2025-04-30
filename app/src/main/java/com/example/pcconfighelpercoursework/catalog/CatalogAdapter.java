@@ -125,6 +125,20 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         String pcCase = MainActivity.resources.getString(R.string.pc_case);
         String ram = MainActivity.resources.getString(R.string.ram);
         if (configurerComponent.getComponentType().equals(cpu)) {
+            list.replaceAll(c ->
+                    c.equals(configurerComponent)
+                            ? new CPU(
+                            components.get(position).getId(),
+                            components.get(position).getName(),
+                            components.get(position).getImage(),
+                            components.get(position).getComponentType(),
+                            components.get(position).getDescription(),
+                            components.get(position).getPrice(),
+                            true,
+                            8,
+                            "AM5")
+                            : c
+            );/*
             list.stream()
                     .filter(c -> c.equals(configurerComponent))
                     .forEach(c -> {
@@ -140,27 +154,25 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                 "AM5");
 
                         Log.e("aaa", c.toString());
-                    });
+                    });*/
             Log.e("list change", Arrays.toString(list.toArray()));
 
             return list;
         } else if (configurerComponent.getComponentType().equals(videocard)) {
-            list.stream()
-                    .filter(c -> c.equals(configurerComponent))
-                    .forEach(c -> {
-                        c = new Videocard(
-                                components.get(position).getId(),
-                                components.get(position).getName(),
-                                components.get(position).getImage(),
-                                components.get(position).getComponentType(),
-                                components.get(position).getDescription(),
-                                components.get(position).getPrice(),
-                                true,
-                                8,
-                                "RTX 20");
-
-                        Log.e("aaa", c.toString());
-                    });
+            list.replaceAll(c ->
+                    c.equals(configurerComponent)
+                            ? new Videocard(
+                            components.get(position).getId(),
+                            components.get(position).getName(),
+                            components.get(position).getImage(),
+                            components.get(position).getComponentType(),
+                            components.get(position).getDescription(),
+                            components.get(position).getPrice(),
+                            true,
+                            8,
+                            "RTX 20")
+                            : c
+            );
             Log.e("list change", Arrays.toString(list.toArray()));
             return list;
         } else {
