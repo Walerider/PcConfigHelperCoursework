@@ -56,13 +56,12 @@ public class CatalogFragment extends Fragment{
         catalogRecyclerView.addItemDecoration(new ItemDecoration(spacingInPixels));
         toolbarTitleTextView = view.findViewById(R.id.toolbarTitleTextView);
 
-        return view;//todo подумать, убивать фрагмент или нет. Скорее всего да, чтобы адаптер менять
+        return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
     }
 
     @Override
@@ -83,10 +82,10 @@ public class CatalogFragment extends Fragment{
     }
 
     private void fillproducts(ConfigurerItem item){
-        if (item.getComponentType().equals(getActivity().getResources().getString(R.string.videocard))) {
+        if (item.getComponentType().equals(getActivity().getResources().getString(R.string.videocard)) && products.isEmpty()) {
             products.add(new CatalogItem(1, "Videocard", "1050ti", "", getActivity().getResources().getString(R.string.videocard), "description", 20000));
             products.add(new CatalogItem(2, "Videocard", "2060 super", "", getActivity().getResources().getString(R.string.videocard), "description", 40000));
-        } else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.cpu))) {
+        } else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.cpu))&& products.isEmpty()) {
             products.add(new CatalogItem(1, "CPU", "Ryzen 5 5700x", "", getActivity().getResources().getString(R.string.cpu), "[AM5, 6 x 3.7 ГГц, L2 - 6 МБ, L3 - 32 МБ, 2 х DDR5-5200 МГц, TDP 65 Вт]", 20000));
             Log.e("getting item", item.toString());
         } else {

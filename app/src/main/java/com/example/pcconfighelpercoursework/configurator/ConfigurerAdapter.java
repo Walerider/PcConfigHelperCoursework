@@ -55,7 +55,6 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         emptyComponents.put(MainActivity.resources.getString(R.string.pc_case),new Cases(MainActivity.resources.getString(R.string.pc_case)));
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
