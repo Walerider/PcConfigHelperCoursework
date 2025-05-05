@@ -12,16 +12,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.pcconfighelpercoursework.configurator.items.*;
-import com.example.pcconfighelpercoursework.items.CPU;
-import com.example.pcconfighelpercoursework.items.CPUCooler;
-import com.example.pcconfighelpercoursework.items.Cases;
-import com.example.pcconfighelpercoursework.items.Component;
-import com.example.pcconfighelpercoursework.items.Motherboard;
-import com.example.pcconfighelpercoursework.items.PowerSupply;
-import com.example.pcconfighelpercoursework.items.RAM;
-import com.example.pcconfighelpercoursework.items.StorageDevice;
-import com.example.pcconfighelpercoursework.items.Videocard;
+import com.example.pcconfighelpercoursework.items.*;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.BufferedReader;

@@ -12,10 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.pcconfighelpercoursework.R;
-import com.example.pcconfighelpercoursework.items.CPU;
-import com.example.pcconfighelpercoursework.items.Component;
+import com.example.pcconfighelpercoursework.items.*;
 import com.example.pcconfighelpercoursework.configurator.HomeFragment;
-import com.example.pcconfighelpercoursework.configurator.items.*;
 import com.example.pcconfighelpercoursework.items.Videocard;
 import com.example.pcconfighelpercoursework.utils.ItemDecoration;
 

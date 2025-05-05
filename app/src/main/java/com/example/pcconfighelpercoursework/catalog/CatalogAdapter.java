@@ -13,9 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pcconfighelpercoursework.MainActivity;
-import com.example.pcconfighelpercoursework.configurator.items.*;
 import com.example.pcconfighelpercoursework.R;
-import com.example.pcconfighelpercoursework.items.Component;
+import com.example.pcconfighelpercoursework.items.*;
 
 import java.util.Arrays;
 import java.util.List;
