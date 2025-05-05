@@ -49,4 +49,19 @@ public class CPUCooler extends ConfigurerItem{
     public void setDissipation(int dissipation) {
         this.dissipation = dissipation;
     }
+
+    @Override
+    public ConfigurerItem createUpdatedComponent(String componentType) {
+        return new CPUCooler(
+                this.getId(),
+                this.getName(),
+                this.getImage(),
+                componentType,
+                this.getDescription(),
+                this.getPrice(),
+                true,
+                this.getSocket(),
+                this.getDissipation()
+        );
+    }
 }

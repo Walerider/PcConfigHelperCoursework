@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pcconfighelpercoursework.MainActivity;
-import com.example.pcconfighelpercoursework.catalog.items.CatalogItem;
+import com.example.pcconfighelpercoursework.configurator.items.*;
 import com.example.pcconfighelpercoursework.configurator.items.*;
 import com.example.pcconfighelpercoursework.R;
 
@@ -26,18 +26,18 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public static final int ADD_CONFIG = 1;//Константы для определения, каталог для добавления, изменения или просто просмотра
     public static final int CHANGE_CONFIG = 2;
     private final LayoutInflater inflater;
-    private List<CatalogItem> components;
+    private List<ConfigurerItem> components;
     private ConfigurerItem configurerComponent;
     private int choice;
     private OnAddButtonClickListener onAddButtonClickListener;
 
-    public CatalogAdapter(Context context, List<CatalogItem> components, int choice) {
+    public CatalogAdapter(Context context, List<ConfigurerItem> components, int choice) {
         this.inflater = LayoutInflater.from(context);
         this.components = components;
         this.choice = choice;
     }
 
-    public CatalogAdapter(Context context,List<CatalogItem> components, int choice, OnAddButtonClickListener onAddButtonClickListener,ConfigurerItem configurerComponent) {
+    public CatalogAdapter(Context context,List<ConfigurerItem> components, int choice, OnAddButtonClickListener onAddButtonClickListener,ConfigurerItem configurerComponent) {
         this.inflater = LayoutInflater.from(context);
         this.components = components;
         this.choice = choice;
@@ -76,9 +76,8 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 addCatalogViewHolder.priceTextView.setText("От " + components.get(position).getPrice() + "p");
                 addCatalogViewHolder.addButton.setOnClickListener(v -> {
                     Log.e("configurerComponent",configurerComponent.toString());
-                    List<ConfigurerItem> l = addConfigurerItem(MainActivity.getComponents(),configurerComponent,position);;
+                    List<ConfigurerItem> l = addConfigurerItem(MainActivity.getComponents(),configurerComponent,position);
                     MainActivity.setComponents(l);
-
                     onAddButtonClickListener.onAddButtonClick();
                 });
                 Log.e("aa", String.valueOf(getItemCount()));
@@ -112,84 +111,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             productNameTextView = view.findViewById(R.id.productNameTextView);
             productDescriptionTextView = view.findViewById(R.id.productDescriptionTextView);
             imageView = view.findViewById(R.id.imageView);
-            //todo Доделать каталог 28/29!!!!!!!
-        }
-    }
-    private List<ConfigurerItem> addConfigurerItem(List<ConfigurerItem> list,ConfigurerItem configurerComponent,int position){
-        String cpu = MainActivity.resources.getString(R.string.cpu);
-        String videocard = MainActivity.resources.getString(R.string.videocard);
-        String cpuCooler = MainActivity.resources.getString(R.string.cpu_cooler);
-        String motherboard = MainActivity.resources.getString(R.string.motherboard);
-        String powerSupply = MainActivity.resources.getString(R.string.power_supply);
-        String storageDevice = MainActivity.resources.getString(R.string.storage_devices);
-        String pcCase = MainActivity.resources.getString(R.string.pc_case);
-        String ram = MainActivity.resources.getString(R.string.ram);
-        if (configurerComponent.getComponentType().equals(cpu)) {
-            list.replaceAll(c ->
-                    c.equals(configurerComponent)
-                            ? new CPU(
-                            components.get(position).getId(),
-                            components.get(position).getName(),
-                            components.get(position).getImage(),
-                            components.get(position).getComponentType(),
-                            components.get(position).getDescription(),
-                            components.get(position).getPrice(),
-                            true,
-                            8,
-                            "AM5")
-                            : c
-            );/*
-            list.stream()
-                    .filter(c -> c.equals(configurerComponent))
-                    .forEach(c -> {
-                        c = new CPU(
-                                components.get(position).getId(),
-                                components.get(position).getName(),
-                                components.get(position).getImage(),
-                                components.get(position).getComponentType(),
-                                components.get(position).getDescription(),
-                                components.get(position).getPrice(),
-                                true,
-                                8,
-                                "AM5");
 
-                        Log.e("aaa", c.toString());
-                    });*/
-            Log.e("list change", Arrays.toString(list.toArray()));
-
-            return list;
-        } else if (configurerComponent.getComponentType().equals(videocard)) {
-            list.replaceAll(c ->
-                    c.equals(configurerComponent)
-                            ? new Videocard(
-                            components.get(position).getId(),
-                            components.get(position).getName(),
-                            components.get(position).getImage(),
-                            components.get(position).getComponentType(),
-                            components.get(position).getDescription(),
-                            components.get(position).getPrice(),
-                            true,
-                            8,
-                            "RTX 20")
-                            : c
-            );
-            Log.e("list change", Arrays.toString(list.toArray()));
-            return list;
-        } else {
-            list.stream()
-                    .filter(c -> c.equals(configurerComponent))
-                    .forEach(c -> {
-                        c.setId(components.get(position).getId());
-                        c.setName(components.get(position).getName());
-                        c.setImage(components.get(position).getImage());
-                        c.setComponentType(components.get(position).getComponentType());
-                        c.setSelected(true);
-                        c.setPrice(components.get(position).getPrice());
-                        c.setDescription(components.get(position).getDescription());
-                        Log.e("aaa",c.toString());
-                    });
-            Log.e("list change", Arrays.toString(list.toArray()));
-            return list;
         }
     }
     public static class AddCatalogViewHolder extends RecyclerView.ViewHolder {
@@ -211,5 +133,24 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public interface OnAddButtonClickListener{
         void onAddButtonClick();
     }
+    private List<ConfigurerItem> addConfigurerItem(List<ConfigurerItem> list,ConfigurerItem configurerComponent,int position){
+        /*String cpuString = MainActivity.resources.getString(R.string.cpu);
+        String videocardString = MainActivity.resources.getString(R.string.videocard);
+        String cpuCoolerString = MainActivity.resources.getString(R.string.cpu_cooler);
+        String motherboardString = MainActivity.resources.getString(R.string.motherboard);
+        String powerSupplyString = MainActivity.resources.getString(R.string.power_supply);
+        String storageDeviceString = MainActivity.resources.getString(R.string.storage_devices);
+        String pcCaseString = MainActivity.resources.getString(R.string.pc_case);
+        String ramString = MainActivity.resources.getString(R.string.ram);*/
+        list.replaceAll(c ->
+                c.equals(configurerComponent)
+                        ? components.get(position).createUpdatedComponent(configurerComponent.getComponentType())
+                        : c
 
+        );
+        Log.e("list change", Arrays.toString(list.toArray()));
+
+        return list;
+
+    }
 }

@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
             components.add(new PowerSupply(resources.getString(R.string.power_supply)));
             components.add(new CPUCooler(resources.getString(R.string.cpu_cooler)));
             components.add(new Cases(resources.getString(R.string.pc_case)));
+            components.add(new StorageDevice(resources.getString(R.string.storage_devices)));
         }
     }
     public static boolean checkComponents(List<ConfigurerItem> components){

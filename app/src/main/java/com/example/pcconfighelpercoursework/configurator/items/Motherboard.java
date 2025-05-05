@@ -54,4 +54,19 @@ public class Motherboard extends ConfigurerItem{
     public void setFormFactor(String formFactor) {
         this.formFactor = formFactor;
     }
+
+    @Override
+    public ConfigurerItem createUpdatedComponent(String componentType) {
+        return new Motherboard(
+                this.getId(),
+                this.getName(),
+                this.getImage(),
+                componentType,
+                this.getDescription(),
+                this.getPrice(),
+                true,
+                this.getSocket(),
+                this.getFormFactor()
+        );
+    }
 }

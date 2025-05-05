@@ -43,11 +43,31 @@ public class RAM extends ConfigurerItem{
         return capacity;
     }
 
+    public String getMemoryType() {
+        return memoryType;
+    }
+
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
 
     public void setMemoryType(String memoryType) {
         this.memoryType = memoryType;
+    }
+
+
+    @Override
+    public ConfigurerItem createUpdatedComponent(String componentType) {
+        return new RAM(
+                this.getId(),
+                this.getName(),
+                this.getImage(),
+                componentType,
+                this.getDescription(),
+                this.getPrice(),
+                true,
+                this.getCapacity(),
+                this.getMemoryType()
+        );
     }
 }

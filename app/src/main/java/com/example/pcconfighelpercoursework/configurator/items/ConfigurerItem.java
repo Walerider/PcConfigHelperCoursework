@@ -140,4 +140,15 @@ public class ConfigurerItem implements Parcelable {
         dest.writeInt(price);
         dest.writeByte((byte) (selected ? 1 : 0));
     }
+    public ConfigurerItem createUpdatedComponent(String componentType){
+        return new ConfigurerItem(
+                this.getId(),
+                this.getName(),
+                this.getImage(),
+                componentType,
+                this.getDescription(),
+                this.getPrice(),
+                true
+        );
+    };
 }

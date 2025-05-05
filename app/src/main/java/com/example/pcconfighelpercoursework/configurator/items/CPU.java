@@ -5,8 +5,8 @@ import android.os.Parcel;
 import androidx.annotation.NonNull;
 
 public class CPU extends ConfigurerItem{
-    int cores;
-    String socket;
+    private int cores;
+    private String socket;
     public CPU(Parcel in) {
         super(in);
         this.cores = in.readInt();
@@ -53,4 +53,20 @@ public class CPU extends ConfigurerItem{
     public void setSocket(String socket) {
         this.socket = socket;
     }
+
+    @Override
+    public ConfigurerItem createUpdatedComponent(String componentType) {
+        return new CPU(
+                this.getId(),
+                this.getName(),
+                this.getImage(),
+                componentType,
+                this.getDescription(),
+                this.getPrice(),
+                true,
+                this.getCores(),
+                this.getSocket()
+        );
+    }
+
 }

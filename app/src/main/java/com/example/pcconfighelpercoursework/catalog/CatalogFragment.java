@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.pcconfighelpercoursework.R;
-import com.example.pcconfighelpercoursework.catalog.items.CatalogItem;
 import com.example.pcconfighelpercoursework.configurator.items.ConfigurerItem;
 import com.example.pcconfighelpercoursework.configurator.HomeFragment;
+import com.example.pcconfighelpercoursework.configurator.items.*;
 import com.example.pcconfighelpercoursework.utils.ItemDecoration;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class CatalogFragment extends Fragment{
     private CatalogAdapter catalogAdapter;
     private RecyclerView catalogRecyclerView;
     TextView toolbarTitleTextView;
-    List<CatalogItem> products;
+    List<ConfigurerItem> products;
     private static final String ARG_CHOICE = "0";
     public CatalogFragment() {
     }
@@ -83,10 +83,10 @@ public class CatalogFragment extends Fragment{
 
     private void fillproducts(ConfigurerItem item){
         if (item.getComponentType().equals(getActivity().getResources().getString(R.string.videocard)) && products.isEmpty()) {
-            products.add(new CatalogItem(1, "Videocard", "1050ti", "", getActivity().getResources().getString(R.string.videocard), "description", 20000));
-            products.add(new CatalogItem(2, "Videocard", "2060 super", "", getActivity().getResources().getString(R.string.videocard), "description", 40000));
+            products.add(new Videocard(1, "RTX 3060 ti", "", getActivity().getResources().getString(R.string.videocard), "description", 20000,false,8,"RTX 30"));
+            products.add(new Videocard(2, "RTX 2060", "", getActivity().getResources().getString(R.string.videocard), "description", 40000,false,8,"RTX 20"));
         } else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.cpu))&& products.isEmpty()) {
-            products.add(new CatalogItem(1, "CPU", "Ryzen 5 5700x", "", getActivity().getResources().getString(R.string.cpu), "[AM5, 6 x 3.7 ГГц, L2 - 6 МБ, L3 - 32 МБ, 2 х DDR5-5200 МГц, TDP 65 Вт]", 20000));
+            products.add(new CPU(1, "Ryzen 5 5700x", "", getActivity().getResources().getString(R.string.cpu), "[AM5, 6 x 3.7 ГГц, L2 - 6 МБ, L3 - 32 МБ, 2 х DDR5-5200 МГц, TDP 65 Вт]", 20000,false,8,"AM4"));
             Log.e("getting item", item.toString());
         } else {
             Log.e("getting item", item.toString());

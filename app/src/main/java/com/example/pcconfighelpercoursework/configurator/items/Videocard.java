@@ -49,4 +49,19 @@ public class Videocard extends ConfigurerItem{
     public void setSeries(String series) {
         this.series = series;
     }
+
+    @Override
+    public ConfigurerItem createUpdatedComponent(String componentType) {
+        return new Videocard(
+                this.getId(),
+                this.getName(),
+                this.getImage(),
+                componentType,
+                this.getDescription(),
+                this.getPrice(),
+                true,
+                this.getVramSize(),
+                this.getSeries()
+        );
+    }
 }

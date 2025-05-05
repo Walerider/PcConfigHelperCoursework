@@ -54,4 +54,19 @@ public class StorageDevice extends ConfigurerItem{
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
+
+    @Override
+    public ConfigurerItem createUpdatedComponent(String componentType) {
+        return new StorageDevice(
+                this.getId(),
+                this.getName(),
+                this.getImage(),
+                componentType,
+                this.getDescription(),
+                this.getPrice(),
+                true,
+                this.getType(),
+                this.getCapacity()
+        );
+    }
 }

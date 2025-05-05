@@ -54,4 +54,19 @@ public class PowerSupply extends ConfigurerItem{
     public void setCertificate(String certificate) {
         this.certificate = certificate;
     }
+
+    @Override
+    public ConfigurerItem createUpdatedComponent(String componentType) {
+        return new PowerSupply(
+                this.getId(),
+                this.getName(),
+                this.getImage(),
+                componentType,
+                this.getDescription(),
+                this.getPrice(),
+                true,
+                this.getPower(),
+                this.getCertificate()
+        );
+    }
 }
