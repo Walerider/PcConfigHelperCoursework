@@ -15,7 +15,7 @@ import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
 import com.example.pcconfighelpercoursework.catalog.CatalogAdapter;
 import com.example.pcconfighelpercoursework.catalog.CatalogFragment;
-import com.example.pcconfighelpercoursework.configurator.items.ConfigurerItem;
+import com.example.pcconfighelpercoursework.items.Component;
 import com.example.pcconfighelpercoursework.utils.ItemDecoration;
 
 public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddButtonClickListener{
@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddBut
 
 
     @Override
-    public void onAddClick( ConfigurerItem item) {
+    public void onAddClick( Component item) {
 
         CatalogFragment catalogFragment = CatalogFragment.newInstance(item, CatalogAdapter.ADD_CONFIG);
         Log.e("asdasdfgfg",item.getComponentType());

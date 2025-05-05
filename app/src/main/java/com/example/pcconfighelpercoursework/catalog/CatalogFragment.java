@@ -12,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.pcconfighelpercoursework.R;
-import com.example.pcconfighelpercoursework.configurator.items.ConfigurerItem;
+import com.example.pcconfighelpercoursework.items.CPU;
+import com.example.pcconfighelpercoursework.items.Component;
 import com.example.pcconfighelpercoursework.configurator.HomeFragment;
 import com.example.pcconfighelpercoursework.configurator.items.*;
+import com.example.pcconfighelpercoursework.items.Videocard;
 import com.example.pcconfighelpercoursework.utils.ItemDecoration;
 
 import java.util.ArrayList;
@@ -26,13 +28,13 @@ public class CatalogFragment extends Fragment{
     private CatalogAdapter catalogAdapter;
     private RecyclerView catalogRecyclerView;
     TextView toolbarTitleTextView;
-    List<ConfigurerItem> products;
+    List<Component> products;
     private static final String ARG_CHOICE = "0";
     public CatalogFragment() {
     }
 
 
-    public static CatalogFragment newInstance(ConfigurerItem param1, int param2) {
+    public static CatalogFragment newInstance(Component param1, int param2) {
         CatalogFragment fragment = new CatalogFragment();
         Bundle args = new Bundle();
         args.putParcelable(COMPOTENT,param1);
@@ -67,21 +69,21 @@ public class CatalogFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        ConfigurerItem item = getArguments().getParcelable(COMPOTENT);
+        Component item = getArguments().getParcelable(COMPOTENT);
         fillproducts(item);
         toolbarTitleTextView.setText(item.getComponentType());
         switch (getArguments().getInt(ARG_CHOICE)){
             case 1:
                 Log.e("choice",ARG_CHOICE);
-                catalogAdapter = new CatalogAdapter(getContext(), products ,getArguments().getInt(ARG_CHOICE),this::onAddButtonClickListener,item);
+                catalogAdapter = new CatalogAdapter(getContext(), products ,getArguments().getInt(ARG_CHOICE),this::onAddButtonClickListener,item);//todo сделать определение для обознпчения совместимости
                 break;
             default:
                 catalogAdapter = new CatalogAdapter(getContext(), products ,getArguments().getInt(ARG_CHOICE));
-        }
+        }//todo сделать фильтрацию
         catalogRecyclerView.setAdapter(catalogAdapter);
     }
 
-    private void fillproducts(ConfigurerItem item){
+    private void fillproducts(Component item){
         if (item.getComponentType().equals(getActivity().getResources().getString(R.string.videocard)) && products.isEmpty()) {
             products.add(new Videocard(1, "RTX 3060 ti", "", getActivity().getResources().getString(R.string.videocard), "description", 20000,false,8,"RTX 30"));
             products.add(new Videocard(2, "RTX 2060", "", getActivity().getResources().getString(R.string.videocard), "description", 40000,false,8,"RTX 20"));

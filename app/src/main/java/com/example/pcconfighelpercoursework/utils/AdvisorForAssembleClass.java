@@ -10,7 +10,7 @@ public class AdvisorForAssembleClass {
     public AdvisorForAssembleClass(Resources resources) {
         AdvisorForAssembleClass.resources = resources;
     }
-
+    //TODO сделать советчик по сборке
     static void adviceForTask(String task){
         if(task.equals(resources.getString(R.string.task_video_edit))){
 

@@ -1,10 +1,10 @@
-package com.example.pcconfighelpercoursework.configurator.items;
+package com.example.pcconfighelpercoursework.items;
 
 import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 
-public class Videocard extends ConfigurerItem{
+public class Videocard extends Component {
     int vramSize;
     String series;
 
@@ -51,7 +51,7 @@ public class Videocard extends ConfigurerItem{
     }
 
     @Override
-    public ConfigurerItem createUpdatedComponent(String componentType) {
+    public Component createUpdatedComponent(String componentType) {
         return new Videocard(
                 this.getId(),
                 this.getName(),

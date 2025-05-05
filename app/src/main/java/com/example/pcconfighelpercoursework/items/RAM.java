@@ -1,10 +1,10 @@
-package com.example.pcconfighelpercoursework.configurator.items;
+package com.example.pcconfighelpercoursework.items;
 
 import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 
-public class RAM extends ConfigurerItem{
+public class RAM extends Component {
     int capacity;
     String memoryType;
 
@@ -57,7 +57,7 @@ public class RAM extends ConfigurerItem{
 
 
     @Override
-    public ConfigurerItem createUpdatedComponent(String componentType) {
+    public Component createUpdatedComponent(String componentType) {
         return new RAM(
                 this.getId(),
                 this.getName(),

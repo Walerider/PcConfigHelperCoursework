@@ -1,8 +1,6 @@
 package com.example.pcconfighelpercoursework.configurator;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,15 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
-import com.example.pcconfighelpercoursework.configurator.items.CPU;
-import com.example.pcconfighelpercoursework.configurator.items.CPUCooler;
-import com.example.pcconfighelpercoursework.configurator.items.Cases;
-import com.example.pcconfighelpercoursework.configurator.items.ConfigurerItem;
-import com.example.pcconfighelpercoursework.configurator.items.Motherboard;
-import com.example.pcconfighelpercoursework.configurator.items.PowerSupply;
-import com.example.pcconfighelpercoursework.configurator.items.RAM;
-import com.example.pcconfighelpercoursework.configurator.items.StorageDevice;
-import com.example.pcconfighelpercoursework.configurator.items.Videocard;
+import com.example.pcconfighelpercoursework.items.CPU;
+import com.example.pcconfighelpercoursework.items.CPUCooler;
+import com.example.pcconfighelpercoursework.items.Cases;
+import com.example.pcconfighelpercoursework.items.Component;
+import com.example.pcconfighelpercoursework.items.Motherboard;
+import com.example.pcconfighelpercoursework.items.PowerSupply;
+import com.example.pcconfighelpercoursework.items.RAM;
+import com.example.pcconfighelpercoursework.items.StorageDevice;
+import com.example.pcconfighelpercoursework.items.Videocard;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -34,12 +32,12 @@ import java.util.Map;
 public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int SL_TYPE_NOT = 0;
     public static final int SL_TYPE_YES = 1;
-    private List<ConfigurerItem> components;
-    private Map<String,ConfigurerItem> emptyComponents;
+    private List<Component> components;
+    private Map<String, Component> emptyComponents;
     private final LayoutInflater inflater;
     private OnAddButtonClickListener onAddButtonClickListener;
 
-    public ConfigurerAdapter(List<ConfigurerItem> components, Context context) {
+    public ConfigurerAdapter(List<Component> components, Context context) {
         this.components = components;
         //Collections.reverse(this.components);
         Log.e("asdasd", Arrays.toString(components.toArray()));
@@ -155,7 +153,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public interface OnAddButtonClickListener {
-        void onAddClick(ConfigurerItem item);
+        void onAddClick(Component item);
     }
 
 }

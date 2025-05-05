@@ -1,10 +1,10 @@
-package com.example.pcconfighelpercoursework.configurator.items;
+package com.example.pcconfighelpercoursework.items;
 
 import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 
-public class CPU extends ConfigurerItem{
+public class CPU extends Component {
     private int cores;
     private String socket;
     public CPU(Parcel in) {
@@ -55,7 +55,7 @@ public class CPU extends ConfigurerItem{
     }
 
     @Override
-    public ConfigurerItem createUpdatedComponent(String componentType) {
+    public Component createUpdatedComponent(String componentType) {
         return new CPU(
                 this.getId(),
                 this.getName(),

@@ -1,33 +1,50 @@
-package com.example.pcconfighelpercoursework.configurator.items;
+package com.example.pcconfighelpercoursework.items;
 
 import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 
-public class Cases extends ConfigurerItem{
+public class Motherboard extends Component {
+    String socket;
     String formFactor;
 
-    public Cases(int id, String name, String image, String componentType, String description, int price, boolean selected, String formFactor) {
+    public Motherboard(int id,  String name, String image, String componentType, String description, int price, boolean selected, String socket, String formFactor) {
         super(id, name, image, componentType, description, price, selected);
+        this.socket = socket;
         this.formFactor = formFactor;
     }
 
-    public Cases(Parcel in) {
+    public Motherboard() {
+    }
+
+    public Motherboard(Parcel in) {
         super(in);
+        this.socket = in.readString();
         this.formFactor = in.readString();
     }
 
-    public Cases(String componentType) {
+    public Motherboard(String componentType) {
         super(componentType);
-    }
-
-    public Cases() {
     }
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
+        dest.writeString(socket);
         dest.writeString(formFactor);
+    }
+
+    @Override
+    public int describeContents() {
+        return super.describeContents();
+    }
+
+    public String getSocket() {
+        return socket;
+    }
+
+    public void setSocket(String socket) {
+        this.socket = socket;
     }
 
     public String getFormFactor() {
@@ -39,8 +56,8 @@ public class Cases extends ConfigurerItem{
     }
 
     @Override
-    public ConfigurerItem createUpdatedComponent(String componentType) {
-        return new Cases(
+    public Component createUpdatedComponent(String componentType) {
+        return new Motherboard(
                 this.getId(),
                 this.getName(),
                 this.getImage(),
@@ -48,8 +65,8 @@ public class Cases extends ConfigurerItem{
                 this.getDescription(),
                 this.getPrice(),
                 true,
+                this.getSocket(),
                 this.getFormFactor()
         );
     }
 }
-

@@ -1,7 +1,6 @@
 package com.example.pcconfighelpercoursework.catalog;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.configurator.items.*;
-import com.example.pcconfighelpercoursework.configurator.items.*;
 import com.example.pcconfighelpercoursework.R;
+import com.example.pcconfighelpercoursework.items.Component;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,18 +25,18 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public static final int ADD_CONFIG = 1;//Константы для определения, каталог для добавления, изменения или просто просмотра
     public static final int CHANGE_CONFIG = 2;
     private final LayoutInflater inflater;
-    private List<ConfigurerItem> components;
-    private ConfigurerItem configurerComponent;
+    private List<Component> components;
+    private Component configurerComponent;
     private int choice;
     private OnAddButtonClickListener onAddButtonClickListener;
 
-    public CatalogAdapter(Context context, List<ConfigurerItem> components, int choice) {
+    public CatalogAdapter(Context context, List<Component> components, int choice) {
         this.inflater = LayoutInflater.from(context);
         this.components = components;
         this.choice = choice;
     }
 
-    public CatalogAdapter(Context context,List<ConfigurerItem> components, int choice, OnAddButtonClickListener onAddButtonClickListener,ConfigurerItem configurerComponent) {
+    public CatalogAdapter(Context context, List<Component> components, int choice, OnAddButtonClickListener onAddButtonClickListener, Component configurerComponent) {
         this.inflater = LayoutInflater.from(context);
         this.components = components;
         this.choice = choice;
@@ -76,7 +75,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 addCatalogViewHolder.priceTextView.setText("От " + components.get(position).getPrice() + "p");
                 addCatalogViewHolder.addButton.setOnClickListener(v -> {
                     Log.e("configurerComponent",configurerComponent.toString());
-                    List<ConfigurerItem> l = addConfigurerItem(MainActivity.getComponents(),configurerComponent,position);
+                    List<Component> l = addConfigurerItem(MainActivity.getComponents(),configurerComponent,position);
                     MainActivity.setComponents(l);
                     onAddButtonClickListener.onAddButtonClick();
                 });
@@ -133,7 +132,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public interface OnAddButtonClickListener{
         void onAddButtonClick();
     }
-    private List<ConfigurerItem> addConfigurerItem(List<ConfigurerItem> list,ConfigurerItem configurerComponent,int position){
+    private List<Component> addConfigurerItem(List<Component> list, Component configurerComponent, int position){
         /*String cpuString = MainActivity.resources.getString(R.string.cpu);
         String videocardString = MainActivity.resources.getString(R.string.videocard);
         String cpuCoolerString = MainActivity.resources.getString(R.string.cpu_cooler);

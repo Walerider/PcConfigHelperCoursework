@@ -1,10 +1,10 @@
-package com.example.pcconfighelpercoursework.configurator.items;
+package com.example.pcconfighelpercoursework.items;
 
 import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 
-public class StorageDevice extends ConfigurerItem{
+public class StorageDevice extends Component {
     String type;
     int capacity;
 
@@ -56,7 +56,7 @@ public class StorageDevice extends ConfigurerItem{
     }
 
     @Override
-    public ConfigurerItem createUpdatedComponent(String componentType) {
+    public Component createUpdatedComponent(String componentType) {
         return new StorageDevice(
                 this.getId(),
                 this.getName(),

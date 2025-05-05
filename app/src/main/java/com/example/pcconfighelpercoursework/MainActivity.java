@@ -13,6 +13,15 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.pcconfighelpercoursework.configurator.items.*;
+import com.example.pcconfighelpercoursework.items.CPU;
+import com.example.pcconfighelpercoursework.items.CPUCooler;
+import com.example.pcconfighelpercoursework.items.Cases;
+import com.example.pcconfighelpercoursework.items.Component;
+import com.example.pcconfighelpercoursework.items.Motherboard;
+import com.example.pcconfighelpercoursework.items.PowerSupply;
+import com.example.pcconfighelpercoursework.items.RAM;
+import com.example.pcconfighelpercoursework.items.StorageDevice;
+import com.example.pcconfighelpercoursework.items.Videocard;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.BufferedReader;
@@ -31,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private NavController navController;
     public static Resources resources;
 
-    private static List<ConfigurerItem> components;
+    private static List<Component> components;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +68,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public static List<ConfigurerItem> getComponents() {
+    public static List<Component> getComponents() {
         return components;
     }
 
-    public static void setComponents(List<ConfigurerItem> components) {
+    public static void setComponents(List<Component> components) {
         MainActivity.components = components;
     }
-    public static void fillComponents(List<ConfigurerItem> components){
+    public static void fillComponents(List<Component> components){
         if(components.isEmpty()){
             components.add(new CPU(resources.getString(R.string.cpu)));
             components.add(new Videocard(resources.getString(R.string.videocard)));
@@ -78,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             components.add(new StorageDevice(resources.getString(R.string.storage_devices)));
         }
     }
-    public static boolean checkComponents(List<ConfigurerItem> components){
+    public static boolean checkComponents(List<Component> components){
         AtomicInteger i = new AtomicInteger(0);
         components.stream().forEach(c -> {
             if(c.getId() != 0){

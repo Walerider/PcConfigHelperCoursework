@@ -1,50 +1,33 @@
-package com.example.pcconfighelpercoursework.configurator.items;
+package com.example.pcconfighelpercoursework.items;
 
 import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 
-public class Motherboard extends ConfigurerItem{
-    String socket;
+public class Cases extends Component {
     String formFactor;
 
-    public Motherboard(int id,  String name, String image, String componentType, String description, int price, boolean selected, String socket, String formFactor) {
+    public Cases(int id, String name, String image, String componentType, String description, int price, boolean selected, String formFactor) {
         super(id, name, image, componentType, description, price, selected);
-        this.socket = socket;
         this.formFactor = formFactor;
     }
 
-    public Motherboard() {
-    }
-
-    public Motherboard(Parcel in) {
+    public Cases(Parcel in) {
         super(in);
-        this.socket = in.readString();
         this.formFactor = in.readString();
     }
 
-    public Motherboard(String componentType) {
+    public Cases(String componentType) {
         super(componentType);
+    }
+
+    public Cases() {
     }
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeString(socket);
         dest.writeString(formFactor);
-    }
-
-    @Override
-    public int describeContents() {
-        return super.describeContents();
-    }
-
-    public String getSocket() {
-        return socket;
-    }
-
-    public void setSocket(String socket) {
-        this.socket = socket;
     }
 
     public String getFormFactor() {
@@ -56,8 +39,8 @@ public class Motherboard extends ConfigurerItem{
     }
 
     @Override
-    public ConfigurerItem createUpdatedComponent(String componentType) {
-        return new Motherboard(
+    public Component createUpdatedComponent(String componentType) {
+        return new Cases(
                 this.getId(),
                 this.getName(),
                 this.getImage(),
@@ -65,8 +48,8 @@ public class Motherboard extends ConfigurerItem{
                 this.getDescription(),
                 this.getPrice(),
                 true,
-                this.getSocket(),
                 this.getFormFactor()
         );
     }
 }
+

@@ -1,10 +1,10 @@
-package com.example.pcconfighelpercoursework.configurator.items;
+package com.example.pcconfighelpercoursework.items;
 
 import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 
-public class PowerSupply extends ConfigurerItem{
+public class PowerSupply extends Component {
     int power;
     String certificate;
 
@@ -56,7 +56,7 @@ public class PowerSupply extends ConfigurerItem{
     }
 
     @Override
-    public ConfigurerItem createUpdatedComponent(String componentType) {
+    public Component createUpdatedComponent(String componentType) {
         return new PowerSupply(
                 this.getId(),
                 this.getName(),

@@ -1,10 +1,10 @@
-package com.example.pcconfighelpercoursework.configurator.items;
+package com.example.pcconfighelpercoursework.items;
 
 import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 
-public class CPUCooler extends ConfigurerItem{
+public class CPUCooler extends Component {
     String socket;
     int dissipation;
 
@@ -51,7 +51,7 @@ public class CPUCooler extends ConfigurerItem{
     }
 
     @Override
-    public ConfigurerItem createUpdatedComponent(String componentType) {
+    public Component createUpdatedComponent(String componentType) {
         return new CPUCooler(
                 this.getId(),
                 this.getName(),

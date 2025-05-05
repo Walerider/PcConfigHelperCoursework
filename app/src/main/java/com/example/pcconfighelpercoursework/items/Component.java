@@ -1,11 +1,11 @@
-package com.example.pcconfighelpercoursework.configurator.items;
+package com.example.pcconfighelpercoursework.items;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-public class ConfigurerItem implements Parcelable {
+public class Component implements Parcelable {
     private int id;
     private String name;
     private String image;
@@ -16,8 +16,8 @@ public class ConfigurerItem implements Parcelable {
     {
         selected = false;
     }
-
-    public ConfigurerItem(int id, String name, String image, String componentType, String description, int price, boolean selected) {
+    //todo Сделать рейтинг для комплектующих
+    public Component(int id, String name, String image, String componentType, String description, int price, boolean selected) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -27,9 +27,9 @@ public class ConfigurerItem implements Parcelable {
         this.selected = selected;
     }
 
-    public ConfigurerItem() {
+    public Component() {
     }
-    protected ConfigurerItem(Parcel in) {
+    protected Component(Parcel in) {
 
         this.id = in.readInt();
         this.name = in.readString();
@@ -40,7 +40,7 @@ public class ConfigurerItem implements Parcelable {
         this.selected = in.readByte() != 0;
 
     }
-    public ConfigurerItem(String componentType) {
+    public Component(String componentType) {
         this.componentType = componentType;
     }
 
@@ -114,15 +114,15 @@ public class ConfigurerItem implements Parcelable {
                 '}';
     }
 
-    public static final Creator<ConfigurerItem> CREATOR = new Creator<ConfigurerItem>() {
+    public static final Creator<Component> CREATOR = new Creator<Component>() {
         @Override
-        public ConfigurerItem createFromParcel(Parcel in) {
-            return new ConfigurerItem(in);
+        public Component createFromParcel(Parcel in) {
+            return new Component(in);
         }
 
         @Override
-        public ConfigurerItem[] newArray(int size) {
-            return new ConfigurerItem[size];
+        public Component[] newArray(int size) {
+            return new Component[size];
         }
     };
     @Override
@@ -140,8 +140,8 @@ public class ConfigurerItem implements Parcelable {
         dest.writeInt(price);
         dest.writeByte((byte) (selected ? 1 : 0));
     }
-    public ConfigurerItem createUpdatedComponent(String componentType){
-        return new ConfigurerItem(
+    public Component createUpdatedComponent(String componentType){
+        return new Component(
                 this.getId(),
                 this.getName(),
                 this.getImage(),
