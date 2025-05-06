@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
@@ -18,12 +19,14 @@ import com.example.pcconfighelpercoursework.catalog.CatalogFragment;
 import com.example.pcconfighelpercoursework.items.Component;
 import com.example.pcconfighelpercoursework.utils.ItemDecoration;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddButtonClickListener{
 
     RecyclerView recyclerView;
     ConfigurerAdapter configurerAdapter;
     ImageButton profileButton;
-
+    TextView priceTextView;
     public HomeFragment() {
     }
     public static HomeFragment newInstance() {
@@ -43,6 +46,8 @@ public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddBut
         int spacingInPixels = getActivity().getResources().getDimensionPixelSize(R.dimen.item_spacing);
         recyclerView = mainView.findViewById(R.id.compView);
         recyclerView.addItemDecoration(new ItemDecoration(spacingInPixels));
+        priceTextView = mainView.findViewById(R.id.priceTextView);
+
         return mainView;
     }
 
@@ -51,11 +56,14 @@ public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddBut
         super.onResume();
         configurerAdapter = new ConfigurerAdapter(MainActivity.getComponents(),getContext());
         configurerAdapter.setOnAddButtonClickListener(this::onAddClick);
-        recyclerView.setAdapter(configurerAdapter);
         configurerAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(configurerAdapter);
         if(!MainActivity.checkComponents(MainActivity.getComponents())){
             MainActivity.fillComponents(MainActivity.getComponents());
         }
+        AtomicInteger a = new AtomicInteger();
+        MainActivity.getComponents().stream().filter(c -> c.getPrice() > 0).forEach(c -> a.addAndGet(c.getPrice()));
+        priceTextView.setText("Итого: " + a + "р");
     }
 
 

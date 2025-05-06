@@ -20,17 +20,27 @@
         app:layout_constraintVertical_bias="0.0">
 
         <androidx.appcompat.widget.Toolbar
+            style="@style/CenterTextToolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            style="@style/CenterTextToolbar">
+            android:layout_height="?attr/actionBarSize">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/assembly"
                 android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>
+                android:layout_gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/priceTextView"
+                android:text="Цена:1000000р"
+                android:layout_gravity="end"
+                />
         </androidx.appcompat.widget.Toolbar>
+
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView

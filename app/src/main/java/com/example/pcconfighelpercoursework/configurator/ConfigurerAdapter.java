@@ -30,8 +30,9 @@ import java.util.List;
 import java.util.Map;
 
 public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    public static final int SL_TYPE_NOT = 0;
-    public static final int SL_TYPE_YES = 1;
+    public static final int SL_TYPE_NOT_CHOICE = 0;
+    public static final int SL_TYPE_CHOICE = 1;
+    public static final int SL_TYPE_STORAGE = 2;
     private List<Component> components;
     private Map<String, Component> emptyComponents;
     private final LayoutInflater inflater;
@@ -56,7 +57,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == SL_TYPE_NOT) {
+        if (viewType == SL_TYPE_NOT_CHOICE) {
 
             View view = inflater.inflate(R.layout.not_selected_pc_config_item, parent, false);
             NotSelectedViewHolder viewHolder = new NotSelectedViewHolder(view);
@@ -72,7 +73,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (holder.getItemViewType()) {
-            case SL_TYPE_YES:
+            case SL_TYPE_CHOICE:
                 SelectedViewHolder selectedViewHolder = (SelectedViewHolder) holder;
                 selectedViewHolder.productNameTextView.setText(components.get(position).getName());
                 selectedViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
@@ -87,11 +88,26 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     notifyDataSetChanged();
                 });
                 break;
-            case SL_TYPE_NOT:
+            case SL_TYPE_NOT_CHOICE:
                 NotSelectedViewHolder notSelectedViewHolder = (NotSelectedViewHolder) holder;
                 notSelectedViewHolder.componentType.setText(components.get(position).getComponentType());
                 notSelectedViewHolder.addButton.setOnClickListener(v -> {
                     onAddButtonClickListener.onAddClick(components.get(position));
+                });
+                break;
+            case SL_TYPE_STORAGE:
+                SelectedViewHolderStorage selectedViewHolderStorage = (SelectedViewHolderStorage) holder;
+                selectedViewHolderStorage.productNameTextView.setText(components.get(position).getName());
+                selectedViewHolderStorage.productDescriptionTextView.setText(components.get(position).getDescription());
+                selectedViewHolderStorage.priceCatalogTextView.setText(String.valueOf(components.get(position).getPrice()) + "р");
+                selectedViewHolderStorage.clearButton.setOnClickListener(v ->{
+                    components.set(position,emptyComponents.get(MainActivity.getComponents().get(position).getComponentType()));
+                    //Log.e("components in delete button adapter",Arrays.toString(components.toArray()));
+                    if(!MainActivity.checkComponents(components)){
+                        MainActivity.fillComponents(components);
+                    }
+                    MainActivity.setComponents(components);
+                    notifyDataSetChanged();
                 });
                 break;
         }
@@ -107,9 +123,12 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public int getItemViewType(int position) {
         if (components.get(position).isSelected()) {
-            return SL_TYPE_YES;
+            if(components.get(position).getComponentType().equals(R.string.storage_devices)){
+                return SL_TYPE_STORAGE;
+            }
+            return SL_TYPE_CHOICE;
         } else {
-            return SL_TYPE_NOT;
+            return SL_TYPE_NOT_CHOICE;
         }
     }
 
@@ -141,6 +160,25 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         final ImageView imageView;
 
         SelectedViewHolder(View view) {
+            super(view);
+            productNameTextView = view.findViewById(R.id.productNameTextView);
+            productDescriptionTextView = view.findViewById(R.id.productDescriptionTextView);
+            priceCatalogTextView = view.findViewById(R.id.priceCatalogTextView);
+            clearButton = view.findViewById(R.id.clearButton);
+            changeButton = view.findViewById(R.id.changeButton);
+            imageView = view.findViewById(R.id.imageView);
+        }
+
+    }
+    public static class SelectedViewHolderStorage extends RecyclerView.ViewHolder {
+        final TextView productNameTextView;
+        final TextView productDescriptionTextView;
+        final TextView priceCatalogTextView;
+        final ImageButton clearButton;
+        final ImageButton changeButton;
+        final ImageView imageView;
+
+        SelectedViewHolderStorage(View view) {
             super(view);
             productNameTextView = view.findViewById(R.id.productNameTextView);
             productDescriptionTextView = view.findViewById(R.id.productDescriptionTextView);

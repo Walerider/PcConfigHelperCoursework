@@ -83,12 +83,15 @@ public class CatalogFragment extends Fragment{
 
     private void fillproducts(Component item){
         if (item.getComponentType().equals(getActivity().getResources().getString(R.string.videocard)) && products.isEmpty()) {
-            products.add(new Videocard(1, "RTX 3060 ti", "", getActivity().getResources().getString(R.string.videocard), "description", 20000,false,8,"RTX 30"));
-            products.add(new Videocard(2, "RTX 2060", "", getActivity().getResources().getString(R.string.videocard), "description", 40000,false,8,"RTX 20"));
+            products.add(new Videocard(1, "KFA2 GeForce RTX 4060 CORE Black", "", getActivity().getResources().getString(R.string.videocard), "PCIe 4.0 8 ГБ GDDR6, 128 бит, 3 x DisplayPort, HDMI, GPU 1830 МГц", 31_999,false,8,"RTX 40"));
+            products.add(new Videocard(2, "Palit GeForce RTX 5070 Ti GamingPro", "", getActivity().getResources().getString(R.string.videocard), "PCIe 5.0 16 ГБ GDDR7, 256 бит, 3 x DisplayPort, HDMI, GPU 2295 МГц", 93_999,false,8,"RTX 20"));
         } else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.cpu))&& products.isEmpty()) {
-            products.add(new CPU(1, "Ryzen 5 5700x", "", getActivity().getResources().getString(R.string.cpu), "[AM5, 6 x 3.7 ГГц, L2 - 6 МБ, L3 - 32 МБ, 2 х DDR5-5200 МГц, TDP 65 Вт]", 20000,false,8,"AM4"));
+            products.add(new CPU(1, "AMD Ryzen 5 5600X", "", getActivity().getResources().getString(R.string.cpu), "AM4, 6 x 3.7 ГГц, L2 - 3 МБ, L3 - 32 МБ, 2 х DDR4-3200 МГц, TDP 65 Вт", 9_499,false,6,"AM4"));
             Log.e("getting item", item.toString());
-        } else {
+        } else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.storage_devices))&& products.isEmpty()) {
+            products.add(new StorageDevice(1, "Kingston A400", "", getActivity().getResources().getString(R.string.storage_devices), "SATA, чтение - 500 Мбайт/сек, запись - 450 Мбайт/сек, 3D NAND 3 бит TLC, TBW - 160 ТБ", 3799,false,"SATA",480));
+            Log.e("getting item", item.toString());
+        }else {
             Log.e("getting item", item.toString());
         }//todo Переместить это в utils и заполнять через запросы к api
     }

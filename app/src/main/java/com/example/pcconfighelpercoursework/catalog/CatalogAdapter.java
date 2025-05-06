@@ -132,14 +132,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         void onAddButtonClick();
     }
     private List<Component> addConfigurerItem(List<Component> list, Component configurerComponent, int position){
-        /*String cpuString = MainActivity.resources.getString(R.string.cpu);
-        String videocardString = MainActivity.resources.getString(R.string.videocard);
-        String cpuCoolerString = MainActivity.resources.getString(R.string.cpu_cooler);
-        String motherboardString = MainActivity.resources.getString(R.string.motherboard);
-        String powerSupplyString = MainActivity.resources.getString(R.string.power_supply);
-        String storageDeviceString = MainActivity.resources.getString(R.string.storage_devices);
-        String pcCaseString = MainActivity.resources.getString(R.string.pc_case);
-        String ramString = MainActivity.resources.getString(R.string.ram);*/
+
         list.replaceAll(c ->
                 c.equals(configurerComponent)
                         ? components.get(position).createUpdatedComponent(configurerComponent.getComponentType())
