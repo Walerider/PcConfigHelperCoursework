@@ -27,6 +27,7 @@ public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddBut
     ConfigurerAdapter configurerAdapter;
     ImageButton profileButton;
     TextView priceTextView;
+    AtomicInteger a;
     public HomeFragment() {
     }
     public static HomeFragment newInstance() {
@@ -61,7 +62,7 @@ public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddBut
         if(!MainActivity.checkComponents(MainActivity.getComponents())){
             MainActivity.fillComponents(MainActivity.getComponents());
         }
-        AtomicInteger a = new AtomicInteger();
+        a = new AtomicInteger();
         MainActivity.getComponents().stream().filter(c -> c.getPrice() > 0).forEach(c -> a.addAndGet(c.getPrice()));
         priceTextView.setText("Итого: " + a + "р");
     }

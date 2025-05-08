@@ -17,5 +17,7 @@
     <string name="text">[AM5, 6 x 3.7 ГГц, L2 - 6 МБ, L3 - 32 МБ, 2 х DDR5-5200 МГц, TDP 65 Вт]</string>
     <string name="pc_case">Case</string>
     <string name="task_video_edit">Video editing</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

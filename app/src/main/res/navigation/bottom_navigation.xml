@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/ratingFragment"
-        android:name="com.example.pcconfighelpercoursework.Rating.RatingFragment"
+        android:name="com.example.pcconfighelpercoursework.rating.RatingFragment"
         android:label="fragment_rating"
         tools:layout="@layout/fragment_rating" />
     <fragment
@@ -27,5 +27,14 @@
         <action
             android:id="@+id/action_catalogFragment_to_homeFragment2"
             app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/catalogChoiceFragment"
+        android:name="com.example.pcconfighelpercoursework.catalog.CatalogChoiceFragment"
+        android:label="fragment_catalog_choice"
+        tools:layout="@layout/fragment_catalog_choice" >
+        <action
+            android:id="@+id/action_catalogChoiceFragment_to_catalogFragment"
+            app:destination="@id/catalogFragment" />
     </fragment>
 </navigation>

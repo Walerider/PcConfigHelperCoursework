@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
         bottomNavigationLogic(bottomNavigationView,navController);
+
     }
 
     @Override
@@ -75,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
             components.add(new PowerSupply(resources.getString(R.string.power_supply)));
             components.add(new CPUCooler(resources.getString(R.string.cpu_cooler)));
             components.add(new Cases(resources.getString(R.string.pc_case)));
-            components.add(new StorageDevice(resources.getString(R.string.storage_devices)));
             components.add(new StorageDevice(resources.getString(R.string.storage_devices)));
         }
     }
@@ -142,6 +142,10 @@ public class MainActivity extends AppCompatActivity {
             }
             if (item.getItemId() == R.id.nav_rating){
                 navController.navigate(R.id.ratingFragment);
+                return true;
+            }
+            if(item.getItemId() == R.id.nav_catalog){
+                navController.navigate(R.id.catalogChoiceFragment);
                 return true;
             }
             return false;

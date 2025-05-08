@@ -1,4 +1,4 @@
-package com.example.pcconfighelpercoursework.Rating;
+package com.example.pcconfighelpercoursework.rating;
 
 import android.os.Bundle;
 

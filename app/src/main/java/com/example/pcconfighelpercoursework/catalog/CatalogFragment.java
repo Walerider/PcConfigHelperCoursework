@@ -2,30 +2,41 @@ package com.example.pcconfighelpercoursework.catalog;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 
 import com.example.pcconfighelpercoursework.R;
 import com.example.pcconfighelpercoursework.items.*;
 import com.example.pcconfighelpercoursework.configurator.HomeFragment;
 import com.example.pcconfighelpercoursework.items.Videocard;
 import com.example.pcconfighelpercoursework.utils.ItemDecoration;
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CatalogFragment extends Fragment{
+public class CatalogFragment extends Fragment {
 
     private static final String COMPOTENT = "";
+    private Component mComponent;
+    private int mChoice;
     private CatalogAdapter catalogAdapter;
     private RecyclerView catalogRecyclerView;
     TextView toolbarTitleTextView;
+    Toolbar toolbar;
     List<Component> products;
     private static final String ARG_CHOICE = "0";
     public CatalogFragment() {
@@ -44,6 +55,10 @@ public class CatalogFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mComponent = getArguments().getParcelable(COMPOTENT);
+            mChoice = getArguments().getInt(ARG_CHOICE);
+        }
     }
 
     @Override
@@ -55,7 +70,8 @@ public class CatalogFragment extends Fragment{
         catalogRecyclerView = view.findViewById(R.id.catalogRecyclerView);
         catalogRecyclerView.addItemDecoration(new ItemDecoration(spacingInPixels));
         toolbarTitleTextView = view.findViewById(R.id.toolbarTitleTextView);
-
+        toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         return view;
     }
 
@@ -67,24 +83,25 @@ public class CatalogFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        Component item = getArguments().getParcelable(COMPOTENT);
+        Component item = mComponent;
         fillproducts(item);
         toolbarTitleTextView.setText(item.getComponentType());
-        switch (getArguments().getInt(ARG_CHOICE)){
+        switch (mChoice){
             case 1:
-                Log.e("choice",ARG_CHOICE);
-                catalogAdapter = new CatalogAdapter(getContext(), products ,getArguments().getInt(ARG_CHOICE),this::onAddButtonClickListener,item);//todo сделать определение для обознпчения совместимости
+                Log.e("choice", String.valueOf(mChoice));
+                catalogAdapter = new CatalogAdapter(getContext(), products ,mChoice,this::onAddButtonClickListener,item);//todo сделать определение для обознпчения совместимости
                 break;
             default:
-                catalogAdapter = new CatalogAdapter(getContext(), products ,getArguments().getInt(ARG_CHOICE));
+                catalogAdapter = new CatalogAdapter(getContext(), products ,mChoice);
         }//todo сделать фильтрацию
         catalogRecyclerView.setAdapter(catalogAdapter);
     }
 
+
     private void fillproducts(Component item){
         if (item.getComponentType().equals(getActivity().getResources().getString(R.string.videocard)) && products.isEmpty()) {
             products.add(new Videocard(1, "KFA2 GeForce RTX 4060 CORE Black", "", getActivity().getResources().getString(R.string.videocard), "PCIe 4.0 8 ГБ GDDR6, 128 бит, 3 x DisplayPort, HDMI, GPU 1830 МГц", 31_999,false,8,"RTX 40"));
-            products.add(new Videocard(2, "Palit GeForce RTX 5070 Ti GamingPro", "", getActivity().getResources().getString(R.string.videocard), "PCIe 5.0 16 ГБ GDDR7, 256 бит, 3 x DisplayPort, HDMI, GPU 2295 МГц", 93_999,false,8,"RTX 20"));
+            products.add(new Videocard(2, "Palit GeForce RTX 5070 Ti GamingPro", Integer.toString(R.drawable.palit_geforce_rtx_5070_ti_gamingpro), getActivity().getResources().getString(R.string.videocard), "PCIe 5.0 16 ГБ GDDR7, 256 бит, 3 x DisplayPort, HDMI, GPU 2295 МГц", 93_999,false,8,"RTX 20"));
         } else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.cpu))&& products.isEmpty()) {
             products.add(new CPU(1, "AMD Ryzen 5 5600X", "", getActivity().getResources().getString(R.string.cpu), "AM4, 6 x 3.7 ГГц, L2 - 3 МБ, L3 - 32 МБ, 2 х DDR4-3200 МГц, TDP 65 Вт", 9_499,false,6,"AM4"));
             Log.e("getting item", item.toString());
