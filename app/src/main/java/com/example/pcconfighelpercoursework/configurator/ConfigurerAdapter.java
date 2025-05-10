@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int SL_TYPE_NOT_CHOICE = 0;
@@ -85,7 +86,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     if(!MainActivity.checkComponents(components)){
                         MainActivity.fillComponents(components);
                     }
-                    MainActivity.setComponents(components);
+                    HomeFragment.setPrice();
                     notifyDataSetChanged();
                 });
                 break;

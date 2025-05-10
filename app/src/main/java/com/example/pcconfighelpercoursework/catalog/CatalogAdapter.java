@@ -66,6 +66,9 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         switch (holder.getItemViewType()){
             case CATALOG:
                 CatalogViewHolder catalogViewHolder = (CatalogViewHolder)holder;
+                catalogViewHolder.imageView.setImageResource(!components.get(position).getImage().equals("") ? Integer.parseInt(components.get(position).getImage()) : R.drawable.ic_launcher_foreground);
+                catalogViewHolder.productNameTextView.setText(components.get(position).getName());
+                catalogViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
                 break;
             case ADD_CONFIG:
                 AddCatalogViewHolder addCatalogViewHolder = (AddCatalogViewHolder)holder;

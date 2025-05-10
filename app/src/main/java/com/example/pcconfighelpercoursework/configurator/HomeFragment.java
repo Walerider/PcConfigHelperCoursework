@@ -23,16 +23,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddButtonClickListener{
 
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     ConfigurerAdapter configurerAdapter;
-    ImageButton profileButton;
-    TextView priceTextView;
+    private ImageButton profileButton;
+    private static TextView priceTextView;
     AtomicInteger a;
     public HomeFragment() {
     }
     public static HomeFragment newInstance() {
-        HomeFragment fragment = new HomeFragment();
-        return fragment;
+        return new HomeFragment();
     }
 
     @Override
@@ -62,11 +61,18 @@ public class HomeFragment extends Fragment implements ConfigurerAdapter.OnAddBut
         if(!MainActivity.checkComponents(MainActivity.getComponents())){
             MainActivity.fillComponents(MainActivity.getComponents());
         }
-        a = new AtomicInteger();
-        MainActivity.getComponents().stream().filter(c -> c.getPrice() > 0).forEach(c -> a.addAndGet(c.getPrice()));
-        priceTextView.setText("Итого: " + a + "р");
+        setPrice();
     }
 
+    public static TextView getPriceTextView() {
+        return priceTextView;
+    }
+
+    public static void setPrice() {
+        AtomicInteger a = new AtomicInteger();
+        MainActivity.getComponents().stream().filter(c -> c.getPrice() > 0).forEach(c -> a.addAndGet(c.getPrice()));
+        HomeFragment.priceTextView.setText("Итого: " + a + "р");
+    }
 
     @Override
     public void onAddClick( Component item) {
