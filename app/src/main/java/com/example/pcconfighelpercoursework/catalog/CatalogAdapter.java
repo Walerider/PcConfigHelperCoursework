@@ -69,6 +69,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 catalogViewHolder.imageView.setImageResource(!components.get(position).getImage().equals("") ? Integer.parseInt(components.get(position).getImage()) : R.drawable.ic_launcher_foreground);
                 catalogViewHolder.productNameTextView.setText(components.get(position).getName());
                 catalogViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
+                catalogViewHolder.priceTextView.setText("От " + components.get(position).getPrice() + "р");
                 break;
             case ADD_CONFIG:
                 AddCatalogViewHolder addCatalogViewHolder = (AddCatalogViewHolder)holder;
@@ -108,12 +109,13 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public TextView productNameTextView;
         public TextView productDescriptionTextView;
         public ImageView imageView;
+        public TextView priceTextView;
         CatalogViewHolder(View view){
             super(view);
             productNameTextView = view.findViewById(R.id.productNameTextView);
             productDescriptionTextView = view.findViewById(R.id.productDescriptionTextView);
             imageView = view.findViewById(R.id.imageView);
-
+            priceTextView = view.findViewById(R.id.priceCatalogTextView);
         }
     }
     public static class AddCatalogViewHolder extends RecyclerView.ViewHolder {
