@@ -66,7 +66,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         switch (holder.getItemViewType()){
             case CATALOG:
                 CatalogViewHolder catalogViewHolder = (CatalogViewHolder)holder;
-                catalogViewHolder.imageView.setImageResource(!components.get(position).getImage().equals("") ? Integer.parseInt(components.get(position).getImage()) : R.drawable.ic_launcher_foreground);
+                catalogViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
                 catalogViewHolder.productNameTextView.setText(components.get(position).getName());
                 catalogViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
                 catalogViewHolder.priceTextView.setText("От " + components.get(position).getPrice() + "р");
@@ -75,7 +75,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 AddCatalogViewHolder addCatalogViewHolder = (AddCatalogViewHolder)holder;
                 addCatalogViewHolder.productNameTextView.setText(components.get(position).getName());
                 addCatalogViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
-                addCatalogViewHolder.imageView.setImageResource(!components.get(position).getImage().equals("") ? Integer.parseInt(components.get(position).getImage()) : R.drawable.ic_launcher_foreground);
+                addCatalogViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
                 addCatalogViewHolder.priceTextView.setText("От " + components.get(position).getPrice() + "p");
                 addCatalogViewHolder.addButton.setOnClickListener(v -> {
                     Log.e("configurerComponent",configurerComponent.toString());

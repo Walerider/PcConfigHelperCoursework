@@ -27,6 +27,13 @@ public class Component implements Parcelable {
         this.selected = selected;
     }
 
+    public Component(int id, String name, String description, String componentType) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.componentType = componentType;
+    }
+
     public Component() {
     }
     protected Component(Parcel in) {

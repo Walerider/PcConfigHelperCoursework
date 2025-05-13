@@ -9,11 +9,7 @@
         android:id="@+id/homeFragment"
         android:name="com.example.pcconfighelpercoursework.configurator.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_homeFragment_to_catalogFragment"
-            app:destination="@id/catalogFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/ratingFragment"
         android:name="com.example.pcconfighelpercoursework.rating.RatingFragment"
@@ -25,8 +21,8 @@
         android:label="fragment_catalog"
         tools:layout="@layout/fragment_catalog" >
         <action
-            android:id="@+id/action_catalogFragment_to_homeFragment2"
-            app:destination="@id/homeFragment" />
+            android:id="@+id/action_catalogFragment_to_catalogChoiceFragment"
+            app:destination="@id/catalogChoiceFragment" />
     </fragment>
     <fragment
         android:id="@+id/catalogChoiceFragment"
@@ -36,5 +32,8 @@
         <action
             android:id="@+id/action_catalogChoiceFragment_to_catalogFragment"
             app:destination="@id/catalogFragment" />
+        <action
+            android:id="@+id/action_catalogChoiceFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

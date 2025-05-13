@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
 import com.example.pcconfighelpercoursework.items.CPU;
 import com.example.pcconfighelpercoursework.items.CPUCooler;
@@ -71,7 +72,8 @@ public class CatalogChoiceFragment extends Fragment implements CatalogChoiceAdap
         bundle.putParcelable("component",emptyComponents.get(position));
         bundle.putInt("choice",0);
         navController.navigate(R.id.catalogFragment,bundle);*/
-
+        /*MainActivity activity = (MainActivity)getActivity();
+        activity.getNavController().;*/
         CatalogFragment catalogFragment = CatalogFragment.newInstance(emptyComponents.get(position), CatalogAdapter.CATALOG);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()

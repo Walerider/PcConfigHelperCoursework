@@ -10,7 +10,7 @@
     <string name="ram">RAM</string>
     <string name="power_supply">Power supply</string>
     <string name="not_loaded">Not loaded</string>
-    <string name="storage_devices">Storage</string>
+    <string name="storage_devices">Storage device</string>
     <string name="cpu_cooler">CPU cooler</string>
     <string name="name">Name</string>
     <string name="assembly">PC assembly</string>

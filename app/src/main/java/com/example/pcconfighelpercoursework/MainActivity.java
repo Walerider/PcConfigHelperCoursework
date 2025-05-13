@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.pcconfighelpercoursework.api.API;
+import com.example.pcconfighelpercoursework.api.APIClient;
+import com.example.pcconfighelpercoursework.api.items.ProductDAO;
 import com.example.pcconfighelpercoursework.items.*;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -22,17 +26,24 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     protected BottomNavigationView bottomNavigationView;
     protected FragmentContainerView fragmentContainerView;
     private NavController navController;
     public static Resources resources;
-
+    private final Long[] CATEGORY_COMPONENTS_ID = {1L,2L,3L,4L,5L,6L,7L,8L};
+    private String[] categoryComponentsName;
     private static List<Component> components;
-
+    private static List<List<Component>> catalogComponentsList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +55,17 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
         bottomNavigationLogic(bottomNavigationView,navController);
-
+        categoryComponentsName = new String[]{getResources().getString(R.string.videocard), getResources().getString(R.string.cpu),
+                getResources().getString(R.string.motherboard), getResources().getString(R.string.ram), getResources().getString(R.string.pc_case),
+                getResources().getString(R.string.power_supply), getResources().getString(R.string.cpu_cooler), getResources().getString(R.string.storage_devices)};
+        fetchItems(CATEGORY_COMPONENTS_ID[0],categoryComponentsName[0]);
+        fetchItems(CATEGORY_COMPONENTS_ID[1],categoryComponentsName[1]);
     }
+
+    public static List<List<Component>> getCatalogComponentsList() {
+        return catalogComponentsList;
+    }
+
 
     @Override
     protected void onStart() {
@@ -121,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void saveComponentsInTxt(Context context, String fileName) {
         String data = "";
-        /*for (String key:getComponents().keySet()){
+        /*for (String key:getComponents()){
             data += key + "/" + getComponents().get(key) + "$";
         }*/
         try {
@@ -137,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if(item.getItemId() == R.id.nav_home){
                 navController.navigate(R.id.homeFragment);
-
                 return true;
             }
             if (item.getItemId() == R.id.nav_rating){
@@ -151,4 +170,34 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
     }
+
+    private void fetchItems(long categoryId,String componentType) {
+        API apiService = APIClient.getApi();
+        Call<List<ProductDAO>> call = apiService.getProductsByCategory(categoryId);
+        List<ProductDAO> list = new ArrayList<>();
+        call.enqueue(new Callback<List<ProductDAO>>() {
+            @Override
+            public void onResponse(Call<List<ProductDAO>> call, Response<List<ProductDAO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.e("API", "Success");
+                    list.clear();
+                    list.addAll(response.body());
+                    catalogComponentsList.add(list.stream().map(p -> new Component((int) p.getId(), p.getName(), p.getDescription(), componentType)).collect(Collectors.toList()));
+                    Log.e("API", String.valueOf(catalogComponentsList.get(catalogComponentsList.size()-1).size()));
+
+                } else {
+                    Toast.makeText(MainActivity.this, "Ошибка: " + response.code(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<List<ProductDAO>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Ошибка: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("API", "Ошибка запроса", t);
+            }
+        });
+    }
+    public NavController getNavController() {
+        return navController;
+    }
+
 }

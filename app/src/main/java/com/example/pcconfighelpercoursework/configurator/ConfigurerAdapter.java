@@ -79,7 +79,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 selectedViewHolder.productNameTextView.setText(components.get(position).getName());
                 selectedViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
                 selectedViewHolder.priceCatalogTextView.setText(String.valueOf(components.get(position).getPrice()) + "р");
-                selectedViewHolder.imageView.setImageResource(!components.get(position).getImage().equals("") ? Integer.parseInt(components.get(position).getImage()) : R.drawable.ic_launcher_foreground);
+                selectedViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
                 selectedViewHolder.clearButton.setOnClickListener(v ->{
                     components.set(position,emptyComponents.get(MainActivity.getComponents().get(position).getComponentType()));
                     //Log.e("components in delete button adapter",Arrays.toString(components.toArray()));
