@@ -4,20 +4,13 @@ public class ProductDAO {
     long id;
     String name;
     String description;
+    int price;
 
-    public ProductDAO(long id, String name, String description) {
+    public ProductDAO(long id, String name, String description, int price) {
         this.id = id;
         this.name = name;
         this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return "ProductDAO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        this.price = price;
     }
 
     public long getId() {
@@ -38,5 +31,14 @@ public class ProductDAO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }

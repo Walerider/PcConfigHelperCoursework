@@ -1,5 +1,6 @@
 package com.example.pcconfighelpercoursework.api;
 
+import com.example.pcconfighelpercoursework.api.items.PriceDAO;
 import com.example.pcconfighelpercoursework.api.items.ProductDAO;
 
 import java.util.List;
@@ -11,4 +12,6 @@ import retrofit2.http.Path;
 public interface API {
     @GET("/api/products/category/{id}")
     Call<List<ProductDAO>> getProductsByCategory(@Path("id") long id);
+    @GET("/api/products/price/{id}")
+    Call<PriceDAO> getProductPrice(@Path("id") long id);
 }

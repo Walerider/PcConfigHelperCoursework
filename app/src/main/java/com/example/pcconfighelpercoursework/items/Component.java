@@ -27,11 +27,12 @@ public class Component implements Parcelable {
         this.selected = selected;
     }
 
-    public Component(int id, String name, String description, String componentType) {
+    public Component(int id, String name, String description, String componentType,int price) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.componentType = componentType;
+        this.price = price;
     }
 
     public Component() {

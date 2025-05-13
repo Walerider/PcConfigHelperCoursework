@@ -1,7 +1,10 @@
 package com.example.pcconfighelpercoursework;
 
+
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -17,17 +20,17 @@ import com.example.pcconfighelpercoursework.api.API;
 import com.example.pcconfighelpercoursework.api.APIClient;
 import com.example.pcconfighelpercoursework.api.items.ProductDAO;
 import com.example.pcconfighelpercoursework.items.*;
+import com.example.pcconfighelpercoursework.utils.ComponentRepository;
+import com.example.pcconfighelpercoursework.utils.DbSingleton;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.BufferedReader;
+/*import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.OutputStreamWriter;*/
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -36,30 +39,41 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+    private ComponentRepository componentRepository;
+
     protected BottomNavigationView bottomNavigationView;
     protected FragmentContainerView fragmentContainerView;
     private NavController navController;
     public static Resources resources;
-    private final Long[] CATEGORY_COMPONENTS_ID = {1L,2L,3L,4L,5L,6L,7L,8L};
+    private final Integer[] CATEGORY_COMPONENTS_ID = {1,2,3,4,5,6,7,8};
     private String[] categoryComponentsName;
     private static List<Component> components;
     private static List<List<Component>> catalogComponentsList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        categoryComponentsName = new String[]{getResources().getString(R.string.videocard), getResources().getString(R.string.cpu),
+                getResources().getString(R.string.motherboard), getResources().getString(R.string.ram), getResources().getString(R.string.pc_case),
+                getResources().getString(R.string.power_supply), getResources().getString(R.string.cpu_cooler), getResources().getString(R.string.storage_devices)};
         components = new ArrayList<>();
         resources = getResources();
-        setContentView(R.layout.activity_main);
+        componentRepository = new ComponentRepository(this);
+
+
+        if(!componentRepository.hasAnyComponents()){
+            fetchItems(CATEGORY_COMPONENTS_ID[0],categoryComponentsName[0]);
+            fetchItems(CATEGORY_COMPONENTS_ID[1],categoryComponentsName[1]);
+        }else{
+            catalogComponentsList.add(componentRepository.getComponentsByCategory(CATEGORY_COMPONENTS_ID[0],categoryComponentsName[0]));
+            catalogComponentsList.add(componentRepository.getComponentsByCategory(CATEGORY_COMPONENTS_ID[1],categoryComponentsName[1]));
+        }
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         fragmentContainerView = findViewById(R.id.fragmentContainerView);
         NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
         bottomNavigationLogic(bottomNavigationView,navController);
-        categoryComponentsName = new String[]{getResources().getString(R.string.videocard), getResources().getString(R.string.cpu),
-                getResources().getString(R.string.motherboard), getResources().getString(R.string.ram), getResources().getString(R.string.pc_case),
-                getResources().getString(R.string.power_supply), getResources().getString(R.string.cpu_cooler), getResources().getString(R.string.storage_devices)};
-        fetchItems(CATEGORY_COMPONENTS_ID[0],categoryComponentsName[0]);
-        fetchItems(CATEGORY_COMPONENTS_ID[1],categoryComponentsName[1]);
+
     }
 
     public static List<List<Component>> getCatalogComponentsList() {
@@ -101,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public static boolean checkComponents(List<Component> components){
         AtomicInteger i = new AtomicInteger(0);
-        components.stream().forEach(c -> {
+        components.forEach(c -> {
             if(c.getId() != 0){
                 i.set(1);
             }
@@ -114,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    protected void getComponentsFromTXT(){//а кто запрещает?
+    /*protected void getComponentsFromTXT(){//а кто запрещает?
         InputStream fin = null;
         try {
             fin = this.openFileInput("login.txt");
@@ -141,9 +155,9 @@ public class MainActivity extends AppCompatActivity {
     }
     private void saveComponentsInTxt(Context context, String fileName) {
         String data = "";
-        /*for (String key:getComponents()){
+        *//*for (String key:getComponents()){
             data += key + "/" + getComponents().get(key) + "$";
-        }*/
+        }*//*
         try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(fileName +".txt",MODE_PRIVATE));
             outputStreamWriter.write(data);
@@ -152,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
         catch (IOException e) {
             Log.e("Exception", "File write failed: " + e);
         }
-    }
+    }*/
     private void bottomNavigationLogic(BottomNavigationView bottomNavigationView,NavController navController){
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if(item.getItemId() == R.id.nav_home){
@@ -171,18 +185,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void fetchItems(long categoryId,String componentType) {
+    private void fetchItems(int categoryId,String componentType) {
         API apiService = APIClient.getApi();
         Call<List<ProductDAO>> call = apiService.getProductsByCategory(categoryId);
         List<ProductDAO> list = new ArrayList<>();
         call.enqueue(new Callback<List<ProductDAO>>() {
             @Override
-            public void onResponse(Call<List<ProductDAO>> call, Response<List<ProductDAO>> response) {
+            public void onResponse(@NonNull Call<List<ProductDAO>> call, @NonNull Response<List<ProductDAO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.e("API", "Success");
                     list.clear();
                     list.addAll(response.body());
-                    catalogComponentsList.add(list.stream().map(p -> new Component((int) p.getId(), p.getName(), p.getDescription(), componentType)).collect(Collectors.toList()));
+                    componentRepository.insertComponents(list, categoryId);
+                    catalogComponentsList.add(list.stream().map(p ->
+                            new Component((int) p.getId(), p.getName(), p.getDescription(), componentType,p.getPrice())
+                    ).collect(Collectors.toList()));
                     Log.e("API", String.valueOf(catalogComponentsList.get(catalogComponentsList.size()-1).size()));
 
                 } else {
@@ -190,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             @Override
-            public void onFailure(Call<List<ProductDAO>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<ProductDAO>> call, @NonNull Throwable t) {
                 Toast.makeText(MainActivity.this, "Ошибка: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("API", "Ошибка запроса", t);
             }
