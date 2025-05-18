@@ -2,29 +2,27 @@ package com.example.pcconfighelpercoursework.catalog;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
+import com.example.pcconfighelpercoursework.configurator.ConfigurerFragment;
 import com.example.pcconfighelpercoursework.items.*;
-import com.example.pcconfighelpercoursework.configurator.HomeFragment;
-import com.example.pcconfighelpercoursework.items.Videocard;
 import com.example.pcconfighelpercoursework.utils.ItemDecoration;
-import com.google.android.material.appbar.AppBarLayout;
+import com.example.pcconfighelpercoursework.utils.NavigationData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +44,11 @@ public class CatalogFragment extends Fragment {
 
     public static CatalogFragment newInstance(Component param1, int param2) {
         CatalogFragment fragment = new CatalogFragment();
+        Log.e("args catalog",param1.toString());
         Bundle args = new Bundle();
-        args.putParcelable(COMPOTENT,param1);
-        args.putInt(ARG_CHOICE,param2);
+        args.putParcelable("component", param1);
+        args.putInt("type", param2);
+        Log.e("bundleGet",args.toString());
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,8 +57,11 @@ public class CatalogFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mComponent = getArguments().getParcelable(COMPOTENT);
-            mChoice = getArguments().getInt(ARG_CHOICE);
+            mComponent = getArguments().getParcelable("component");
+            mChoice = getArguments().getInt("type");
+            Log.e("asdasfgghh",getArguments().toString());
+            Log.e("mChoice", String.valueOf(mChoice));
+
         }
     }
 
@@ -66,6 +69,7 @@ public class CatalogFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         products = new ArrayList<>();
+        Log.e("mChoice", String.valueOf(mChoice));
         View view =inflater.inflate(R.layout.fragment_catalog, container, false);
         int spacingInPixels = getActivity().getResources().getDimensionPixelSize(R.dimen.item_spacing);
         catalogRecyclerView = view.findViewById(R.id.catalogRecyclerView);
@@ -87,17 +91,44 @@ public class CatalogFragment extends Fragment {
         Component item = mComponent;
         fillproducts(item);
         toolbarTitleTextView.setText(item.getComponentType());
+        Log.e("mChoice", String.valueOf(mChoice));
         switch (mChoice){
+            case 0:
+                catalogAdapter = new CatalogAdapter(getContext(), products ,mChoice);
+                break;
             case 1:
                 Log.e("choice", String.valueOf(mChoice));
-                catalogAdapter = new CatalogAdapter(getContext(), products ,mChoice,this::onAddButtonClickListener,item);//todo сделать определение для обознпчения совместимости
+            if(!products.isEmpty()){
+                catalogAdapter = new CatalogAdapter(getContext(), products, mChoice, this::onAddButtonClickListener, item);
+            }else{
+                Toast.makeText(this.getContext(),"Убедитесь в подключении к интернету", Toast.LENGTH_LONG);
+                }
+                //todo сделать определение для обознпчения совместимости
                 break;
-            default:
-                catalogAdapter = new CatalogAdapter(getContext(), products ,mChoice);
+            case 2:
+
+                if(!products.isEmpty()){
+                    catalogAdapter = new CatalogAdapter(getContext(), products, mChoice, this::onAddButtonClickListener, item);
+                }else{
+                    Toast.makeText(this.getContext(),"Убедитесь в подключении к интернету", Toast.LENGTH_LONG);
+                }
+                break;
+
+
         }//todo сделать фильтрацию
         catalogRecyclerView.setAdapter(catalogAdapter);
+        MainActivity activity = (MainActivity)this.getActivity();
+        if(activity.getBottomNavigationView().getSelectedItemId() != R.id.nav_catalog){
+            activity.getBottomNavigationView().setSelectedItemId(R.id.nav_catalog);
+        }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        NavigationData.init(getContext());
+        NavigationData.setBoolean("add",false);
+    }
 
     private void fillproducts(Component item){
         if (item.getComponentType().equals(getActivity().getResources().getString(R.string.videocard)) && products.isEmpty()) {
@@ -112,13 +143,20 @@ public class CatalogFragment extends Fragment {
         }//todo Переместить это в utils и заполнять через запросы к api
     }
     private void onAddButtonClickListener() {
-        HomeFragment homeFragment = (HomeFragment) getActivity().getSupportFragmentManager().findFragmentByTag("home_fragment");
-        if(homeFragment != null){
+        /*ConfigurerFragment configurerFragment = (ConfigurerFragment) getActivity().getSupportFragmentManager().findFragmentByTag("home_fragment");
+        if(configurerFragment != null){
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainerView, homeFragment, "home_fragment")
+                    .replace(R.id.fragmentContainerView, configurerFragment, "home_fragment")
                     .addToBackStack("home_fragment_backstack")
                     .commit();
-
-        }
+*/
+        NavController navController = ((MainActivity)requireActivity()).getNavController();
+        Log.e(" catalog onAddButtonClickListener","penis");
+        navController.navigate(R.id.configurerFragment,null,new NavOptions.Builder()
+                .setEnterAnim(androidx.navigation.ui.R.anim.nav_default_pop_enter_anim)
+                .setExitAnim(androidx.navigation.ui.R.anim.nav_default_exit_anim)
+                .setPopUpTo(R.id.bottom_navigation,false)
+                .build());
     }
+
 }

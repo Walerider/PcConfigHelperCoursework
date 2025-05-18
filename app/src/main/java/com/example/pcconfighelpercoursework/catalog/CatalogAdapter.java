@@ -50,16 +50,18 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         View view;
         switch (viewType){
             case CHANGE_CONFIG:
-            view = inflater.inflate(R.layout.catalog_item,parent,false);
-            return new CatalogViewHolder(view);
+            view = inflater.inflate(R.layout.change_catalog_item,parent,false);
+            Log.e("viewType createView", String.valueOf(viewType));
+            return new ChangeCatalogViewHolder(view);
 
             case ADD_CONFIG:
             view = inflater.inflate(R.layout.add_catalog_item,parent,false);
             return new AddCatalogViewHolder(view);
-            default:
+            case CATALOG:
                 view = inflater.inflate(R.layout.catalog_item,parent,false);
                 return new CatalogViewHolder(view);
         }
+        return null;
     }
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
@@ -85,6 +87,18 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 });
                 Log.e("aa", String.valueOf(getItemCount()));
                 break;
+            case CHANGE_CONFIG:
+                ChangeCatalogViewHolder changeCatalogViewHolder = (ChangeCatalogViewHolder) holder;
+                changeCatalogViewHolder.productNameTextView.setText(components.get(position).getName());
+                changeCatalogViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
+                changeCatalogViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
+                changeCatalogViewHolder.priceTextView.setText("От " + components.get(position).getPrice() + "p");
+                changeCatalogViewHolder.changeButton.setOnClickListener(v -> {
+                    Log.e("configurerComponent",configurerComponent.toString());
+                    List<Component> l = addConfigurerItem(MainActivity.getComponents(),configurerComponent,position);
+                    MainActivity.setComponents(l);
+                    onAddButtonClickListener.onAddButtonClick();
+                });
         }
 
     }
@@ -134,12 +148,28 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         }
     }
+    public static class ChangeCatalogViewHolder extends RecyclerView.ViewHolder {
+        public TextView priceTextView;
+        public TextView productNameTextView;
+        public TextView productDescriptionTextView;
+        public ImageButton changeButton;
+        public ImageView imageView;
+        ChangeCatalogViewHolder(View view){
+            super(view);
+            priceTextView = view.findViewById(R.id.priceCatalogTextView);
+            productNameTextView = view.findViewById(R.id.productNameTextView);
+            productDescriptionTextView = view.findViewById(R.id.productDescriptionTextView);
+            changeButton = view.findViewById(R.id.changeButtonCatalogImageView);
+            imageView = view.findViewById(R.id.imageView);
+
+        }
+    }
     public interface OnAddButtonClickListener{
         void onAddButtonClick();
     }
     private List<Component> addConfigurerItem(List<Component> list, Component configurerComponent, int position){
         list.replaceAll(c ->
-                c.equals(configurerComponent)
+                c.getComponentType().equals(configurerComponent.getComponentType())
                         ? components.get(position).createUpdatedComponent(configurerComponent.getComponentType())
                         : c
         );

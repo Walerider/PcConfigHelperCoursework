@@ -3,13 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottom_navigation"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/assemblyChoiceFragment">
 
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.pcconfighelpercoursework.configurator.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/configurerFragment"
+        android:name="com.example.pcconfighelpercoursework.configurator.ConfigurerFragment"
+        android:label="fragment_configurer"
+        tools:layout="@layout/fragment_configurer" >
+        <action
+            android:id="@+id/action_configurerFragment_to_catalogFragment"
+            app:destination="@id/catalogFragment" />
+    </fragment>
     <fragment
         android:id="@+id/ratingFragment"
         android:name="com.example.pcconfighelpercoursework.rating.RatingFragment"
@@ -20,20 +24,38 @@
         android:name="com.example.pcconfighelpercoursework.catalog.CatalogFragment"
         android:label="fragment_catalog"
         tools:layout="@layout/fragment_catalog" >
-        <action
-            android:id="@+id/action_catalogFragment_to_catalogChoiceFragment"
-            app:destination="@id/catalogChoiceFragment" />
+        <argument
+            android:name="component"
+            app:argType="com.example.pcconfighelpercoursework.items.Component" />
+        <argument
+            android:name="type"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/catalogChoiceFragment"
         android:name="com.example.pcconfighelpercoursework.catalog.CatalogChoiceFragment"
         android:label="fragment_catalog_choice"
         tools:layout="@layout/fragment_catalog_choice" >
-        <action
-            android:id="@+id/action_catalogChoiceFragment_to_catalogFragment"
-            app:destination="@id/catalogFragment" />
-        <action
-            android:id="@+id/action_catalogChoiceFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/assemblyChoiceFragment"
+        android:name="com.example.pcconfighelpercoursework.configurator.AssemblyChoiceFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_assembly_choice" >
+        <action
+            android:id="@+id/action_assemblyChoiceFragment_to_configurerFragment"
+            app:destination="@id/configurerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.pcconfighelpercoursework.profile.RegisterFragment"
+        android:label="RegisterFragment" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.pcconfighelpercoursework.profile.ProfileFragment"
+        android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.pcconfighelpercoursework.profile.LoginFragment"
+        android:label="LoginFragment" />
 </navigation>

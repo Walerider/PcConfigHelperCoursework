@@ -56,7 +56,7 @@ public class CatalogChoiceFragment extends Fragment implements CatalogChoiceAdap
                              Bundle savedInstanceState) {
         componentList = new ArrayList<>();emptyComponents = new ArrayList<>();
         setComponentList(getResources());
-        setEmptyComponents();;
+        setEmptyComponents();
         View view = inflater.inflate(R.layout.fragment_catalog_choice, container, false);
         recyclerView = view.findViewById(R.id.catalogChoiceRecyclerView);
         adapter = new CatalogChoiceAdapter(componentList, getContext(), this::onItemClick);
@@ -65,22 +65,25 @@ public class CatalogChoiceFragment extends Fragment implements CatalogChoiceAdap
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity activity = (MainActivity)this.getActivity();
+        if(activity.getBottomNavigationView().getSelectedItemId() != R.id.nav_catalog){
+            activity.getBottomNavigationView().setSelectedItemId(R.id.nav_catalog);
+        }
+
+    }
+
+    @Override
     public void onItemClick(int position) {
-        /*NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
-        NavController navController = navHostFragment.getNavController();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("component",emptyComponents.get(position));
-        bundle.putInt("choice",0);
-        navController.navigate(R.id.catalogFragment,bundle);*/
-        /*MainActivity activity = (MainActivity)getActivity();
-        activity.getNavController().;*/
-        CatalogFragment catalogFragment = CatalogFragment.newInstance(emptyComponents.get(position), CatalogAdapter.CATALOG);
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right)
-                .replace(R.id.fragmentContainerView, catalogFragment,"catalog_fragment")
-                .addToBackStack("catalog_fragment_backstack")
-                .commit();
+        NavController navController = ((MainActivity)requireActivity()).getNavController();
+        Bundle args = new Bundle();
+        Log.e("onItemClick",emptyComponents.get(position).toString());
+        args.putParcelable("component", emptyComponents.get(position));
+        args.putInt("type", CatalogAdapter.CATALOG);
+        Log.e("onItemClick",args.toString());
+
+        navController.navigate(R.id.catalogFragment,args);
     }
     void setComponentList(Resources resources){
         Log.e("asd",resources.getString(R.string.cpu));

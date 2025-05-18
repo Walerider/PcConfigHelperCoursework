@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
+import com.example.pcconfighelpercoursework.catalog.CatalogAdapter;
 import com.example.pcconfighelpercoursework.items.CPU;
 import com.example.pcconfighelpercoursework.items.CPUCooler;
 import com.example.pcconfighelpercoursework.items.Cases;
@@ -28,12 +30,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int SL_TYPE_NOT_CHOICE = 0;
     public static final int SL_TYPE_CHOICE = 1;
     public static final int SL_TYPE_STORAGE = 2;
+    public static final int SAVE_CLEAR = 3;
     private List<Component> components;
     private Map<String, Component> emptyComponents;
     private final LayoutInflater inflater;
@@ -58,7 +60,11 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == SL_TYPE_NOT_CHOICE) {
+        if(viewType == SAVE_CLEAR){
+            View view = inflater.inflate(R.layout.buttons_assembly_item,parent,false);
+            ButtonsViewHolder viewHolder = new ButtonsViewHolder(view);
+            return viewHolder;
+        }else if (viewType == SL_TYPE_NOT_CHOICE) {
 
             View view = inflater.inflate(R.layout.not_selected_pc_config_item, parent, false);
             NotSelectedViewHolder viewHolder = new NotSelectedViewHolder(view);
@@ -86,15 +92,18 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     if(!MainActivity.checkComponents(components)){
                         MainActivity.fillComponents(components);
                     }
-                    HomeFragment.setPrice();
+                    ConfigurerFragment.setPrice();
                     notifyDataSetChanged();
+                });
+                selectedViewHolder.changeButton.setOnClickListener(v ->{
+                    onAddButtonClickListener.onAddClick(emptyComponents.get(components.get(position).getComponentType()), CatalogAdapter.CHANGE_CONFIG);
                 });
                 break;
             case SL_TYPE_NOT_CHOICE:
                 NotSelectedViewHolder notSelectedViewHolder = (NotSelectedViewHolder) holder;
                 notSelectedViewHolder.componentType.setText(components.get(position).getComponentType());
                 notSelectedViewHolder.addButton.setOnClickListener(v -> {
-                    onAddButtonClickListener.onAddClick(components.get(position));
+                    onAddButtonClickListener.onAddClick(components.get(position), CatalogAdapter.ADD_CONFIG);
                 });
                 break;
             case SL_TYPE_STORAGE:
@@ -111,7 +120,22 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     MainActivity.setComponents(components);
                     notifyDataSetChanged();
                 });
+                selectedViewHolderStorage.changeButton.setOnClickListener(v ->{
+                    onAddButtonClickListener.onAddClick(emptyComponents.get(components.get(position).getComponentType()), CatalogAdapter.CHANGE_CONFIG);
+                });
                 break;
+            case SAVE_CLEAR:
+                ButtonsViewHolder buttonsViewHolder = (ButtonsViewHolder) holder;
+                buttonsViewHolder.clearButton.setOnClickListener(v ->{
+                    List<Component> l = MainActivity.getComponents();
+                    l.clear();
+                    MainActivity.setComponents(l);
+                    MainActivity.fillComponents(l);
+                    notifyDataSetChanged();
+                });
+                buttonsViewHolder.saveButton.setOnClickListener(v -> {
+
+                });
         }
 
     }
@@ -119,11 +143,14 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        return components.size();
+        return components.size() + 1;
     }
 
     @Override
     public int getItemViewType(int position) {
+        if((position == getItemCount() - 1)){
+            return SAVE_CLEAR;
+        }
         if (components.get(position).isSelected()) {
             if(components.get(position).getComponentType().equals(R.string.storage_devices)){
                 return SL_TYPE_STORAGE;
@@ -193,7 +220,16 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public interface OnAddButtonClickListener {
-        void onAddClick(Component item);
+        void onAddClick(Component item,int type);
     }
+    public static class ButtonsViewHolder extends RecyclerView.ViewHolder{
+        private Button clearButton;
+        private final Button saveButton;
 
+        public ButtonsViewHolder(@NonNull View itemView) {
+            super(itemView);
+            clearButton = itemView.findViewById(R.id.clearButton);
+            saveButton = itemView.findViewById(R.id.saveButton);
+        }
+    }
 }

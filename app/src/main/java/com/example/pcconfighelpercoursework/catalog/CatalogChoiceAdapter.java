@@ -28,7 +28,7 @@ public class CatalogChoiceAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.catalog_choice_item,parent,false);
-        Log.e("Choice","aaaaaaa");
+
         return new ChoiceCatalogViewHolder(view);
     }
 
