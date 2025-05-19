@@ -4,14 +4,19 @@ import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 
-public class Motherboard extends Component {
-    String socket;
-    String formFactor;
+import com.example.pcconfighelpercoursework.api.items.ProductAttributeDAO;
 
-    public Motherboard(int id,  String name, String image, String componentType, String description, int price, boolean selected, String socket, String formFactor) {
-        super(id, name, image, componentType, description, price, selected);
-        this.socket = socket;
-        this.formFactor = formFactor;
+import java.util.List;
+
+public class Motherboard extends Component {
+
+
+    public Motherboard(int id, String name, String image, String componentType, String description, int price, boolean selected, List<ProductAttributeDAO> attributes) {
+        super(id, name, image, componentType, description, price, selected, attributes);
+    }
+
+    public Motherboard(int id, String name, String description, String componentType, int price, List<ProductAttributeDAO> attributes) {
+        super(id, name, description, componentType, price, attributes);
     }
 
     public Motherboard() {
@@ -19,8 +24,10 @@ public class Motherboard extends Component {
 
     public Motherboard(Parcel in) {
         super(in);
-        this.socket = in.readString();
-        this.formFactor = in.readString();
+    }
+
+    public Motherboard(int id, String name, String description, String componentType, int price) {
+        super(id, name, description, componentType, price);
     }
 
     public Motherboard(String componentType) {
@@ -30,29 +37,11 @@ public class Motherboard extends Component {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeString(socket);
-        dest.writeString(formFactor);
     }
 
     @Override
     public int describeContents() {
         return super.describeContents();
-    }
-
-    public String getSocket() {
-        return socket;
-    }
-
-    public void setSocket(String socket) {
-        this.socket = socket;
-    }
-
-    public String getFormFactor() {
-        return formFactor;
-    }
-
-    public void setFormFactor(String formFactor) {
-        this.formFactor = formFactor;
     }
 
     @Override
@@ -65,8 +54,7 @@ public class Motherboard extends Component {
                 this.getDescription(),
                 this.getPrice(),
                 true,
-                this.getSocket(),
-                this.getFormFactor()
+                this.getAttributes()
         );
     }
 }

@@ -70,6 +70,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 CatalogViewHolder catalogViewHolder = (CatalogViewHolder)holder;
                 catalogViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
                 catalogViewHolder.productNameTextView.setText(components.get(position).getName());
+                Log.e("component",components.get(position).getComponentType());
                 catalogViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
                 catalogViewHolder.priceTextView.setText("От " + components.get(position).getPrice() + "р");
                 break;
@@ -90,6 +91,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             case CHANGE_CONFIG:
                 ChangeCatalogViewHolder changeCatalogViewHolder = (ChangeCatalogViewHolder) holder;
                 changeCatalogViewHolder.productNameTextView.setText(components.get(position).getName());
+
                 changeCatalogViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
                 changeCatalogViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
                 changeCatalogViewHolder.priceTextView.setText("От " + components.get(position).getPrice() + "p");

@@ -17,6 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "name TEXT," +
                 "description TEXT," +
                 "price INTEGER," +
+                "attributes TEXT, " +
                 "category_id INTEGER)");
     }
 

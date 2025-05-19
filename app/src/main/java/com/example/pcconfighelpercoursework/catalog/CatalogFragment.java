@@ -133,11 +133,29 @@ public class CatalogFragment extends Fragment {
     private void fillproducts(Component item){
         if (item.getComponentType().equals(getActivity().getResources().getString(R.string.videocard)) && products.isEmpty()) {
             products.addAll(MainActivity.getCatalogComponentsList().get(0));
+            Log.e("getting item", item.getComponentType());
+
         } else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.cpu))&& products.isEmpty()) {
             products.addAll(MainActivity.getCatalogComponentsList().get(1));
-        } else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.storage_devices))&& products.isEmpty()) {
-            products.add(new StorageDevice(1, "Kingston A400", "", getActivity().getResources().getString(R.string.storage_devices), "SATA, чтение - 500 Мбайт/сек, запись - 450 Мбайт/сек, 3D NAND 3 бит TLC, TBW - 160 ТБ", 3799,false,"SATA",480));
-            Log.e("getting item", item.toString());
+            Log.e("getting item", item.getComponentType());
+        } else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.motherboard))&& products.isEmpty()) {
+            products.addAll(MainActivity.getCatalogComponentsList().get(2));
+            Log.e("getting item", item.getComponentType());
+        }else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.ram))&& products.isEmpty()) {
+            products.addAll(MainActivity.getCatalogComponentsList().get(3));
+            Log.e("getting item", item.getComponentType());
+        }else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.pc_case))&& products.isEmpty()) {
+            products.addAll(MainActivity.getCatalogComponentsList().get(4));
+            Log.e("getting item", item.getComponentType());
+        }else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.power_supply))&& products.isEmpty()) {
+            products.addAll(MainActivity.getCatalogComponentsList().get(5));
+            Log.e("getting item", item.getComponentType());
+        }else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.cpu_cooler))&& products.isEmpty()) {
+            products.addAll(MainActivity.getCatalogComponentsList().get(6));
+            Log.e("getting item", item.getComponentType());
+        }else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.storage_devices))&& products.isEmpty()) {
+            products.addAll(MainActivity.getCatalogComponentsList().get(7));
+            Log.e("getting item", item.getComponentType());
         }else {
             Log.e("getting item", item.toString());
         }//todo Переместить это в utils и заполнять через запросы к api
@@ -149,12 +167,10 @@ public class CatalogFragment extends Fragment {
                     .replace(R.id.fragmentContainerView, configurerFragment, "home_fragment")
                     .addToBackStack("home_fragment_backstack")
                     .commit();
-*/
+        */
         NavController navController = ((MainActivity)requireActivity()).getNavController();
         Log.e(" catalog onAddButtonClickListener","penis");
         navController.navigate(R.id.configurerFragment,null,new NavOptions.Builder()
-                .setEnterAnim(androidx.navigation.ui.R.anim.nav_default_pop_enter_anim)
-                .setExitAnim(androidx.navigation.ui.R.anim.nav_default_exit_anim)
                 .setPopUpTo(R.id.bottom_navigation,false)
                 .build());
     }

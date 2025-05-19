@@ -1,5 +1,6 @@
 package com.example.pcconfighelpercoursework.configurator;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -19,6 +21,7 @@ import com.example.pcconfighelpercoursework.R;
 import com.example.pcconfighelpercoursework.catalog.CatalogAdapter;
 import com.example.pcconfighelpercoursework.catalog.CatalogFragment;
 import com.example.pcconfighelpercoursework.items.Component;
+import com.example.pcconfighelpercoursework.utils.AssemblyData;
 import com.example.pcconfighelpercoursework.utils.ItemDecoration;
 import com.example.pcconfighelpercoursework.utils.NavigationData;
 
@@ -30,7 +33,9 @@ public class ConfigurerFragment extends Fragment implements ConfigurerAdapter.On
     ConfigurerAdapter configurerAdapter;
     private ImageButton profileButton;
     private static TextView priceTextView;
-    AtomicInteger a;
+    private static TextView assemblyNameTextView;
+
+    static AtomicInteger a;
     public ConfigurerFragment() {
     }
     public static ConfigurerFragment newInstance() {
@@ -50,18 +55,39 @@ public class ConfigurerFragment extends Fragment implements ConfigurerAdapter.On
         recyclerView = mainView.findViewById(R.id.compView);
         recyclerView.addItemDecoration(new ItemDecoration(spacingInPixels));
         priceTextView = mainView.findViewById(R.id.priceTextView);
+        assemblyNameTextView = mainView.findViewById(R.id.assemblyNameTextView);
         MainActivity activity = (MainActivity)this.getActivity();
         activity.changeNavigationStartDestination();
         if(activity.getBottomNavigationView().getSelectedItemId() != R.id.nav_home){
             activity.getBottomNavigationView().setSelectedItemId(R.id.nav_home);
         }
+        a = new AtomicInteger(0);
+        if(AssemblyData.getString("name") == null){
+            assemblyNameTextView.setText("Название сборки");
+        }else {
+            assemblyNameTextView.setText(AssemblyData.getString("name"));
+        }
+        assemblyNameTextView.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            final EditText input = new EditText(getContext());
+            input.setHint(assemblyNameTextView.getText());
+            builder.setTitle("Редактирование текста")
+                    .setView(input)
+                    .setPositiveButton("Сохранить", (dialog, which) -> {
+                        String newText = input.getText().toString();
+                        assemblyNameTextView.setText(newText);
+                        AssemblyData.setString("name",newText);
+                    })
+                    .setNegativeButton("Отмена", null)
+                    .show();
+        });;
         return mainView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        configurerAdapter = new ConfigurerAdapter(MainActivity.getComponents(),getContext());
+        configurerAdapter = new ConfigurerAdapter(MainActivity.getComponents(),getContext(),Navigation.findNavController(requireView()));
         configurerAdapter.setOnAddButtonClickListener(this::onAddClick);
         configurerAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(configurerAdapter);
@@ -75,8 +101,11 @@ public class ConfigurerFragment extends Fragment implements ConfigurerAdapter.On
         return priceTextView;
     }
 
+    public static TextView getAssemblyNameTextView() {
+        return assemblyNameTextView;
+    }
+
     public static void setPrice() {
-        AtomicInteger a = new AtomicInteger();
         MainActivity.getComponents().stream().filter(c -> c.getPrice() > 0).forEach(c -> a.addAndGet(c.getPrice()));
         ConfigurerFragment.priceTextView.setText("Итого: " + a + "р");
     }

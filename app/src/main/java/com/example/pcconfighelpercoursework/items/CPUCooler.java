@@ -4,20 +4,23 @@ import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 
-public class CPUCooler extends Component {
-    String socket;
-    int dissipation;
+import com.example.pcconfighelpercoursework.api.items.ProductAttributeDAO;
 
-    public CPUCooler(int id, String name, String image, String componentType, String description, int price, boolean selected, String socket, int dissipation) {
-        super(id, name, image, componentType, description, price, selected);
-        this.socket = socket;
-        this.dissipation = dissipation;
+import java.util.List;
+
+public class CPUCooler extends Component {
+
+
+    public CPUCooler(int id, String name, String image, String componentType, String description, int price, boolean selected, List<ProductAttributeDAO> attributes) {
+        super(id, name, image, componentType, description, price, selected, attributes);
+    }
+
+    public CPUCooler(int id, String name, String description, String componentType, int price, List<ProductAttributeDAO> attributes) {
+        super(id, name, description, componentType, price, attributes);
     }
 
     public CPUCooler(Parcel in) {
         super(in);
-        this.socket = in.readString();
-        this.dissipation = in.readInt();
     }
 
     public CPUCooler(String componentType) {
@@ -30,25 +33,8 @@ public class CPUCooler extends Component {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeString(socket);
-        dest.writeInt(dissipation);
     }
 
-    public String getSocket() {
-        return socket;
-    }
-
-    public void setSocket(String socket) {
-        this.socket = socket;
-    }
-
-    public int getDissipation() {
-        return dissipation;
-    }
-
-    public void setDissipation(int dissipation) {
-        this.dissipation = dissipation;
-    }
 
     @Override
     public Component createUpdatedComponent(String componentType) {
@@ -60,8 +46,7 @@ public class CPUCooler extends Component {
                 this.getDescription(),
                 this.getPrice(),
                 true,
-                this.getSocket(),
-                this.getDissipation()
+                this.getAttributes()
         );
     }
 }

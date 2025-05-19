@@ -1,16 +1,27 @@
 package com.example.pcconfighelpercoursework.api.items;
 
-public class ProductDAO {
-    long id;
-    String name;
-    String description;
-    int price;
+import com.google.gson.annotations.SerializedName;
 
-    public ProductDAO(long id, String name, String description, int price) {
+import java.util.List;
+
+public class ProductDAO {
+    @SerializedName("id")
+    long id;
+    @SerializedName("name")
+    String name;
+    @SerializedName("description")
+    String description;
+    @SerializedName("prices")
+    private List<Integer> prices;
+    @SerializedName("productAttributes")
+    private List<ProductAttributeDAO> attributes;
+
+    public ProductDAO(long id, String name, String description, List<Integer> prices, List<ProductAttributeDAO> attributes) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.price = price;
+        this.prices = prices;
+        this.attributes = attributes;
     }
 
     public long getId() {
@@ -33,12 +44,31 @@ public class ProductDAO {
         this.description = description;
     }
 
-
-    public int getPrice() {
-        return price;
+    public List<Integer> getPrices() {
+        return prices;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setPrices(List<Integer> prices) {
+        this.prices = prices;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductDAO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", prices=" + prices +
+                ", attributes=" + attributes +
+                '}';
+    }
+
+    public List<ProductAttributeDAO> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(List<ProductAttributeDAO> attributes) {
+        this.attributes = attributes;
     }
 }
+

@@ -1,6 +1,7 @@
 package com.example.pcconfighelpercoursework.profile;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.NavOptions;
 
 import com.example.pcconfighelpercoursework.R;
+import com.example.pcconfighelpercoursework.utils.UserData;
 
 public class ProfileFragment extends Fragment {
 
@@ -30,24 +32,22 @@ public class ProfileFragment extends Fragment {
         userNameTextView = view.findViewById(R.id.userNameTextView);
         logoutButton = view.findViewById(R.id.logoutButton);
         viewBuildsButton = view.findViewById(R.id.viewBuildsButton);
-
+        userNameTextView.setText(UserData.getString("username"));
+        Log.e("username", UserData.getString("username"));
+        Log.e("password", UserData.getString("password"));
         logoutButton.setOnClickListener(v -> {
-            // Очищаем историю навигации и переходим на экран логина
             NavController navController = Navigation.findNavController(view);
-
             // Создаем NavOptions для очистки back stack
             NavOptions navOptions = new NavOptions.Builder()
                     .setPopUpTo(R.id.bottom_navigation, true) // Очищаем весь граф навигации
                     .build();
-
+            clearAuthData();
             navController.navigate(
                     R.id.loginFragment, // ID вашего фрагмента авторизации
                     null,
                     navOptions
             );
 
-            // Здесь можно добавить очистку данных авторизации (SharedPreferences и т.д.)
-            // clearAuthData();
         });
 
         viewBuildsButton.setOnClickListener(v -> {
@@ -58,9 +58,10 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    // Метод для очистки данных авторизации (пример)
     private void clearAuthData() {
-        // SharedPreferences preferences = requireContext().getSharedPreferences("auth", Context.MODE_PRIVATE);
-        // preferences.edit().clear().apply();
+        UserData.setBoolean("isLogin",false);
+        UserData.setString("username",null);
+        UserData.setString("password",null);
+        UserData.setInteger("id",-1);
     }
 }

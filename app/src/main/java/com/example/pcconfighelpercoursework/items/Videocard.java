@@ -4,14 +4,23 @@ import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 
-public class Videocard extends Component {
-    int vramSize;
-    String series;
+import com.example.pcconfighelpercoursework.api.items.ProductAttributeDAO;
 
-    public Videocard(int id, String name, String image, String componentType, String description, int price, boolean selected, int vramSize, String series) {
-        super(id, name, image, componentType, description, price, selected);
-        this.vramSize = vramSize;
-        this.series = series;
+import java.util.List;
+
+public class Videocard extends Component {
+
+
+    public Videocard(int id, String name, String description, String componentType, int price) {
+        super(id, name, description, componentType, price);
+    }
+
+    public Videocard(int id, String name, String image, String componentType, String description, int price, boolean selected, List<ProductAttributeDAO> attributes) {
+        super(id, name, image, componentType, description, price, selected, attributes);
+    }
+
+    public Videocard(int id, String name, String description, String componentType, int price, List<ProductAttributeDAO> attributes) {
+        super(id, name, description, componentType, price, attributes);
     }
 
     public Videocard() {
@@ -19,8 +28,6 @@ public class Videocard extends Component {
 
     public Videocard(Parcel in) {
         super(in);
-        this.vramSize = in.readInt();
-        this.series = in.readString();
     }
 
     public Videocard(String componentType) {
@@ -30,24 +37,6 @@ public class Videocard extends Component {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeInt(vramSize);
-        dest.writeString(series);
-    }
-
-    public int getVramSize() {
-        return vramSize;
-    }
-
-    public void setVramSize(int vramSize) {
-        this.vramSize = vramSize;
-    }
-
-    public String getSeries() {
-        return series;
-    }
-
-    public void setSeries(String series) {
-        this.series = series;
     }
 
     @Override
@@ -60,8 +49,7 @@ public class Videocard extends Component {
                 this.getDescription(),
                 this.getPrice(),
                 true,
-                this.getVramSize(),
-                this.getSeries()
+                this.getAttributes()
         );
     }
 }

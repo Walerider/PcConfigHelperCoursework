@@ -4,21 +4,28 @@ import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 
-public class Cases extends Component {
-    String formFactor;
+import com.example.pcconfighelpercoursework.api.items.ProductAttributeDAO;
 
-    public Cases(int id, String name, String image, String componentType, String description, int price, boolean selected, String formFactor) {
-        super(id, name, image, componentType, description, price, selected);
-        this.formFactor = formFactor;
-    }
+import java.util.List;
+
+public class Cases extends Component {
+
+
 
     public Cases(Parcel in) {
         super(in);
-        this.formFactor = in.readString();
     }
 
     public Cases(String componentType) {
         super(componentType);
+    }
+
+    public Cases(int id, String name, String image, String componentType, String description, int price, boolean selected, List<ProductAttributeDAO> attributes) {
+        super(id, name, image, componentType, description, price, selected, attributes);
+    }
+
+    public Cases(int id, String name, String description, String componentType, int price, List<ProductAttributeDAO> attributes) {
+        super(id, name, description, componentType, price, attributes);
     }
 
     public Cases() {
@@ -27,16 +34,8 @@ public class Cases extends Component {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeString(formFactor);
     }
 
-    public String getFormFactor() {
-        return formFactor;
-    }
-
-    public void setFormFactor(String formFactor) {
-        this.formFactor = formFactor;
-    }
 
     @Override
     public Component createUpdatedComponent(String componentType) {
@@ -48,7 +47,7 @@ public class Cases extends Component {
                 this.getDescription(),
                 this.getPrice(),
                 true,
-                this.getFormFactor()
+                this.getAttributes()
         );
     }
 }

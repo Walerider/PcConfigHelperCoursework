@@ -4,20 +4,21 @@ import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 
-public class StorageDevice extends Component {
-    String type;
-    int capacity;
+import com.example.pcconfighelpercoursework.api.items.ProductAttributeDAO;
 
-    public StorageDevice(int id,  String name, String image, String componentType, String description, int price, boolean selected, String type, int capacity) {
-        super(id,  name, image, componentType, description, price, selected);
-        this.type = type;
-        this.capacity = capacity;
+import java.util.List;
+
+public class StorageDevice extends Component {
+    public StorageDevice(int id, String name, String image, String componentType, String description, int price, boolean selected, List<ProductAttributeDAO> attributes) {
+        super(id, name, image, componentType, description, price, selected, attributes);
+    }
+
+    public StorageDevice(int id, String name, String description, String componentType, int price, List<ProductAttributeDAO> attributes) {
+        super(id, name, description, componentType, price, attributes);
     }
 
     public StorageDevice(Parcel in) {
         super(in);
-        this.type = in.readString();
-        this.capacity = in.readInt();
     }
 
     public StorageDevice() {
@@ -30,8 +31,6 @@ public class StorageDevice extends Component {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeString(type);
-        dest.writeInt(capacity);
     }
 
     @Override
@@ -39,21 +38,6 @@ public class StorageDevice extends Component {
         return super.describeContents();
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
 
     @Override
     public Component createUpdatedComponent(String componentType) {
@@ -65,8 +49,7 @@ public class StorageDevice extends Component {
                 this.getDescription(),
                 this.getPrice(),
                 true,
-                this.getType(),
-                this.getCapacity()
+                this.getAttributes()
         );
     }
 }

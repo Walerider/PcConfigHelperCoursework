@@ -22,9 +22,11 @@ import com.example.pcconfighelpercoursework.api.API;
 import com.example.pcconfighelpercoursework.api.APIClient;
 import com.example.pcconfighelpercoursework.api.items.ProductDAO;
 import com.example.pcconfighelpercoursework.items.*;
+import com.example.pcconfighelpercoursework.utils.AssemblyData;
 import com.example.pcconfighelpercoursework.utils.ComponentRepository;
 import com.example.pcconfighelpercoursework.utils.DbSingleton;
 import com.example.pcconfighelpercoursework.utils.NavigationData;
+import com.example.pcconfighelpercoursework.utils.UserData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /*import java.io.BufferedReader;
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected FragmentContainerView fragmentContainerView;
 
     public static Resources resources;
-    private final Integer[] CATEGORY_COMPONENTS_ID = {1,2,3,4,5,6,7,8};
+    private final int[] CATEGORY_COMPONENTS_ID = {1,2,3,4,5,6,7,8};
     private String[] categoryComponentsName;
     private static List<Component> components;
     private static List<List<Component>> catalogComponentsList = new ArrayList<>();
@@ -62,14 +64,17 @@ public class MainActivity extends AppCompatActivity {
         components = new ArrayList<>();
         resources = getResources();
         componentRepository = new ComponentRepository(this);
-
-
         if(!componentRepository.hasAnyComponents()){
-            fetchItems(CATEGORY_COMPONENTS_ID[0],categoryComponentsName[0]);
-            fetchItems(CATEGORY_COMPONENTS_ID[1],categoryComponentsName[1]);
+            executeCatalogLists(CATEGORY_COMPONENTS_ID,categoryComponentsName);
         }else{
             catalogComponentsList.add(componentRepository.getComponentsByCategory(CATEGORY_COMPONENTS_ID[0],categoryComponentsName[0]));
             catalogComponentsList.add(componentRepository.getComponentsByCategory(CATEGORY_COMPONENTS_ID[1],categoryComponentsName[1]));
+            catalogComponentsList.add(componentRepository.getComponentsByCategory(CATEGORY_COMPONENTS_ID[2],categoryComponentsName[2]));
+            catalogComponentsList.add(componentRepository.getComponentsByCategory(CATEGORY_COMPONENTS_ID[3],categoryComponentsName[3]));
+            catalogComponentsList.add(componentRepository.getComponentsByCategory(CATEGORY_COMPONENTS_ID[4],categoryComponentsName[4]));
+            catalogComponentsList.add(componentRepository.getComponentsByCategory(CATEGORY_COMPONENTS_ID[5],categoryComponentsName[5]));
+            catalogComponentsList.add(componentRepository.getComponentsByCategory(CATEGORY_COMPONENTS_ID[6],categoryComponentsName[6]));
+            catalogComponentsList.add(componentRepository.getComponentsByCategory(CATEGORY_COMPONENTS_ID[7],categoryComponentsName[7]));
         }
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         fragmentContainerView = findViewById(R.id.fragmentContainerView);
@@ -78,7 +83,10 @@ public class MainActivity extends AppCompatActivity {
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
         NavigationData.init(this);
+        UserData.init(this);
+        AssemblyData.init(this);
         setNavigationStartDestination();
+
         Log.e("data is creating", String.valueOf(NavigationData.getBoolean("isCreating")));
         bottomNavigationLogic(bottomNavigationView,navController);
     }
@@ -170,8 +178,13 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
             if (item.getItemId() == R.id.nav_profile){
+                if(UserData.getBoolean("isLogin")){
+
+                    navController.navigate(R.id.profileFragment);
+                    return true;
+                }
                 navController.navigate(R.id.registerFragment);
-                Log.e("navigation", "Rating");
+                Log.e("navigation", "profile");
                 return true;
             }
             if(item.getItemId() == R.id.nav_catalog && !NavigationData.getBoolean("add")){
@@ -187,37 +200,96 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void fetchItems(int categoryId,String componentType) {
-        API apiService = APIClient.getApi();
-        Call<List<ProductDAO>> call = apiService.getProductsByCategory(categoryId);
-        List<ProductDAO> list = new ArrayList<>();
-        call.enqueue(new Callback<List<ProductDAO>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<ProductDAO>> call, @NonNull Response<List<ProductDAO>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Log.e("API", "Success");
-                    list.clear();
-                    list.addAll(response.body());
-                    componentRepository.insertComponents(list, categoryId);
-                    catalogComponentsList.add(list.stream().map(p ->
-                            new Component((int) p.getId(), p.getName(), p.getDescription(), componentType,p.getPrice())
-                    ).collect(Collectors.toList()));
-                    Log.e("API", String.valueOf(catalogComponentsList.get(catalogComponentsList.size()-1).size()));
-
-                } else {
-                    Toast.makeText(MainActivity.this, "Ошибка: " + response.code(), Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onFailure(@NonNull Call<List<ProductDAO>> call, @NonNull Throwable t) {
-                Toast.makeText(MainActivity.this, "Ошибка: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("API", "Ошибка запроса", t);
-            }
-        });
+    private void executeCatalogLists(int[] categoryIds,String[] componentTypes){
+        new FillComponentsCatalogLists().fetchItems(categoryIds,componentTypes);
     }
-
     public NavController getNavController() {
         return navController;
+    }
+    private class FillComponentsCatalogLists{
+        int currIndex = 0;
+        public void fetchItems(int[] categoryIds,String[] componentTypes) {
+            if (currIndex >= categoryIds.length) {
+
+                runOnUiThread(() -> {
+                    Toast.makeText(MainActivity.this, "Все данные загружены", Toast.LENGTH_SHORT).show();
+                });
+                return;
+            }
+            int categoryId = categoryIds[currIndex];
+            String componentType = componentTypes[currIndex];
+            API apiService = APIClient.getApi();
+            Call<List<ProductDAO>> call = apiService.getProductsByCategory(categoryId);
+            List<ProductDAO> list = new ArrayList<>();
+            call.enqueue(new Callback<List<ProductDAO>>() {
+                @Override
+                public void onResponse(@NonNull Call<List<ProductDAO>> call, @NonNull Response<List<ProductDAO>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        Log.e("API", "Success");
+                        list.clear();
+                        Log.e("API",Arrays.toString(response.body().toArray()));
+                        list.addAll(response.body());
+                        Log.e("API", String.valueOf(list.get(0).getPrices().get(0)));
+                        componentRepository.insertComponents(list, categoryId);
+                        fillListFetchItems(categoryId,list,componentType);
+                        Log.e("API", String.valueOf(catalogComponentsList.get(catalogComponentsList.size()-1).size()));
+                        currIndex++;
+                        fetchItems(categoryIds, componentTypes);
+                    } else {
+                        Toast.makeText(MainActivity.this, "Ошибка: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(@NonNull Call<List<ProductDAO>> call, @NonNull Throwable t) {
+                    Toast.makeText(MainActivity.this, "Ошибка: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("API", "Ошибка запроса", t);
+                }
+            });
+        }
+        private void fillListFetchItems(int categoryId,List<ProductDAO> list,String componentType){
+            Log.e("attr", String.valueOf(list.get(0).getDescription()));
+            switch (categoryId){
+                case 1:
+                    catalogComponentsList.add(list.stream().map(p ->
+                            new Videocard((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                    ).collect(Collectors.toList()));
+                    break;
+                case 2:
+                    catalogComponentsList.add(list.stream().map(p ->
+                            new CPU((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                    ).collect(Collectors.toList()));
+                    break;
+                case 3:
+                    catalogComponentsList.add(list.stream().map(p ->
+                            new Motherboard((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                    ).collect(Collectors.toList()));
+                    break;
+                case 4:
+                    catalogComponentsList.add(list.stream().map(p ->
+                            new RAM((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                    ).collect(Collectors.toList()));
+                    break;
+                case 5:
+                    catalogComponentsList.add(list.stream().map(p ->
+                            new Cases((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                    ).collect(Collectors.toList()));
+                    break;
+                case 6:
+                    catalogComponentsList.add(list.stream().map(p ->
+                            new PowerSupply((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                    ).collect(Collectors.toList()));
+                    break;
+                case 7:
+                    catalogComponentsList.add(list.stream().map(p ->
+                            new CPUCooler((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                    ).collect(Collectors.toList()));
+                    break;
+                case 8:
+                    catalogComponentsList.add(list.stream().map(p ->
+                            new StorageDevice((int) p.getId(), p.getName(), p.getDescription(), componentType,p.getPrices().size() != 0 ? p.getPrices().get(0) : 0,p.getAttributes())
+                    ).collect(Collectors.toList()));
+            }
+        }
     }
 }
 /*protected void getComponentsFromTXT(){//а кто запрещает?

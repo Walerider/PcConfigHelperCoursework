@@ -1,6 +1,7 @@
 package com.example.pcconfighelpercoursework.profile;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,15 @@ import androidx.navigation.Navigation;
 import androidx.navigation.NavOptions;
 
 import com.example.pcconfighelpercoursework.R;
+import com.example.pcconfighelpercoursework.api.API;
+import com.example.pcconfighelpercoursework.api.APIClient;
+import com.example.pcconfighelpercoursework.api.items.UserPOJO;
+import com.example.pcconfighelpercoursework.utils.NavigationData;
+import com.example.pcconfighelpercoursework.utils.UserData;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterFragment extends Fragment {
 
@@ -78,21 +88,56 @@ public class RegisterFragment extends Fragment {
     private void registerUser(String username, String email, String password) {
         // Здесь должна быть реальная логика регистрации
         // Например, сохранение в SharedPreferences или запрос к API
+        API apiService = APIClient.getApi();
+        UserPOJO user = new UserPOJO(username,email,password);
+        Call<String> call = apiService.registerUser(user);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.code() == 200) {
+                    String result = response.body();
+                    UserData.setString("username",username);
+                    UserData.setString("password",password);
+                    UserData.setBoolean("isLogin",true);
+                    UserData.setInteger("id", Integer.parseInt(result));
+                    Log.e("id",result);
+                    Toast.makeText(getContext(), "Регистрация успешна!", Toast.LENGTH_SHORT).show();
+                    NavController navController = Navigation.findNavController(requireView());
+                    NavOptions navOptions = new NavOptions.Builder()
+                            .setPopUpTo(R.id.registerFragment, true) // Очищаем стек до registerFragment
+                            .build();
 
+                    navController.navigate(
+                            R.id.loginFragment, // ID вашего фрагмента авторизации
+                            null,
+                            navOptions
+                    );
+
+                } else {
+                    Log.e("Retrofit", "Ошибка: " + response.code());
+                }
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                if(!call.isCanceled()){
+                    Toast.makeText(getContext(), "Регистрация успешна!", Toast.LENGTH_SHORT).show();
+                    NavController navController = Navigation.findNavController(requireView());
+                    NavOptions navOptions = new NavOptions.Builder()
+                            .setPopUpTo(R.id.registerFragment, true) // Очищаем стек до registerFragment
+                            .build();
+                    UserData.setString("username",username);
+                    UserData.setString("password",password);
+                    navController.navigate(
+                            R.id.loginFragment, // ID вашего фрагмента авторизации
+                            null,
+                            navOptions
+                    );
+                }
+                Log.e("Retrofit", "Network bug: " + t.getMessage());
+                Log.e("Retrofit", "Network bug: " + call.isCanceled());
+            }
+        });
         // После успешной регистрации:
-        Toast.makeText(getContext(), "Регистрация успешна!", Toast.LENGTH_SHORT).show();
 
-        // Переход на экран авторизации с очисткой стека навигации
-        NavController navController = Navigation.findNavController(requireView());
-
-        NavOptions navOptions = new NavOptions.Builder()
-                .setPopUpTo(R.id.registerFragment, true) // Очищаем стек до registerFragment
-                .build();
-
-        navController.navigate(
-                R.id.loginFragment, // ID вашего фрагмента авторизации
-                null,
-                navOptions
-        );
     }
 }

@@ -4,14 +4,18 @@ import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 
-public class PowerSupply extends Component {
-    int power;
-    String certificate;
+import com.example.pcconfighelpercoursework.api.items.ProductAttributeDAO;
 
-    public PowerSupply(int id, String name, String image, String componentType, String description, int price, boolean selected, int power, String certificate) {
-        super(id, name, image, componentType, description, price, selected);
-        this.power = power;
-        this.certificate = certificate;
+import java.util.List;
+
+public class PowerSupply extends Component {
+
+    public PowerSupply(int id, String name, String image, String componentType, String description, int price, boolean selected, List<ProductAttributeDAO> attributes) {
+        super(id, name, image, componentType, description, price, selected, attributes);
+    }
+
+    public PowerSupply(int id, String name, String description, String componentType, int price, List<ProductAttributeDAO> attributes) {
+        super(id, name, description, componentType, price, attributes);
     }
 
     public PowerSupply() {
@@ -23,36 +27,17 @@ public class PowerSupply extends Component {
 
     public PowerSupply(Parcel in) {
         super(in);
-        this.power = in.readInt();
-        this.certificate = in.readString();
     }
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeInt(power);
 
     }
 
     @Override
     public int describeContents() {
         return super.describeContents();
-    }
-
-    public int getPower() {
-        return power;
-    }
-
-    public void setPower(int power) {
-        this.power = power;
-    }
-
-    public String getCertificate() {
-        return certificate;
-    }
-
-    public void setCertificate(String certificate) {
-        this.certificate = certificate;
     }
 
     @Override
@@ -65,8 +50,7 @@ public class PowerSupply extends Component {
                 this.getDescription(),
                 this.getPrice(),
                 true,
-                this.getPower(),
-                this.getCertificate()
+                this.getAttributes()
         );
     }
 }

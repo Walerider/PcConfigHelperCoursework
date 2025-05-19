@@ -4,15 +4,21 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
+import com.example.pcconfighelpercoursework.api.items.ProductAttributeDAO;
 import com.example.pcconfighelpercoursework.api.items.ProductDAO;
 import com.example.pcconfighelpercoursework.items.Component;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ComponentRepository {
     private final DatabaseHelper dbHelper;
+    Gson gson = new Gson();
     public ComponentRepository(Context context) {
         this.dbHelper = DbSingleton.getInstance(context);
     }
@@ -40,9 +46,15 @@ public class ComponentRepository {
                 values.put("id", p.getId());
                 values.put("name", p.getName());
                 values.put("description", p.getDescription());
-                values.put("price", p.getPrice());
+                if(p.getPrices().size() != 0){
+                    values.put("price", p.getPrices().get(0));
+                }else{
+                    continue;
+                }
                 values.put("category_id", categoryId);
-
+                if (p.getAttributes() != null) {
+                    values.put("attributes", gson.toJson(p.getAttributes()));
+                }
                 db.insertWithOnConflict("components", null, values,
                         SQLiteDatabase.CONFLICT_IGNORE);
             }
@@ -72,11 +84,18 @@ public class ComponentRepository {
                 component.setDescription(cursor.getString(cursor.getColumnIndex("description")));
                 component.setPrice(cursor.getInt(cursor.getColumnIndex("price")));
                 component.setComponentType(componentType);
-
+                String attributesJson = cursor.getString(cursor.getColumnIndex("attributes"));
+                Type attrType = new TypeToken<List<ProductAttributeDAO>>(){}.getType();
+                List<ProductAttributeDAO> attributes = gson.fromJson(attributesJson, attrType);
+                component.setAttributes(attributes != null ? attributes : new ArrayList<>());
                 components.add(component);
             }
         }
         return components;
+    }
+    public void recreateDatabase(){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        dbHelper.onUpgrade(db,1,2);
     }
 }
 

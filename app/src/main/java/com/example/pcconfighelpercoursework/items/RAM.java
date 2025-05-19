@@ -4,14 +4,17 @@ import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 
-public class RAM extends Component {
-    int capacity;
-    String memoryType;
+import com.example.pcconfighelpercoursework.api.items.ProductAttributeDAO;
 
-    public RAM(int id,  String name, String image, String componentType, String description, int price, boolean selected, int capacity, String memoryType) {
-        super(id,  name, image, componentType, description, price, selected);
-        this.capacity = capacity;
-        this.memoryType = memoryType;
+import java.util.List;
+
+public class RAM extends Component {
+    public RAM(int id, String name, String image, String componentType, String description, int price, boolean selected, List<ProductAttributeDAO> attributes) {
+        super(id, name, image, componentType, description, price, selected, attributes);
+    }
+
+    public RAM(int id, String name, String description, String componentType, int price, List<ProductAttributeDAO> attributes) {
+        super(id, name, description, componentType, price, attributes);
     }
 
     public RAM() {
@@ -19,8 +22,6 @@ public class RAM extends Component {
 
     public RAM(Parcel in) {
         super(in);
-        this.capacity = in.readInt();
-        this.memoryType = in.readString();
     }
 
     public RAM(String componentType) {
@@ -30,29 +31,11 @@ public class RAM extends Component {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeInt(capacity);
-        dest.writeString(memoryType);
     }
 
     @Override
     public int describeContents() {
         return super.describeContents();
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public String getMemoryType() {
-        return memoryType;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
-    public void setMemoryType(String memoryType) {
-        this.memoryType = memoryType;
     }
 
 
@@ -66,8 +49,7 @@ public class RAM extends Component {
                 this.getDescription(),
                 this.getPrice(),
                 true,
-                this.getCapacity(),
-                this.getMemoryType()
+                this.getAttributes()
         );
     }
 }

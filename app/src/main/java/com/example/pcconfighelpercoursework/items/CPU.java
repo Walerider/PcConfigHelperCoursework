@@ -4,26 +4,32 @@ import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 
+import com.example.pcconfighelpercoursework.api.items.ProductAttributeDAO;
+
+import java.util.List;
+
 public class CPU extends Component {
-    private int cores;
-    private String socket;
     public CPU(Parcel in) {
         super(in);
-        this.cores = in.readInt();
-        this.socket = in.readString();
     }
 
     public CPU() {
     }
 
-    public CPU(int id, String name, String image, String componentType, String description, int price, boolean selected, int cores, String socket) {
-        super(id, name, image, componentType, description, price, selected);
-        this.cores = cores;
-        this.socket = socket;
+    public CPU(int id, String name, String image, String componentType, String description, int price, boolean selected, List<ProductAttributeDAO> attributes) {
+        super(id, name, image, componentType, description, price, selected, attributes);
+    }
+
+    public CPU(int id, String name, String description, String componentType, int price) {
+        super(id, name, description, componentType, price);
     }
 
     public CPU(String componentType) {
         super(componentType);
+    }
+
+    public CPU(int id, String name, String description, String componentType, int price, List<ProductAttributeDAO> attributes) {
+        super(id, name, description, componentType, price, attributes);
     }
 
     @Override
@@ -34,25 +40,9 @@ public class CPU extends Component {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeInt(cores);
-        dest.writeString(socket);
     }
 
-    public int getCores() {
-        return cores;
-    }
 
-    public void setCores(int cores) {
-        this.cores = cores;
-    }
-
-    public String getSocket() {
-        return socket;
-    }
-
-    public void setSocket(String socket) {
-        this.socket = socket;
-    }
 
     @Override
     public Component createUpdatedComponent(String componentType) {
@@ -64,8 +54,7 @@ public class CPU extends Component {
                 this.getDescription(),
                 this.getPrice(),
                 true,
-                this.getCores(),
-                this.getSocket()
+                this.getAttributes()
         );
     }
 

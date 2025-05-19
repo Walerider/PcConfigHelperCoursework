@@ -5,6 +5,11 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.example.pcconfighelpercoursework.api.items.ProductAttributeDAO;
+import com.example.pcconfighelpercoursework.api.items.ProductDAO;
+
+import java.util.List;
+
 public class Component implements Parcelable {
     private int id;
     private String name;
@@ -13,11 +18,14 @@ public class Component implements Parcelable {
     private String description;
     private int price;
     private boolean selected;
+    private List<ProductAttributeDAO> attributes;
     {
         selected = false;
     }
     //todo Сделать рейтинг для комплектующих
-    public Component(int id, String name, String image, String componentType, String description, int price, boolean selected) {
+
+
+    public Component(int id, String name, String image, String componentType, String description, int price, boolean selected, List<ProductAttributeDAO> attributes) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -25,14 +33,24 @@ public class Component implements Parcelable {
         this.description = description;
         this.price = price;
         this.selected = selected;
+        this.attributes = attributes;
     }
 
-    public Component(int id, String name, String description, String componentType,int price) {
+    public Component(int id, String name, String description, String componentType, int price) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.componentType = componentType;
         this.price = price;
+    }
+
+    public Component(int id, String name,String description, String componentType, int price, List<ProductAttributeDAO> attributes) {
+        this.id = id;
+        this.name = name;
+        this.componentType = componentType;
+        this.description = description;
+        this.price = price;
+        this.attributes = attributes;
     }
 
     public Component() {
@@ -109,6 +127,14 @@ public class Component implements Parcelable {
         this.description = description;
     }
 
+    public List<ProductAttributeDAO> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(List<ProductAttributeDAO> attributes) {
+        this.attributes = attributes;
+    }
+
     @Override
     public String toString() {
         return "ConfigurerItem{" +
@@ -156,7 +182,8 @@ public class Component implements Parcelable {
                 componentType,
                 this.getDescription(),
                 this.getPrice(),
-                true
+                true,
+                this.attributes
         );
     };
 }
