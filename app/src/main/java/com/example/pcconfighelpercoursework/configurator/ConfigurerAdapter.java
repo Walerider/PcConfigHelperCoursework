@@ -35,6 +35,7 @@ import com.example.pcconfighelpercoursework.items.PowerSupply;
 import com.example.pcconfighelpercoursework.items.RAM;
 import com.example.pcconfighelpercoursework.items.StorageDevice;
 import com.example.pcconfighelpercoursework.items.Videocard;
+import com.example.pcconfighelpercoursework.utils.AssemblyData;
 import com.example.pcconfighelpercoursework.utils.NavigationData;
 import com.example.pcconfighelpercoursework.utils.UserData;
 
@@ -180,6 +181,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                                     Log.e("id",result);
                                     NavigationData.setBoolean("isCreating",false);
                                     Toast.makeText(inflater.getContext(), "Сборка успешно создана!", Toast.LENGTH_SHORT).show();
+                                    AssemblyData.setString("name",null);
 
                                     NavOptions navOptions = new NavOptions.Builder()
                                             .setPopUpTo(R.id.assemblyChoiceFragment, true) // Очищаем стек до registerFragment
@@ -200,6 +202,12 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                                 if(!call.isCanceled()){
                                     Toast.makeText(inflater.getContext(), "Сборка создана успешно!", Toast.LENGTH_SHORT).show();
                                     NavigationData.setBoolean("isCreating",false);
+                                    AssemblyData.setString("name",null);
+                                    List<Component> l = MainActivity.getComponents();
+                                    l.clear();
+                                    MainActivity.setComponents(l);
+                                    MainActivity.fillComponents(l);
+                                    notifyDataSetChanged();
                                     NavOptions navOptions = new NavOptions.Builder()
                                             .setPopUpTo(R.id.configurerFragment, true) // Очищаем стек до registerFragment
                                             .build();

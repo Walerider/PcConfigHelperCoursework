@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         components = new ArrayList<>();
         resources = getResources();
         componentRepository = new ComponentRepository(this);
+
         if(!componentRepository.hasAnyComponents()){
             executeCatalogLists(CATEGORY_COMPONENTS_ID,categoryComponentsName);
         }else{
