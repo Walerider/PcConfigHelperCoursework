@@ -61,12 +61,14 @@ public class ConfigurerFragment extends Fragment implements ConfigurerAdapter.On
         if(activity.getBottomNavigationView().getSelectedItemId() != R.id.nav_home){
             activity.getBottomNavigationView().setSelectedItemId(R.id.nav_home);
         }
+        Log.e("socket",AssemblyData.getString("socket"));
         a = new AtomicInteger(0);
-        if(AssemblyData.getString("name") == null){
+        if(AssemblyData.getString("name").isEmpty()){
             assemblyNameTextView.setText("Название сборки");
         }else {
             assemblyNameTextView.setText(AssemblyData.getString("name"));
         }
+        Log.e("assembly name",AssemblyData.getString("name"));
         assemblyNameTextView.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             final EditText input = new EditText(getContext());

@@ -36,6 +36,7 @@ import com.example.pcconfighelpercoursework.items.RAM;
 import com.example.pcconfighelpercoursework.items.StorageDevice;
 import com.example.pcconfighelpercoursework.items.Videocard;
 import com.example.pcconfighelpercoursework.utils.AssemblyData;
+import com.example.pcconfighelpercoursework.utils.AssemblyDeleteCompat;
 import com.example.pcconfighelpercoursework.utils.NavigationData;
 import com.example.pcconfighelpercoursework.utils.UserData;
 
@@ -113,6 +114,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     if(!MainActivity.checkComponents(components)){
                         MainActivity.fillComponents(components);
                     }
+                    AssemblyDeleteCompat.deleteCompat(MainActivity.getComponents().get(position),inflater.getContext().getResources());
                     ConfigurerFragment.setPrice();
                     notifyDataSetChanged();
                 });
@@ -152,6 +154,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     l.clear();
                     MainActivity.setComponents(l);
                     MainActivity.fillComponents(l);
+                    AssemblyData.clear(inflater.getContext());
                     notifyDataSetChanged();
                 });
                 buttonsViewHolder.saveButton.setOnClickListener(v -> {

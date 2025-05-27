@@ -54,10 +54,11 @@ public class CatalogChoiceFragment extends Fragment implements CatalogChoiceAdap
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        componentList = new ArrayList<>();emptyComponents = new ArrayList<>();
+        View view = inflater.inflate(R.layout.fragment_catalog_choice, container, false);
+        componentList = new ArrayList<>();
+        emptyComponents = new ArrayList<>();
         setComponentList(getResources());
         setEmptyComponents();
-        View view = inflater.inflate(R.layout.fragment_catalog_choice, container, false);
         recyclerView = view.findViewById(R.id.catalogChoiceRecyclerView);
         adapter = new CatalogChoiceAdapter(componentList, getContext(), this::onItemClick);
         recyclerView.setAdapter(adapter);
@@ -86,15 +87,14 @@ public class CatalogChoiceFragment extends Fragment implements CatalogChoiceAdap
         navController.navigate(R.id.catalogFragment,args);
     }
     void setComponentList(Resources resources){
-        Log.e("asd",resources.getString(R.string.cpu));
         this.componentList.add(resources.getString(R.string.cpu));
         this.componentList.add(resources.getString(R.string.videocard));
-        this.componentList.add(resources.getString(R.string.ram));
         this.componentList.add(resources.getString(R.string.motherboard));
+        this.componentList.add(resources.getString(R.string.ram));
         this.componentList.add(resources.getString(R.string.power_supply));
         this.componentList.add(resources.getString(R.string.pc_case));
         this.componentList.add(resources.getString(R.string.cpu_cooler));
-        this.componentList.add(resources.getString(R.string.pc_case));
+        this.componentList.add(resources.getString(R.string.storage_devices));
     }
 
     public void setEmptyComponents() {

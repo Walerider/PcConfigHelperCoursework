@@ -2,6 +2,7 @@ package com.example.pcconfighelpercoursework.catalog;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -13,29 +14,43 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
+import com.example.pcconfighelpercoursework.api.API;
+import com.example.pcconfighelpercoursework.api.APIClient;
+import com.example.pcconfighelpercoursework.api.items.ProductDAO;
 import com.example.pcconfighelpercoursework.configurator.ConfigurerFragment;
 import com.example.pcconfighelpercoursework.items.*;
+import com.example.pcconfighelpercoursework.utils.ComponentRepository;
 import com.example.pcconfighelpercoursework.utils.ItemDecoration;
 import com.example.pcconfighelpercoursework.utils.NavigationData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CatalogFragment extends Fragment {
 
     private static final String COMPOTENT = "";
     private Component mComponent;
     private int mChoice;
+    private String filters;
+    private ComponentRepository componentRepository;
     private CatalogAdapter catalogAdapter;
     private RecyclerView catalogRecyclerView;
     TextView toolbarTitleTextView;
     Toolbar toolbar;
+    ProgressBar progressBar;
     List<Component> products;
     private static final String ARG_CHOICE = "0";
     public CatalogFragment() {
@@ -59,6 +74,7 @@ public class CatalogFragment extends Fragment {
         if (getArguments() != null) {
             mComponent = getArguments().getParcelable("component");
             mChoice = getArguments().getInt("type");
+            filters = getArguments().getString("filters");
             Log.e("asdasfgghh",getArguments().toString());
             Log.e("mChoice", String.valueOf(mChoice));
 
@@ -76,7 +92,9 @@ public class CatalogFragment extends Fragment {
         catalogRecyclerView.addItemDecoration(new ItemDecoration(spacingInPixels));
         toolbarTitleTextView = view.findViewById(R.id.toolbarTitleTextView);
         toolbar = view.findViewById(R.id.toolbar);
+        progressBar = view.findViewById(R.id.progressBar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        componentRepository = new ComponentRepository(getContext());
         return view;
     }
 
@@ -89,17 +107,20 @@ public class CatalogFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Component item = mComponent;
-        fillproducts(item);
+        /*fillproducts(item);*/
         toolbarTitleTextView.setText(item.getComponentType());
+
         Log.e("mChoice", String.valueOf(mChoice));
+        Log.e("products length", String.valueOf(products.size()));
         switch (mChoice){
             case 0:
-                catalogAdapter = new CatalogAdapter(getContext(), products ,mChoice);
+                catalogAdapter = new CatalogAdapter(getContext(), products ,mChoice,((MainActivity)requireActivity()).getNavController());
                 break;
             case 1:
                 Log.e("choice", String.valueOf(mChoice));
             if(!products.isEmpty()){
-                catalogAdapter = new CatalogAdapter(getContext(), products, mChoice, this::onAddButtonClickListener, item);
+                catalogAdapter = new CatalogAdapter(getContext(), products, mChoice, this::onAddButtonClickListener, item,((MainActivity)requireActivity()).getNavController());
+
             }else{
                 Toast.makeText(this.getContext(),"Убедитесь в подключении к интернету", Toast.LENGTH_LONG);
                 }
@@ -108,7 +129,7 @@ public class CatalogFragment extends Fragment {
             case 2:
 
                 if(!products.isEmpty()){
-                    catalogAdapter = new CatalogAdapter(getContext(), products, mChoice, this::onAddButtonClickListener, item);
+                    catalogAdapter = new CatalogAdapter(getContext(), products, mChoice, this::onAddButtonClickListener, item,((MainActivity)requireActivity()).getNavController());
                 }else{
                     Toast.makeText(this.getContext(),"Убедитесь в подключении к интернету", Toast.LENGTH_LONG);
                 }
@@ -117,6 +138,7 @@ public class CatalogFragment extends Fragment {
 
         }//todo сделать фильтрацию
         catalogRecyclerView.setAdapter(catalogAdapter);
+        fillproducts(item);
         MainActivity activity = (MainActivity)this.getActivity();
         if(activity.getBottomNavigationView().getSelectedItemId() != R.id.nav_catalog){
             activity.getBottomNavigationView().setSelectedItemId(R.id.nav_catalog);
@@ -126,39 +148,40 @@ public class CatalogFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        NavigationData.init(getContext());
         NavigationData.setBoolean("add",false);
     }
 
     private void fillproducts(Component item){
         if (item.getComponentType().equals(getActivity().getResources().getString(R.string.videocard)) && products.isEmpty()) {
-            products.addAll(MainActivity.getCatalogComponentsList().get(0));
+            executeLists(1);
             Log.e("getting item", item.getComponentType());
 
         } else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.cpu))&& products.isEmpty()) {
-            products.addAll(MainActivity.getCatalogComponentsList().get(1));
+            executeLists(2);
             Log.e("getting item", item.getComponentType());
+
         } else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.motherboard))&& products.isEmpty()) {
-            products.addAll(MainActivity.getCatalogComponentsList().get(2));
+            executeLists(3);
             Log.e("getting item", item.getComponentType());
         }else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.ram))&& products.isEmpty()) {
-            products.addAll(MainActivity.getCatalogComponentsList().get(3));
+            executeLists(4);
             Log.e("getting item", item.getComponentType());
         }else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.pc_case))&& products.isEmpty()) {
-            products.addAll(MainActivity.getCatalogComponentsList().get(4));
+            executeLists(5);
             Log.e("getting item", item.getComponentType());
         }else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.power_supply))&& products.isEmpty()) {
-            products.addAll(MainActivity.getCatalogComponentsList().get(5));
+            executeLists(6);
             Log.e("getting item", item.getComponentType());
         }else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.cpu_cooler))&& products.isEmpty()) {
-            products.addAll(MainActivity.getCatalogComponentsList().get(6));
+            executeLists(7);
             Log.e("getting item", item.getComponentType());
         }else if (item.getComponentType().equals(getActivity().getResources().getString(R.string.storage_devices))&& products.isEmpty()) {
-            products.addAll(MainActivity.getCatalogComponentsList().get(7));
+            executeLists(8);
+
             Log.e("getting item", item.getComponentType());
         }else {
             Log.e("getting item", item.toString());
-        }//todo Переместить это в utils и заполнять через запросы к api
+        }//todo Переделать, чтобы статичных данных не было
     }
     private void onAddButtonClickListener() {
         /*ConfigurerFragment configurerFragment = (ConfigurerFragment) getActivity().getSupportFragmentManager().findFragmentByTag("home_fragment");
@@ -174,5 +197,102 @@ public class CatalogFragment extends Fragment {
                 .setPopUpTo(R.id.bottom_navigation,false)
                 .build());
     }
+    private void executeLists(int categoryId){
+        new FillComponentsCatalogLists().fetchItems(categoryId, mComponent.getComponentType());
+    }
+    private class FillComponentsCatalogLists{
+        int currIndex = 0;
+        public void fetchItems(int categoryId,String componentType) {
+            if (currIndex >= 1) {
+                progressBar.setVisibility(View.GONE);
+                catalogRecyclerView.setVisibility(View.VISIBLE);
+                return;
+            }
+            progressBar.setVisibility(View.VISIBLE);
+            catalogRecyclerView.setVisibility(View.GONE);
+            API apiService = APIClient.getApi();
+            Call<List<ProductDAO>> call = apiService.getProductsByCategory(categoryId);
+            List<ProductDAO> list = new ArrayList<>();
+            call.enqueue(new Callback<List<ProductDAO>>() {
+                @Override
+                public void onResponse(@NonNull Call<List<ProductDAO>> call, @NonNull Response<List<ProductDAO>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        Log.e("API", "Success");
+                        list.clear();
+                        Log.e("API", Arrays.toString(response.body().toArray()));
+                        list.addAll(response.body());
+                        Log.e("API", String.valueOf(list.get(0).getPrices().get(0)));
+                        //componentRepository.insertComponents(list, categoryId);
+                        /*fillListFetchItems(categoryId,list,componentType);*/
+                        currIndex++;
+                        products = fillListFetchItems(categoryId,list,componentType);
+                        Log.e("list",Arrays.toString(products.toArray()));
+                        catalogAdapter.setCatalog(products);
+                        fetchItems(categoryId,componentType);
+                    } else {
+                        Toast.makeText(getContext(), "Ошибка: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(@NonNull Call<List<ProductDAO>> call, @NonNull Throwable t) {
+                    Toast.makeText(getContext(), "Ошибка: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("API", "Ошибка запроса", t);
+                }
+            });
+        }
+        private List<Component> fillListFetchItems(int categoryId,List<ProductDAO> list,String componentType){
+            Log.e("attr", String.valueOf(list.get(0).getDescription()));
+            List<Component> catalogComponentsList = new ArrayList<>();
+            switch (categoryId){
+                case 1:
+                    catalogComponentsList.addAll(list.stream().map(p ->
+                            new Videocard((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                    ).collect(Collectors.toList()));
+                    return catalogComponentsList;
 
+                case 2:
+                    catalogComponentsList.addAll(list.stream().map(p ->
+                            new CPU((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                    ).collect(Collectors.toList()));
+                    return catalogComponentsList;
+
+                case 3:
+                    catalogComponentsList.addAll(list.stream().map(p ->
+                            new Motherboard((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                    ).collect(Collectors.toList()));
+                    return catalogComponentsList;
+
+                case 4:
+                    catalogComponentsList.addAll(list.stream().map(p ->
+                            new RAM((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                    ).collect(Collectors.toList()));
+                    return catalogComponentsList;
+
+                case 5:
+                    catalogComponentsList.addAll(list.stream().map(p ->
+                            new Cases((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                    ).collect(Collectors.toList()));
+                    return catalogComponentsList;
+
+                case 6:
+                    catalogComponentsList.addAll(list.stream().map(p ->
+                            new PowerSupply((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                    ).collect(Collectors.toList()));
+                    return catalogComponentsList;
+
+                case 7:
+                    catalogComponentsList.addAll(list.stream().map(p ->
+                            new CPUCooler((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                    ).collect(Collectors.toList()));
+                    return catalogComponentsList;
+
+                case 8:
+                    catalogComponentsList.addAll(list.stream().map(p ->
+                            new StorageDevice((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                    ).collect(Collectors.toList()));
+                    return catalogComponentsList;
+            }
+            return catalogComponentsList;
+        }
+    }
 }

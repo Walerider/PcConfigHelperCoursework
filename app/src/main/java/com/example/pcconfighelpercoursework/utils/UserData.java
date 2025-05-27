@@ -13,7 +13,7 @@ public class UserData {
         sharedPreferences.edit().putString(key,value).apply();
     }
     public static String getString(String key){
-        return sharedPreferences.getString(key,null);
+        return sharedPreferences.getString(key,"");
     }
     public static void setBoolean(String key, boolean value) {
         sharedPreferences.edit().putBoolean(key,value).apply();
