@@ -58,4 +58,14 @@
         android:id="@+id/loginFragment"
         android:name="com.example.pcconfighelpercoursework.profile.LoginFragment"
         android:label="LoginFragment" />
+    <fragment
+        android:id="@+id/productFragment"
+        android:name="com.example.pcconfighelpercoursework.product.ProductFragment"
+        android:label="fragment_product"
+        tools:layout="@layout/fragment_product" />
+    <fragment
+        android:id="@+id/filterChoiceFragment"
+        android:name="com.example.pcconfighelpercoursework.catalog.FilterChoiceFragment"
+        android:label="fragment_filter_choice"
+        tools:layout="@layout/fragment_filter_choice" />
 </navigation>

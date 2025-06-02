@@ -9,6 +9,7 @@ import com.example.pcconfighelpercoursework.api.items.ProductAttributeDAO;
 import com.example.pcconfighelpercoursework.api.items.ProductDAO;
 
 import java.util.List;
+import java.util.Map;
 
 public class Component implements Parcelable {
     private int id;
@@ -18,14 +19,14 @@ public class Component implements Parcelable {
     private String description;
     private int price;
     private boolean selected;
-    private List<ProductAttributeDAO> attributes;
+    private Map<String,String> attributes;
     {
         selected = false;
     }
     //todo Сделать рейтинг для комплектующих
 
 
-    public Component(int id, String name, String image, String componentType, String description, int price, boolean selected, List<ProductAttributeDAO> attributes) {
+    public Component(int id, String name, String image, String componentType, String description, int price, boolean selected, Map<String,String> attributes) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -44,7 +45,7 @@ public class Component implements Parcelable {
         this.price = price;
     }
 
-    public Component(int id, String name,String description, String componentType, int price, List<ProductAttributeDAO> attributes) {
+    public Component(int id, String name,String description, String componentType, int price,Map<String,String> attributes) {
         this.id = id;
         this.name = name;
         this.componentType = componentType;
@@ -127,11 +128,11 @@ public class Component implements Parcelable {
         this.description = description;
     }
 
-    public List<ProductAttributeDAO> getAttributes() {
+    public Map<String, String> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<ProductAttributeDAO> attributes) {
+    public void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
     }
 

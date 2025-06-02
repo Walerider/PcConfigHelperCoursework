@@ -65,18 +65,7 @@ public class MainActivity extends AppCompatActivity {
         resources = getResources();
         componentRepository = new ComponentRepository(this);
 
-        if(!componentRepository.hasAnyComponents()){
-            /*executeCatalogLists(CATEGORY_COMPONENTS_ID,categoryComponentsName);*/
-        }else{
-            /*catalogComponentsList.add(componentRepository.getComponentsByCategory(CATEGORY_COMPONENTS_ID[0],categoryComponentsName[0]));
-            catalogComponentsList.add(componentRepository.getComponentsByCategory(CATEGORY_COMPONENTS_ID[1],categoryComponentsName[1]));
-            catalogComponentsList.add(componentRepository.getComponentsByCategory(CATEGORY_COMPONENTS_ID[2],categoryComponentsName[2]));
-            catalogComponentsList.add(componentRepository.getComponentsByCategory(CATEGORY_COMPONENTS_ID[3],categoryComponentsName[3]));
-            catalogComponentsList.add(componentRepository.getComponentsByCategory(CATEGORY_COMPONENTS_ID[4],categoryComponentsName[4]));
-            catalogComponentsList.add(componentRepository.getComponentsByCategory(CATEGORY_COMPONENTS_ID[5],categoryComponentsName[5]));
-            catalogComponentsList.add(componentRepository.getComponentsByCategory(CATEGORY_COMPONENTS_ID[6],categoryComponentsName[6]));
-            catalogComponentsList.add(componentRepository.getComponentsByCategory(CATEGORY_COMPONENTS_ID[7],categoryComponentsName[7]));*/
-        }
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         fragmentContainerView = findViewById(R.id.fragmentContainerView);
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()

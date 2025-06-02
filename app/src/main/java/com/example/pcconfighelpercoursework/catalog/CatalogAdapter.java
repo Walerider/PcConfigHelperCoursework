@@ -1,6 +1,7 @@
 package com.example.pcconfighelpercoursework.catalog;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,21 +36,24 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private int choice;
     private final NavController navController;
     private OnAddButtonClickListener onAddButtonClickListener;
+    private OnItemClickListener onItemClickListener;
 
-    public CatalogAdapter(Context context, List<Component> components, int choice, NavController navController) {
+    public CatalogAdapter(Context context, List<Component> components, int choice, NavController navController, OnItemClickListener onItemClickListener) {
         this.inflater = LayoutInflater.from(context);
         this.components = components;
         this.choice = choice;
         this.navController = navController;
+        this.onItemClickListener = onItemClickListener;
     }
 
-    public CatalogAdapter(Context context, List<Component> components, int choice, OnAddButtonClickListener onAddButtonClickListener, Component configurerComponent, NavController navController) {
+    public CatalogAdapter(Context context, List<Component> components, int choice, OnAddButtonClickListener onAddButtonClickListener, Component configurerComponent, NavController navController, OnItemClickListener onItemClickListener) {
         this.inflater = LayoutInflater.from(context);
         this.components = components;
         this.choice = choice;
         this.onAddButtonClickListener = onAddButtonClickListener;
         this.configurerComponent = configurerComponent;
         this.navController = navController;
+        this.onItemClickListener = onItemClickListener;
         Log.e("constant catalog", String.valueOf(choice));
     }
 
@@ -82,13 +86,22 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             case FILTER_LAYOUT:
                 FilterViewHolder filterViewHolder = (FilterViewHolder)holder;
                 filterViewHolder.filterTextView.setText(inflater.getContext().getResources().getString(R.string.filter));
+
                 filterViewHolder.filterTextView.setOnClickListener(v -> {
-                    navController.navigate(R.id.configurerFragment,null);
+                    Bundle args = new Bundle();
+                    args.putString("component_type", components.get(0).getComponentType());
+                    args.putInt("choice",choice);
+                    Log.e("filter bundle",args.toString());
+                    navController.navigate(R.id.filterChoiceFragment,args);
                 });
                 break;
             case CATALOG:
                 CatalogViewHolder catalogViewHolder = (CatalogViewHolder)holder;
                 catalogViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
+                holder.itemView.setOnClickListener(v ->{
+                    Log.e("product_id", String.valueOf(components.get(position-1).getId()));
+                    onItemClickListener.onItemClick(components.get(position-1).getId());
+                });
                 catalogViewHolder.productNameTextView.setText(components.get(position-1).getName());
                 Log.e("component",components.get(position-1).getName());
                 Log.e("component id ", String.valueOf(components.get(position-1).getId()));
@@ -101,6 +114,10 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             case ADD_CONFIG:
                 AddCatalogViewHolder addCatalogViewHolder = (AddCatalogViewHolder)holder;
                 addCatalogViewHolder.productNameTextView.setText(components.get(position-1).getName());
+                holder.itemView.setOnClickListener(v ->{
+                    Log.e("product_id", String.valueOf(components.get(position-1).getId()));
+                    onItemClickListener.onItemClick(components.get(position-1).getId());
+                });
                 addCatalogViewHolder.productDescriptionTextView.setText(components.get(position-1).getDescription());
                 addCatalogViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
                 addCatalogViewHolder.priceTextView.setText("От " + components.get(position-1).getPrice() + "p");
@@ -108,9 +125,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     Log.e("configurerComponent",configurerComponent.toString());
                     List<Component> l = addConfigurerItem(MainActivity.getComponents(),configurerComponent,position);
                     AssemblyData.setString(configurerComponent.getComponentType(),components.get(position-1).getName());
-                    if(configurerComponent.getComponentType().equals(R.string.cpu) || configurerComponent.getComponentType().equals(R.string.motherboard)){
-                        AssemblyData.setString("socket",components.get(position-1).getAttributes().stream().filter(attr -> attr.getName().equals("Сокет")).collect(Collectors.toList()).get(0).getValue());
-                    }
+
                     AssemblyAddCompat.addCompat(components.get(position-1),inflater.getContext().getResources());
                     MainActivity.setComponents(l);
                     onAddButtonClickListener.onAddButtonClick();
@@ -119,6 +134,10 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 break;
             case CHANGE_CONFIG:
                 ChangeCatalogViewHolder changeCatalogViewHolder = (ChangeCatalogViewHolder) holder;
+                holder.itemView.setOnClickListener(v ->{
+                    Log.e("product_id", String.valueOf(components.get(position-1).getId()));
+                    onItemClickListener.onItemClick(components.get(position-1).getId());
+                });
                 changeCatalogViewHolder.productNameTextView.setText(components.get(position-1).getName());
                 AssemblyAddCompat.addCompat(components.get(position-1),inflater.getContext().getResources());
                 changeCatalogViewHolder.productDescriptionTextView.setText(components.get(position-1).getDescription());
@@ -213,6 +232,9 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
     public interface OnAddButtonClickListener{
         void onAddButtonClick();
+    }
+    public interface OnItemClickListener{
+        void onItemClick(int productId);
     }
     private List<Component> addConfigurerItem(List<Component> list, Component configurerComponent, int position){
         list.replaceAll(c ->

@@ -52,7 +52,7 @@ public class AssemblyChoiceFragment extends Fragment {
 
         });
         MainActivity activity = (MainActivity)this.getActivity();
-        if(activity.getBottomNavigationView().getSelectedItemId() != R.id.nav_home){
+        if (activity != null && activity.getBottomNavigationView().getSelectedItemId() != R.id.nav_home) {
             activity.getBottomNavigationView().setSelectedItemId(R.id.nav_home);
         }
         return view;

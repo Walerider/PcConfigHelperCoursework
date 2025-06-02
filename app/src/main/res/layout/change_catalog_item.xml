@@ -52,7 +52,7 @@
         <TextView
             android:id="@+id/productDescriptionTextView"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:text="@string/text"
             android:textAlignment="textStart"
             android:textColor="?colorPrimaryInverse"
@@ -60,10 +60,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.55"
-            app:layout_constraintHorizontal_bias="0.598"
+            app:layout_constraintHorizontal_bias="0.602"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.893"
+            app:layout_constraintTop_toBottomOf="@+id/productNameTextView"
+            app:layout_constraintVertical_bias="0.035"
             app:layout_constraintWidth_percent="0.4" />
 
         <TextView

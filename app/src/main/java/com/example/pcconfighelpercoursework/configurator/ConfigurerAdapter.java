@@ -2,6 +2,7 @@ package com.example.pcconfighelpercoursework.configurator;
 
 import static java.security.AccessController.getContext;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -56,8 +57,8 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public static final int SL_TYPE_CHOICE = 1;
     public static final int SL_TYPE_STORAGE = 2;
     public static final int SAVE_CLEAR = 3;
-    private List<Component> components;
-    private Map<String, Component> emptyComponents;
+    private final List<Component> components;
+    private final Map<String, Component> emptyComponents;
     private final LayoutInflater inflater;
     private OnAddButtonClickListener onAddButtonClickListener;
     public final NavController navController;
@@ -84,21 +85,19 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType == SAVE_CLEAR){
             View view = inflater.inflate(R.layout.buttons_assembly_item,parent,false);
-            ButtonsViewHolder viewHolder = new ButtonsViewHolder(view);
-            return viewHolder;
+            return new ButtonsViewHolder(view);
         }else if (viewType == SL_TYPE_NOT_CHOICE) {
 
             View view = inflater.inflate(R.layout.not_selected_pc_config_item, parent, false);
-            NotSelectedViewHolder viewHolder = new NotSelectedViewHolder(view);
 
-            return viewHolder;
+            return new NotSelectedViewHolder(view);
         } else {
             View view = inflater.inflate(R.layout.selected_pc_config_item, parent, false);
-            SelectedViewHolder viewHolder = new SelectedViewHolder(view);
-            return viewHolder;
+            return new SelectedViewHolder(view);
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (holder.getItemViewType()) {
@@ -106,7 +105,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 SelectedViewHolder selectedViewHolder = (SelectedViewHolder) holder;
                 selectedViewHolder.productNameTextView.setText(components.get(position).getName());
                 selectedViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
-                selectedViewHolder.priceCatalogTextView.setText(String.valueOf(components.get(position).getPrice()) + "р");
+                selectedViewHolder.priceCatalogTextView.setText(components.get(position).getPrice() + "р");
                 selectedViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
                 selectedViewHolder.clearButton.setOnClickListener(v ->{
                     components.set(position,emptyComponents.get(MainActivity.getComponents().get(position).getComponentType()));
@@ -133,7 +132,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 SelectedViewHolderStorage selectedViewHolderStorage = (SelectedViewHolderStorage) holder;
                 selectedViewHolderStorage.productNameTextView.setText(components.get(position).getName());
                 selectedViewHolderStorage.productDescriptionTextView.setText(components.get(position).getDescription());
-                selectedViewHolderStorage.priceCatalogTextView.setText(String.valueOf(components.get(position).getPrice()) + "р");
+                selectedViewHolderStorage.priceCatalogTextView.setText(components.get(position).getPrice() + "р");
                 selectedViewHolderStorage.clearButton.setOnClickListener(v ->{
                     components.set(position,emptyComponents.get(MainActivity.getComponents().get(position).getComponentType()));
                     //Log.e("components in delete button adapter",Arrays.toString(components.toArray()));
@@ -168,7 +167,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         assembly.setName(String.valueOf(ConfigurerFragment.getAssemblyNameTextView().getText()));
                         assembly.setUserId(Long.valueOf(UserData.getInteger("id")));
                         List<Long> ids = new ArrayList<>();
-                        MainActivity.getComponents().stream().forEach(c -> {
+                        MainActivity.getComponents().forEach(c -> {
                             ids.add((long) c.getId());
                         });
                         assembly.setProductIds(ids);
@@ -178,7 +177,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         Call<AssemblyPOJO> call = apiService.createAssembly(assembly);
                         call.enqueue(new Callback<AssemblyPOJO>() {
                             @Override
-                            public void onResponse(Call<AssemblyPOJO> call, Response<AssemblyPOJO> response) {
+                            public void onResponse(@NonNull Call<AssemblyPOJO> call, @NonNull Response<AssemblyPOJO> response) {
                                 if (response.code() == 200) {
                                     String result = response.toString();
                                     Log.e("id",result);
@@ -201,7 +200,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                                 }
                             }
                             @Override
-                            public void onFailure(Call<AssemblyPOJO> call, Throwable t) {
+                            public void onFailure(@NonNull Call<AssemblyPOJO> call, @NonNull Throwable t) {
                                 if(!call.isCanceled()){
                                     Toast.makeText(inflater.getContext(), "Сборка создана успешно!", Toast.LENGTH_SHORT).show();
                                     NavigationData.setBoolean("isCreating",false);
@@ -235,7 +234,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
     private boolean checkAssemblyComponents(){
         AtomicInteger allFill = new AtomicInteger(1);
-        MainActivity.getComponents().stream().forEach(c -> {
+        MainActivity.getComponents().forEach(c -> {
             if(c.getId() <= 0)allFill.set(0);
         });
         if(allFill.get() == 1){
@@ -327,7 +326,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         void onAddClick(Component item,int type);
     }
     public static class ButtonsViewHolder extends RecyclerView.ViewHolder{
-        private Button clearButton;
+        private final Button clearButton;
         private final Button saveButton;
 
         public ButtonsViewHolder(@NonNull View itemView) {

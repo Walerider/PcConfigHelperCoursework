@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,16 +24,21 @@ import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
 import com.example.pcconfighelpercoursework.api.API;
 import com.example.pcconfighelpercoursework.api.APIClient;
+import com.example.pcconfighelpercoursework.api.items.ProductAttributeDAO;
 import com.example.pcconfighelpercoursework.api.items.ProductDAO;
 import com.example.pcconfighelpercoursework.configurator.ConfigurerFragment;
 import com.example.pcconfighelpercoursework.items.*;
 import com.example.pcconfighelpercoursework.utils.ComponentRepository;
 import com.example.pcconfighelpercoursework.utils.ItemDecoration;
 import com.example.pcconfighelpercoursework.utils.NavigationData;
+import com.example.pcconfighelpercoursework.utils.SharedViewModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import retrofit2.Call;
@@ -112,34 +118,10 @@ public class CatalogFragment extends Fragment {
 
         Log.e("mChoice", String.valueOf(mChoice));
         Log.e("products length", String.valueOf(products.size()));
-        switch (mChoice){
-            case 0:
-                catalogAdapter = new CatalogAdapter(getContext(), products ,mChoice,((MainActivity)requireActivity()).getNavController());
-                break;
-            case 1:
-                Log.e("choice", String.valueOf(mChoice));
-            if(!products.isEmpty()){
-                catalogAdapter = new CatalogAdapter(getContext(), products, mChoice, this::onAddButtonClickListener, item,((MainActivity)requireActivity()).getNavController());
-
-            }else{
-                Toast.makeText(this.getContext(),"Убедитесь в подключении к интернету", Toast.LENGTH_LONG);
-                }
-                //todo сделать определение для обознпчения совместимости
-                break;
-            case 2:
-
-                if(!products.isEmpty()){
-                    catalogAdapter = new CatalogAdapter(getContext(), products, mChoice, this::onAddButtonClickListener, item,((MainActivity)requireActivity()).getNavController());
-                }else{
-                    Toast.makeText(this.getContext(),"Убедитесь в подключении к интернету", Toast.LENGTH_LONG);
-                }
-                break;
-
-
-        }//todo сделать фильтрацию
-        catalogRecyclerView.setAdapter(catalogAdapter);
+        //todo сделать фильтрацию
         fillproducts(item);
         MainActivity activity = (MainActivity)this.getActivity();
+
         if(activity.getBottomNavigationView().getSelectedItemId() != R.id.nav_catalog){
             activity.getBottomNavigationView().setSelectedItemId(R.id.nav_catalog);
         }
@@ -183,20 +165,7 @@ public class CatalogFragment extends Fragment {
             Log.e("getting item", item.toString());
         }//todo Переделать, чтобы статичных данных не было
     }
-    private void onAddButtonClickListener() {
-        /*ConfigurerFragment configurerFragment = (ConfigurerFragment) getActivity().getSupportFragmentManager().findFragmentByTag("home_fragment");
-        if(configurerFragment != null){
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainerView, configurerFragment, "home_fragment")
-                    .addToBackStack("home_fragment_backstack")
-                    .commit();
-        */
-        NavController navController = ((MainActivity)requireActivity()).getNavController();
-        Log.e(" catalog onAddButtonClickListener","penis");
-        navController.navigate(R.id.configurerFragment,null,new NavOptions.Builder()
-                .setPopUpTo(R.id.bottom_navigation,false)
-                .build());
-    }
+
     private void executeLists(int categoryId){
         new FillComponentsCatalogLists().fetchItems(categoryId, mComponent.getComponentType());
     }
@@ -205,6 +174,12 @@ public class CatalogFragment extends Fragment {
         public void fetchItems(int categoryId,String componentType) {
             if (currIndex >= 1) {
                 progressBar.setVisibility(View.GONE);
+                setupAdapter();
+                catalogRecyclerView.setAdapter(catalogAdapter);
+                List<Map<String,String>> list = new ArrayList<>();
+                products.stream().forEach(p -> list.add(p.getAttributes()));
+                SharedViewModel viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+                viewModel.setMapList(list);
                 catalogRecyclerView.setVisibility(View.VISIBLE);
                 return;
             }
@@ -227,7 +202,6 @@ public class CatalogFragment extends Fragment {
                         currIndex++;
                         products = fillListFetchItems(categoryId,list,componentType);
                         Log.e("list",Arrays.toString(products.toArray()));
-                        catalogAdapter.setCatalog(products);
                         fetchItems(categoryId,componentType);
                     } else {
                         Toast.makeText(getContext(), "Ошибка: " + response.code(), Toast.LENGTH_SHORT).show();
@@ -246,53 +220,93 @@ public class CatalogFragment extends Fragment {
             switch (categoryId){
                 case 1:
                     catalogComponentsList.addAll(list.stream().map(p ->
-                            new Videocard((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                            new Videocard((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes().stream().collect(Collectors.toMap(ProductAttributeDAO::getName,ProductAttributeDAO::getValue)))
                     ).collect(Collectors.toList()));
                     return catalogComponentsList;
 
                 case 2:
                     catalogComponentsList.addAll(list.stream().map(p ->
-                            new CPU((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                            new CPU((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes().stream().collect(Collectors.toMap(ProductAttributeDAO::getName,ProductAttributeDAO::getValue)))
                     ).collect(Collectors.toList()));
                     return catalogComponentsList;
 
                 case 3:
                     catalogComponentsList.addAll(list.stream().map(p ->
-                            new Motherboard((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                            new Motherboard((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes().stream().collect(Collectors.toMap(ProductAttributeDAO::getName,ProductAttributeDAO::getValue)))
                     ).collect(Collectors.toList()));
                     return catalogComponentsList;
 
                 case 4:
                     catalogComponentsList.addAll(list.stream().map(p ->
-                            new RAM((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                            new RAM((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes().stream().collect(Collectors.toMap(ProductAttributeDAO::getName,ProductAttributeDAO::getValue)))
                     ).collect(Collectors.toList()));
                     return catalogComponentsList;
 
                 case 5:
                     catalogComponentsList.addAll(list.stream().map(p ->
-                            new Cases((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                            new Cases((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes().stream().collect(Collectors.toMap(ProductAttributeDAO::getName,ProductAttributeDAO::getValue)))
                     ).collect(Collectors.toList()));
                     return catalogComponentsList;
 
                 case 6:
                     catalogComponentsList.addAll(list.stream().map(p ->
-                            new PowerSupply((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                            new PowerSupply((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes().stream().collect(Collectors.toMap(ProductAttributeDAO::getName,ProductAttributeDAO::getValue)))
                     ).collect(Collectors.toList()));
                     return catalogComponentsList;
 
                 case 7:
                     catalogComponentsList.addAll(list.stream().map(p ->
-                            new CPUCooler((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                            new CPUCooler((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes().stream().collect(Collectors.toMap(ProductAttributeDAO::getName,ProductAttributeDAO::getValue)))
                     ).collect(Collectors.toList()));
                     return catalogComponentsList;
 
                 case 8:
                     catalogComponentsList.addAll(list.stream().map(p ->
-                            new StorageDevice((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes())
+                            new StorageDevice((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes().stream().collect(Collectors.toMap(ProductAttributeDAO::getName,ProductAttributeDAO::getValue)))
                     ).collect(Collectors.toList()));
                     return catalogComponentsList;
             }
             return catalogComponentsList;
+        }
+        private void setupAdapter(){
+            switch (mChoice){
+                case 0:
+                    catalogAdapter = new CatalogAdapter(getContext(), products ,mChoice,((MainActivity)requireActivity()).getNavController(), this::onItemClickListener);
+                    break;
+                case 1:
+                    Log.e("choice", String.valueOf(mChoice));
+                    if(!products.isEmpty()){
+                        catalogAdapter = new CatalogAdapter(getContext(), products, mChoice,this::onAddButtonClickListener, mComponent,((MainActivity)requireActivity()).getNavController(), this::onItemClickListener);
+
+                    }else{
+                        Toast.makeText(getContext(),"Убедитесь в подключении к интернету", Toast.LENGTH_LONG);
+                    }
+                    //todo сделать определение для обознпчения совместимости
+                    break;
+                case 2:
+                    if(!products.isEmpty()){
+                        catalogAdapter = new CatalogAdapter(getContext(), products, mChoice,this::onAddButtonClickListener, mComponent,((MainActivity)requireActivity()).getNavController(), this::onItemClickListener );
+                    }else{
+                        Toast.makeText(getContext(),"Убедитесь в подключении к интернету", Toast.LENGTH_LONG);
+                    }
+                    break;
+
+
+            }
+        }
+        private void onAddButtonClickListener() {
+            NavController navController = ((MainActivity)requireActivity()).getNavController();
+            Log.e(" catalog onAddButtonClickListener","penis");
+            navController.navigate(R.id.configurerFragment,null,new NavOptions.Builder()
+                    .setPopUpTo(R.id.bottom_navigation,false)
+                    .build());
+        }
+        private void onItemClickListener(@NotNull int productId) {
+            NavController navController = ((MainActivity)requireActivity()).getNavController();
+            Bundle args = new Bundle();
+            args.putInt("product_id", productId);
+            Log.e("onItemClick",args.toString());
+            navController.navigate(R.id.productFragment,args);
         }
     }
 }

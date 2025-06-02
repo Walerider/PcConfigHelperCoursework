@@ -18,7 +18,7 @@ public class AssemblyAddCompat {
             AssemblyData.setInt(resources.getString(R.string.cpu),component.getId());
             Log.e("addCompat", String.valueOf(AssemblyData.getInt(resources.getString(R.string.cpu))));
             if(AssemblyData.getInt(resources.getString(R.string.motherboard)) == 0){
-                AssemblyData.setString("socket",component.getAttributes().stream().filter(attr -> attr.getName().equals("Сокет")).collect(Collectors.toList()).get(0).getValue());
+                AssemblyData.setString("socket",component.getAttributes().get("Сокет"));
             }
             Log.e("addCompat",AssemblyData.getString("socket"));
             return;
@@ -26,20 +26,20 @@ public class AssemblyAddCompat {
         if (component.getComponentType().equals(resources.getString(R.string.motherboard))) {
             AssemblyData.setInt(resources.getString(R.string.motherboard),component.getId());
             if(AssemblyData.getInt(resources.getString(R.string.cpu)) == 0){
-                AssemblyData.setString("socket",component.getAttributes().stream().filter(attr -> attr.getName().equals("Сокет")).collect(Collectors.toList()).get(0).getValue());
+                AssemblyData.setString("socket",component.getAttributes().get("Сокет"));
             }
             if(AssemblyData.getInt(resources.getString(R.string.ram)) == 0){
-                AssemblyData.setString("ddr type",component.getAttributes().stream().filter(attr -> attr.getName().equals("Тип поддерживаемой памяти")).collect(Collectors.toList()).get(0).getValue());
+                AssemblyData.setString("ddr type",component.getAttributes().get("Тип поддерживаемой памяти"));
             }
             if(AssemblyData.getInt(resources.getString(R.string.pc_case)) == 0){
-                AssemblyData.setString("form_factor",component.getAttributes().stream().filter(attr -> attr.getName().equals("Форм-фактор")).collect(Collectors.toList()).get(0).getValue());
+                AssemblyData.setString("form_factor",component.getAttributes().get("Форм-фактор"));
             }
             return;
         }
         if(component.getComponentType().equals(resources.getString(R.string.ram))){
             AssemblyData.setInt(resources.getString(R.string.ram),component.getId());
             if(AssemblyData.getInt(resources.getString(R.string.motherboard)) == 0){
-                AssemblyData.setString("ddr type",component.getAttributes().stream().filter(attr -> attr.getName().equals("Тип памяти")).collect(Collectors.toList()).get(0).getValue());
+                AssemblyData.setString("ddr type",component.getAttributes().get("Тип памяти"));
             }
             return;
         }
@@ -62,7 +62,7 @@ public class AssemblyAddCompat {
         if(component.getComponentType().equals(resources.getString(R.string.pc_case))){
             AssemblyData.setInt(resources.getString(R.string.pc_case),component.getId());
             if(AssemblyData.getString(resources.getString(R.string.motherboard)).isEmpty()){
-                AssemblyData.setString("form_factor",component.getAttributes().stream().filter(attr -> attr.getName().equals("Форм-фактор")).collect(Collectors.toList()).get(0).getValue());
+                AssemblyData.setString("form_factor",component.getAttributes().get("Форм-фактор совместимых плат"));
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.example.pcconfighelpercoursework.configurator;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
@@ -25,6 +26,7 @@ import com.example.pcconfighelpercoursework.utils.AssemblyData;
 import com.example.pcconfighelpercoursework.utils.ItemDecoration;
 import com.example.pcconfighelpercoursework.utils.NavigationData;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ConfigurerFragment extends Fragment implements ConfigurerAdapter.OnAddButtonClickListener{
@@ -32,7 +34,9 @@ public class ConfigurerFragment extends Fragment implements ConfigurerAdapter.On
     private RecyclerView recyclerView;
     ConfigurerAdapter configurerAdapter;
     private ImageButton profileButton;
+    @SuppressLint("StaticFieldLeak")
     private static TextView priceTextView;
+    @SuppressLint("StaticFieldLeak")
     private static TextView assemblyNameTextView;
 
     static AtomicInteger a;
@@ -110,6 +114,7 @@ public class ConfigurerFragment extends Fragment implements ConfigurerAdapter.On
     public static void setPrice() {
         MainActivity.getComponents().stream().filter(c -> c.getPrice() > 0).forEach(c -> a.addAndGet(c.getPrice()));
         ConfigurerFragment.priceTextView.setText("Итого: " + a + "р");
+
     }
 
     @Override
@@ -123,7 +128,7 @@ public class ConfigurerFragment extends Fragment implements ConfigurerAdapter.On
                 .replace(R.id.fragmentContainerView, catalogFragment,"catalog_fragment")
                 .addToBackStack("catalog_fragment_backstack")
                 .commit();*/
-        NavigationData.init(getContext());
+        NavigationData.init(requireContext());
         NavigationData.setBoolean("add",true);
         NavController navController = ((MainActivity)requireActivity()).getNavController();
         Bundle args = new Bundle();

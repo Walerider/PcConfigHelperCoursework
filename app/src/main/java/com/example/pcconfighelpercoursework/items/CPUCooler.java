@@ -7,15 +7,16 @@ import androidx.annotation.NonNull;
 import com.example.pcconfighelpercoursework.api.items.ProductAttributeDAO;
 
 import java.util.List;
+import java.util.Map;
 
 public class CPUCooler extends Component {
 
 
-    public CPUCooler(int id, String name, String image, String componentType, String description, int price, boolean selected, List<ProductAttributeDAO> attributes) {
+    public CPUCooler(int id, String name, String image, String componentType, String description, int price, boolean selected, Map<String,String> attributes) {
         super(id, name, image, componentType, description, price, selected, attributes);
     }
 
-    public CPUCooler(int id, String name, String description, String componentType, int price, List<ProductAttributeDAO> attributes) {
+    public CPUCooler(int id, String name, String description, String componentType, int price, Map<String,String> attributes) {
         super(id, name, description, componentType, price, attributes);
     }
 

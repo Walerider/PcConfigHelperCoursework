@@ -14,7 +14,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ComponentRepository {
     private final DatabaseHelper dbHelper;
@@ -87,7 +89,7 @@ public class ComponentRepository {
                 String attributesJson = cursor.getString(cursor.getColumnIndex("attributes"));
                 Type attrType = new TypeToken<List<ProductAttributeDAO>>(){}.getType();
                 List<ProductAttributeDAO> attributes = gson.fromJson(attributesJson, attrType);
-                component.setAttributes(attributes != null ? attributes : new ArrayList<>());
+                component.setAttributes(attributes != null ? attributes.stream().collect(Collectors.toMap(ProductAttributeDAO::getName,ProductAttributeDAO::getValue)) : new HashMap<>());
                 components.add(component);
             }
         }
