@@ -36,6 +36,9 @@ public class CatalogChoiceAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ChoiceCatalogViewHolder viewHolder = (ChoiceCatalogViewHolder)holder;
         viewHolder.productNameTextView.setText(componenList.get(position));
+        if(componenList.get(position).equals(inflater.getContext().getResources().getString(R.string.videocard))){
+            viewHolder.productNameTextView.setTextCursorDrawable(inflater.getContext().getDrawable(R.drawable.videocard));
+        }
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

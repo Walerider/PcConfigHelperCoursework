@@ -1,8 +1,7 @@
-package com.example.pcconfighelpercoursework.catalog;
+package com.example.pcconfighelpercoursework.catalog.filters;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,15 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
-import com.example.pcconfighelpercoursework.api.API;
-import com.example.pcconfighelpercoursework.api.APIClient;
 import com.example.pcconfighelpercoursework.api.items.ProductAttributeDAO;
-import com.example.pcconfighelpercoursework.api.items.ProductDAO;
-import com.example.pcconfighelpercoursework.items.Component;
 import com.example.pcconfighelpercoursework.utils.SharedViewModel;
 import com.example.pcconfighelpercoursework.utils.filters.CaseFilters;
 import com.example.pcconfighelpercoursework.utils.filters.CoolersFilters;
@@ -41,13 +35,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class FilterChoiceFragment extends Fragment {
 
@@ -118,13 +107,10 @@ public class FilterChoiceFragment extends Fragment {
             if (componentFilters == null || componentFilters.isEmpty()) {
                 return result;
             }
-
-            // Получаем все имена фильтров для быстрого доступа
             Set<String> filterNames = componentFilters.stream()
                     .map(ProductAttributeDAO::getName)
                     .collect(Collectors.toSet());
 
-            // Обрабатываем все переданные атрибуты
             attributesList.forEach(attributes -> {
                 filterNames.stream()
                         .filter(attributes::containsKey)

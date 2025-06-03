@@ -65,7 +65,7 @@
         tools:layout="@layout/fragment_product" />
     <fragment
         android:id="@+id/filterChoiceFragment"
-        android:name="com.example.pcconfighelpercoursework.catalog.FilterChoiceFragment"
+        android:name="com.example.pcconfighelpercoursework.catalog.filters.FilterChoiceFragment"
         android:label="fragment_filter_choice"
         tools:layout="@layout/fragment_filter_choice" />
 </navigation>

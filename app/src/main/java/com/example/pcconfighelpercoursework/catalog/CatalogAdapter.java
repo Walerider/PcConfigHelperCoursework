@@ -1,6 +1,7 @@
 package com.example.pcconfighelpercoursework.catalog;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -118,6 +119,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     Log.e("product_id", String.valueOf(components.get(position-1).getId()));
                     onItemClickListener.onItemClick(components.get(position-1).getId());
                 });
+
                 addCatalogViewHolder.productDescriptionTextView.setText(components.get(position-1).getDescription());
                 addCatalogViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
                 addCatalogViewHolder.priceTextView.setText("От " + components.get(position-1).getPrice() + "p");
