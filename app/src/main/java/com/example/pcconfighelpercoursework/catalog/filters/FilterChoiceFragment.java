@@ -6,18 +6,22 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
 import com.example.pcconfighelpercoursework.api.items.ProductAttributeDAO;
+import com.example.pcconfighelpercoursework.items.Component;
+import com.example.pcconfighelpercoursework.utils.FiltersGetCompat;
 import com.example.pcconfighelpercoursework.utils.SharedViewModel;
 import com.example.pcconfighelpercoursework.utils.filters.CaseFilters;
 import com.example.pcconfighelpercoursework.utils.filters.CoolersFilters;
@@ -41,10 +45,13 @@ import java.util.stream.Collectors;
 public class FilterChoiceFragment extends Fragment {
 
     ImageButton imageButton;
-    private String mComponentType;
+    Button useButton;
+    private Component mComponent;
     private int mChoice;
+    static public List<ProductAttributeDAO> filtersSend = new ArrayList<>();
     Map<String,Map<String,Integer>> filters;
     List<Map<String, String>> attrList;
+    List<ExpandableItem> filtersList;
     RecyclerView recyclerView;
     ProgressBar progressBar;
     public FilterChoiceFragment() {
@@ -60,11 +67,11 @@ public class FilterChoiceFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mComponentType = getArguments().getString("component_type");
+            mComponent = getArguments().getParcelable("component");
             mChoice = getArguments().getInt("choice");
             Log.e("asdasfgghh",getArguments().toString());
             Log.e("mChoice", String.valueOf(mChoice));
-            Log.e("mChoice", mComponentType);
+            Log.e("mChoice", mComponent.toString());
             filters = new HashMap<>();
         }
     }
@@ -74,6 +81,7 @@ public class FilterChoiceFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_filter_choice, container, false);
         attrList = new ArrayList<>();
+        filtersList = new ArrayList<>();
         imageButton = view.findViewById(R.id.backImageButton);
         imageButton.setOnClickListener(v ->{
             backByBackStack();
@@ -81,7 +89,7 @@ public class FilterChoiceFragment extends Fragment {
         //Log.e("filters test", new FilterAdd().getFilters(l.get(0)).toString());
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
-
+        useButton = view.findViewById(R.id.useButton);
         return view;
     }
 
@@ -89,6 +97,17 @@ public class FilterChoiceFragment extends Fragment {
     public void onStart() {
         super.onStart();
         new AddAttributes().addItems();
+        useButton.setOnClickListener(v -> {
+            SharedViewModel viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+            viewModel.clearFilters(mComponent.getComponentType());
+            viewModel.addFilters(mComponent.getComponentType(),filtersSend);
+            Bundle args = new Bundle();
+            args.putParcelable("component",mComponent);
+            args.putInt("type",mChoice);
+            NavController navController = ((MainActivity)requireActivity()).getNavController();
+            navController.navigate(R.id.catalogFragment,args,new NavOptions.Builder()
+                    .build());
+        });
     }
 
     private void backByBackStack(){
@@ -100,12 +119,12 @@ public class FilterChoiceFragment extends Fragment {
         {
             subFilters = new HashMap<>();
         }
-        public Map<String, Map<String, Integer>> getFilters(List<Map<String, String>> attributesList) {
+        public List<ExpandableItem> getFilters(List<Map<String, String>> attributesList) {
             Map<String, Map<String, Integer>> result = new HashMap<>();
             List<ProductAttributeDAO> componentFilters = getComponentFilters();
-
+            List<ExpandableItem> adapterList = new ArrayList<>();
             if (componentFilters == null || componentFilters.isEmpty()) {
-                return result;
+                return adapterList;
             }
             Set<String> filterNames = componentFilters.stream()
                     .map(ProductAttributeDAO::getName)
@@ -120,8 +139,11 @@ public class FilterChoiceFragment extends Fragment {
                                     .merge(attributeValue, 1, Integer::sum);
                         });
             });
-
-            return result;
+            filters = result;
+            for (String key: result.keySet()) {
+                adapterList.add(new ExpandableItem(key,result.get(key),false));
+            }
+            return adapterList;
         }
         private List<ProductAttributeDAO> getComponentFilters() {
             try {
@@ -151,24 +173,24 @@ public class FilterChoiceFragment extends Fragment {
 
         private @Nullable Class<?> getaClass() {
             Class<?> filtersClass = null;
-            if(mComponentType.equals(getResources().getString(R.string.cpu))){
+            if(mComponent.getComponentType().equals(getResources().getString(R.string.cpu))){
                 filtersClass = CpuFilters.class;
-            }else if(mComponentType.equals(getResources().getString(R.string.videocard))){
+            }else if(mComponent.getComponentType().equals(getResources().getString(R.string.videocard))){
                 filtersClass = VideocardFilters.class;
-            }else if(mComponentType.equals(getResources().getString(R.string.motherboard))){
+            }else if(mComponent.getComponentType().equals(getResources().getString(R.string.motherboard))){
                 filtersClass = MotherboardFilters.class;
-            }else if(mComponentType.equals(getResources().getString(R.string.ram))){
+            }else if(mComponent.getComponentType().equals(getResources().getString(R.string.ram))){
                 filtersClass = RamFilters.class;
-            }else if(mComponentType.equals(getResources().getString(R.string.storage_devices))){
+            }else if(mComponent.getComponentType().equals(getResources().getString(R.string.storage_devices))){
                 filtersClass = StorageDevicesFilters.class;
-            }else if(mComponentType.equals(getResources().getString(R.string.power_supply))){
+            }else if(mComponent.getComponentType().equals(getResources().getString(R.string.power_supply))){
                 filtersClass = PsuFilters.class;
-            }else if(mComponentType.equals(getResources().getString(R.string.cpu_cooler))){
+            }else if(mComponent.getComponentType().equals(getResources().getString(R.string.cpu_cooler))){
                 filtersClass = CoolersFilters.class;
-            }else if(mComponentType.equals(getResources().getString(R.string.pc_case))){
+            }else if(mComponent.getComponentType().equals(getResources().getString(R.string.pc_case))){
                 filtersClass = CaseFilters.class;
             }
-            Log.e("equals", mComponentType);
+            Log.e("equals", mComponent.getComponentType());
             return filtersClass;
         }
     }
@@ -179,11 +201,12 @@ public class FilterChoiceFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 Log.e("filters List", filters.toString());
+                recyclerView.setAdapter(new FilterAdapter(filtersList));
                 return;
             }
             if(currIndex == 1){
                 Log.e("attrList", Arrays.toString(attrList.toArray()));
-                filters = new AddFilters().getFilters(attrList);
+                filtersList = new AddFilters().getFilters(attrList);
                 currIndex++;
                 addItems();
             }

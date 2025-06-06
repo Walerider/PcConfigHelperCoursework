@@ -24,11 +24,13 @@ import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
 import com.example.pcconfighelpercoursework.api.API;
 import com.example.pcconfighelpercoursework.api.APIClient;
+import com.example.pcconfighelpercoursework.api.items.FilterDAO;
 import com.example.pcconfighelpercoursework.api.items.ProductAttributeDAO;
 import com.example.pcconfighelpercoursework.api.items.ProductDAO;
 import com.example.pcconfighelpercoursework.configurator.ConfigurerFragment;
 import com.example.pcconfighelpercoursework.items.*;
 import com.example.pcconfighelpercoursework.utils.ComponentRepository;
+import com.example.pcconfighelpercoursework.utils.FiltersGetCompat;
 import com.example.pcconfighelpercoursework.utils.ItemDecoration;
 import com.example.pcconfighelpercoursework.utils.NavigationData;
 import com.example.pcconfighelpercoursework.utils.SharedViewModel;
@@ -47,18 +49,14 @@ import retrofit2.Response;
 
 public class CatalogFragment extends Fragment {
 
-    private static final String COMPOTENT = "";
     private Component mComponent;
     private int mChoice;
-    private String filters;
-    private ComponentRepository componentRepository;
     private CatalogAdapter catalogAdapter;
     private RecyclerView catalogRecyclerView;
     TextView toolbarTitleTextView;
     Toolbar toolbar;
     ProgressBar progressBar;
     List<Component> products;
-    private static final String ARG_CHOICE = "0";
     public CatalogFragment() {
     }
 
@@ -80,7 +78,6 @@ public class CatalogFragment extends Fragment {
         if (getArguments() != null) {
             mComponent = getArguments().getParcelable("component");
             mChoice = getArguments().getInt("type");
-            filters = getArguments().getString("filters");
             Log.e("asdasfgghh",getArguments().toString());
             Log.e("mChoice", String.valueOf(mChoice));
 
@@ -100,7 +97,6 @@ public class CatalogFragment extends Fragment {
         toolbar = view.findViewById(R.id.toolbar);
         progressBar = view.findViewById(R.id.progressBar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        componentRepository = new ComponentRepository(getContext());
         return view;
     }
 
@@ -172,13 +168,20 @@ public class CatalogFragment extends Fragment {
     private class FillComponentsCatalogLists{
         int currIndex = 0;
         public void fetchItems(int categoryId,String componentType) {
+            List<ProductAttributeDAO> filtersList = new ArrayList<>();
+            filtersList.addAll(FiltersGetCompat.getFiltersFromShared(mComponent,getResources()));
+            Log.e("filters list", Arrays.toString(filtersList.toArray()));
+            SharedViewModel viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
             if (currIndex >= 1) {
                 progressBar.setVisibility(View.GONE);
-                setupAdapter();
+                viewModel.getFiltersList(mComponent.getComponentType()).observe(getViewLifecycleOwner(),list ->{
+                    filtersList.addAll(list);
+                });
+                Log.e("filters list adapter", Arrays.toString(filtersList.toArray()));
+                setupAdapter(filtersList,viewModel);
                 catalogRecyclerView.setAdapter(catalogAdapter);
                 List<Map<String,String>> list = new ArrayList<>();
                 products.stream().forEach(p -> list.add(p.getAttributes()));
-                SharedViewModel viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
                 viewModel.setMapList(list);
                 catalogRecyclerView.setVisibility(View.VISIBLE);
                 return;
@@ -186,7 +189,10 @@ public class CatalogFragment extends Fragment {
             progressBar.setVisibility(View.VISIBLE);
             catalogRecyclerView.setVisibility(View.GONE);
             API apiService = APIClient.getApi();
-            Call<List<ProductDAO>> call = apiService.getProductsByCategory(categoryId);
+            viewModel.getFiltersList(mComponent.getComponentType()).observe(getViewLifecycleOwner(),list ->{
+                filtersList.addAll(list);
+            });
+            Call<List<ProductDAO>> call = apiService.getProductsByCategoryFilter(categoryId,new FilterDAO(filtersList));
             List<ProductDAO> list = new ArrayList<>();
             call.enqueue(new Callback<List<ProductDAO>>() {
                 @Override
@@ -268,15 +274,15 @@ public class CatalogFragment extends Fragment {
             }
             return catalogComponentsList;
         }
-        private void setupAdapter(){
+        private void setupAdapter(List<ProductAttributeDAO> list,SharedViewModel viewModel){
             switch (mChoice){
                 case 0:
-                    catalogAdapter = new CatalogAdapter(getContext(), products ,mChoice,((MainActivity)requireActivity()).getNavController(), this::onItemClickListener);
+                    catalogAdapter = new CatalogAdapter(mComponent,getContext(), products ,mChoice,viewModel,list,((MainActivity)requireActivity()).getNavController(), this::onItemClickListener);
                     break;
                 case 1:
                     Log.e("choice", String.valueOf(mChoice));
                     if(!products.isEmpty()){
-                        catalogAdapter = new CatalogAdapter(getContext(), products, mChoice,this::onAddButtonClickListener, mComponent,((MainActivity)requireActivity()).getNavController(), this::onItemClickListener);
+                        catalogAdapter = new CatalogAdapter(mComponent,getContext(), products, mChoice,viewModel,list,this::onAddButtonClickListener, mComponent,((MainActivity)requireActivity()).getNavController(), this::onItemClickListener);
 
                     }else{
                         Toast.makeText(getContext(),"Убедитесь в подключении к интернету", Toast.LENGTH_LONG);
@@ -285,7 +291,7 @@ public class CatalogFragment extends Fragment {
                     break;
                 case 2:
                     if(!products.isEmpty()){
-                        catalogAdapter = new CatalogAdapter(getContext(), products, mChoice,this::onAddButtonClickListener, mComponent,((MainActivity)requireActivity()).getNavController(), this::onItemClickListener );
+                        catalogAdapter = new CatalogAdapter(mComponent,getContext(), products, mChoice,viewModel,list,this::onAddButtonClickListener, mComponent,((MainActivity)requireActivity()).getNavController(), this::onItemClickListener );
                     }else{
                         Toast.makeText(getContext(),"Убедитесь в подключении к интернету", Toast.LENGTH_LONG);
                     }

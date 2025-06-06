@@ -7,4 +7,8 @@ import java.util.List;
 public class FilterDAO {
     @SerializedName("productAttributes")
     List<ProductAttributeDAO> productAttributes;
+
+    public FilterDAO(List<ProductAttributeDAO> productAttributes) {
+        this.productAttributes = productAttributes;
+    }
 }

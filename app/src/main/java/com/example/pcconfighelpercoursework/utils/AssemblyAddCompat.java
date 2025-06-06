@@ -61,7 +61,7 @@ public class AssemblyAddCompat {
         }
         if(component.getComponentType().equals(resources.getString(R.string.pc_case))){
             AssemblyData.setInt(resources.getString(R.string.pc_case),component.getId());
-            if(AssemblyData.getString(resources.getString(R.string.motherboard)).isEmpty()){
+            if(AssemblyData.getInt(resources.getString(R.string.motherboard)) == 0){
                 AssemblyData.setString("form_factor",component.getAttributes().get("Форм-фактор совместимых плат"));
             }
         }

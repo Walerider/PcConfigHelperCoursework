@@ -35,4 +35,9 @@ public class ProductAttributeDAO {
     public ProductAttributeDAO(String name) {
         this.name = name;
     }
+
+    public ProductAttributeDAO(String name, String value) {
+        this.name = name;
+        this.value = value;
+    }
 }

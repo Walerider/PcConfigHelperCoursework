@@ -44,7 +44,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    private ComponentRepository componentRepository;
     private NavController navController;
     protected BottomNavigationView bottomNavigationView;
     protected FragmentContainerView fragmentContainerView;
@@ -53,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     private final int[] CATEGORY_COMPONENTS_ID = {1,2,3,4,5,6,7,8};
     private String[] categoryComponentsName;
     private static List<Component> components;
-    private static List<List<Component>> catalogComponentsList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,9 +61,6 @@ public class MainActivity extends AppCompatActivity {
                 getResources().getString(R.string.power_supply), getResources().getString(R.string.cpu_cooler), getResources().getString(R.string.storage_devices)};
         components = new ArrayList<>();
         resources = getResources();
-        componentRepository = new ComponentRepository(this);
-
-
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         fragmentContainerView = findViewById(R.id.fragmentContainerView);
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
@@ -76,15 +71,10 @@ public class MainActivity extends AppCompatActivity {
         UserData.init(this);
         AssemblyData.init(this);
         setNavigationStartDestination();
-
+        components = AssemblyData.loadList();
         Log.e("data is creating", String.valueOf(NavigationData.getBoolean("isCreating")));
         bottomNavigationLogic(bottomNavigationView,navController);
     }
-
-    public static List<List<Component>> getCatalogComponentsList() {
-        return catalogComponentsList;
-    }
-
 
     @Override
     protected void onStart() {
@@ -97,6 +87,13 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         fillComponents(components);
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e("components save", Arrays.toString(components.toArray()));
+        AssemblyData.saveList(components);
     }
 
     public static List<Component> getComponents() {

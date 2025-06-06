@@ -92,8 +92,8 @@ public class CatalogChoiceFragment extends Fragment implements CatalogChoiceAdap
         this.componentList.add(resources.getString(R.string.motherboard));
         this.componentList.add(resources.getString(R.string.ram));
         this.componentList.add(resources.getString(R.string.power_supply));
-        this.componentList.add(resources.getString(R.string.pc_case));
         this.componentList.add(resources.getString(R.string.cpu_cooler));
+        this.componentList.add(resources.getString(R.string.pc_case));
         this.componentList.add(resources.getString(R.string.storage_devices));
     }
 
