@@ -2,6 +2,7 @@ package com.example.pcconfighelpercoursework.configurator;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,9 +11,11 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -72,7 +75,6 @@ public class ConfigurerFragment extends Fragment implements ConfigurerAdapter.On
         }else {
             assemblyNameTextView.setText(AssemblyData.getString("name"));
         }
-        Log.e("assembly name",AssemblyData.getString("name"));
         assemblyNameTextView.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             final EditText input = new EditText(getContext());
@@ -82,10 +84,28 @@ public class ConfigurerFragment extends Fragment implements ConfigurerAdapter.On
                     .setPositiveButton("Сохранить", (dialog, which) -> {
                         String newText = input.getText().toString();
                         assemblyNameTextView.setText(newText);
-                        AssemblyData.setString("name",newText);
+                        AssemblyData.setString("name", newText);
                     })
-                    .setNegativeButton("Отмена", null)
-                    .show();
+                    .setNegativeButton("Отмена", null);
+
+            AlertDialog dialog = builder.create();
+            dialog.setOnShowListener(d -> {
+                Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                TypedValue typedValue = new TypedValue();
+                getContext().getTheme().resolveAttribute(com.google.android.material.R.attr.colorSecondary, typedValue, true);
+                int colorSecondary = typedValue.data;
+                TypedValue errorValue = new TypedValue();
+                getContext().getTheme().resolveAttribute(com.google.android.material.R.attr.colorError, errorValue, true);
+                int colorError = errorValue.data;
+                if (positiveButton != null) {
+                    positiveButton.setTextColor(colorSecondary);
+                }
+                if (negativeButton != null) {
+                    negativeButton.setTextColor(colorError);
+                }
+            });
+            dialog.show();
         });;
         return mainView;
     }
@@ -120,14 +140,6 @@ public class ConfigurerFragment extends Fragment implements ConfigurerAdapter.On
     @Override
     public void onAddClick( Component item,int type) {
 
-        /*CatalogFragment catalogFragment = CatalogFragment.newInstance(item, CatalogAdapter.ADD_CONFIG);
-        Log.e("asdasdfgfg",item.getComponentType());
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right)
-                .replace(R.id.fragmentContainerView, catalogFragment,"catalog_fragment")
-                .addToBackStack("catalog_fragment_backstack")
-                .commit();*/
         NavigationData.init(requireContext());
         NavigationData.setBoolean("add",true);
         NavController navController = ((MainActivity)requireActivity()).getNavController();

@@ -48,6 +48,9 @@ public class FiltersGetCompat {
             return filtersList;
         }
         if(component.getComponentType().equals(resources.getString(R.string.cpu_cooler))){
+            if(AssemblyData.getInt(resources.getString(R.string.cpu)) != 0 || AssemblyData.getInt(resources.getString(R.string.motherboard)) != 0){
+                filtersList.add(new ProductAttributeDAO("Сокет",AssemblyData.getString("socket")));
+            }
             return filtersList;
         }
         if(component.getComponentType().equals(resources.getString(R.string.power_supply))){

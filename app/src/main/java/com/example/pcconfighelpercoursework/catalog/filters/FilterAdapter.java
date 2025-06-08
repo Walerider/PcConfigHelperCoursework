@@ -50,8 +50,6 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
             titleView = itemView.findViewById(R.id.title);
             subItemsRecyclerView = itemView.findViewById(R.id.sub_items_recycler);
             subItemsContainer = itemView.findViewById(R.id.expandable_layout);
-
-            // Настройка внутреннего RecyclerView
             subItemsRecyclerView.setLayoutManager(new GridLayoutManager(itemView.getContext(),2));
         }
 

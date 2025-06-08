@@ -7,5 +7,8 @@
     <color name="lightgray">#6E6D6D</color>
     <color name="turquoise">#47FFCB</color>
     <color name="darkred">#8F0505</color>
+    <color name="red">#F44336</color>
     <color name="lightgreen">#AAC800</color>
+    <color name="orange">#FFC107</color>
+
 </resources>

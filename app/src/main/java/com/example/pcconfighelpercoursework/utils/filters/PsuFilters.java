@@ -10,5 +10,4 @@ public class PsuFilters {
     public static final ProductAttributeDAO CPU_CONNECTORS = new ProductAttributeDAO("Разъемы для питания процессора (CPU)");
     public static final ProductAttributeDAO CERTIFICATE = new ProductAttributeDAO("Сертификат 80 PLUS");
     public static final ProductAttributeDAO DEFEND_TECH = new ProductAttributeDAO("Технологии защиты");
-    public static final ProductAttributeDAO MODEL = new ProductAttributeDAO("Модель");
 }

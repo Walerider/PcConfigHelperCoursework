@@ -2,6 +2,7 @@ package com.example.pcconfighelpercoursework;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,13 +19,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.pcconfighelpercoursework.api.API;
-import com.example.pcconfighelpercoursework.api.APIClient;
-import com.example.pcconfighelpercoursework.api.items.ProductDAO;
 import com.example.pcconfighelpercoursework.items.*;
 import com.example.pcconfighelpercoursework.utils.AssemblyData;
-import com.example.pcconfighelpercoursework.utils.ComponentRepository;
-import com.example.pcconfighelpercoursework.utils.DbSingleton;
 import com.example.pcconfighelpercoursework.utils.NavigationData;
 import com.example.pcconfighelpercoursework.utils.UserData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -47,18 +43,12 @@ public class MainActivity extends AppCompatActivity {
     private NavController navController;
     protected BottomNavigationView bottomNavigationView;
     protected FragmentContainerView fragmentContainerView;
-
-    public static Resources resources;
-    private final int[] CATEGORY_COMPONENTS_ID = {1,2,3,4,5,6,7,8};
-    private String[] categoryComponentsName;
+    public static Resources resources;;
     private static List<Component> components;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        categoryComponentsName = new String[]{getResources().getString(R.string.videocard), getResources().getString(R.string.cpu),
-                getResources().getString(R.string.motherboard), getResources().getString(R.string.ram), getResources().getString(R.string.pc_case),
-                getResources().getString(R.string.power_supply), getResources().getString(R.string.cpu_cooler), getResources().getString(R.string.storage_devices)};
         components = new ArrayList<>();
         resources = getResources();
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -86,12 +76,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         fillComponents(components);
-
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         Log.e("components save", Arrays.toString(components.toArray()));
         AssemblyData.saveList(components);
     }
@@ -192,42 +181,3 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
-/*protected void getComponentsFromTXT(){//а кто запрещает?
-            InputStream fin = null;
-            try {
-                fin = this.openFileInput("login.txt");
-                BufferedReader in = new BufferedReader(new InputStreamReader(fin,"UTF8"));
-                String name = "";
-                String i;
-                while((i=in.readLine()) != null){
-                    name += i;
-                }
-                in.close();
-            }catch (FileNotFoundException e){
-            }
-            catch (IOException e) {
-                Log.e("login123123", "Can not read file: " + e);
-            }
-            finally {
-                try {
-                    if(fin != null)
-                        fin.close();
-                } catch (IOException e) {
-                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-        private void saveComponentsInTxt(Context context, String fileName) {
-            String data = "";
-            *//*for (String key:getComponents()){
-            data += key + "/" + getComponents().get(key) + "$";
-        }*//*
-        try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(fileName +".txt",MODE_PRIVATE));
-            outputStreamWriter.write(data);
-            outputStreamWriter.close();
-        }
-        catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e);
-        }
-    }*/

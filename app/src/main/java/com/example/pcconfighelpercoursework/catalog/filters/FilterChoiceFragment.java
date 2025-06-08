@@ -48,7 +48,7 @@ public class FilterChoiceFragment extends Fragment {
     Button useButton;
     private Component mComponent;
     private int mChoice;
-    static public List<ProductAttributeDAO> filtersSend = new ArrayList<>();
+    public static List<ProductAttributeDAO> filtersSend = new ArrayList<>();
     Map<String,Map<String,Integer>> filters;
     List<Map<String, String>> attrList;
     List<ExpandableItem> filtersList;
@@ -141,6 +141,18 @@ public class FilterChoiceFragment extends Fragment {
             });
             filters = result;
             for (String key: result.keySet()) {
+                if(mComponent.getComponentType().equals(getResources().getString(R.string.cpu_cooler))
+                && key.equals("Сокет")){
+                    Map<String,Integer> map = new HashMap<>();
+                    for (String k : result.get(key).keySet()) {
+                        String[] entries = k.split(",\\s*");
+                        for (String e:entries) {
+                            map.merge(e, 1, Integer::sum);
+                        }
+                    }
+                    adapterList.add(new ExpandableItem(key,map,false));
+                    continue;
+                }
                 adapterList.add(new ExpandableItem(key,result.get(key),false));
             }
             return adapterList;

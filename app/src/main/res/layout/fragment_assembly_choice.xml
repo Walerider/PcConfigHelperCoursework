@@ -4,13 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".configurator.AssemblyChoiceFragment"
-    android:background="?colorPrimary">
+    tools:context=".configurator.AssemblyChoiceFragment">
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/catalogToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:background="?colorPrimaryContainer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.08"
@@ -41,7 +40,7 @@
         android:layout_height="71dp"
         android:backgroundTint="?colorSecondary"
         android:text="Создать сборку"
-        android:textColor="?colorPrimary"
+        android:textColor="?colorPrimaryInverse"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

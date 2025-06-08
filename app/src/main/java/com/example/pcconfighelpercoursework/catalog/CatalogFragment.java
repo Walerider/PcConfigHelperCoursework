@@ -27,9 +27,7 @@ import com.example.pcconfighelpercoursework.api.APIClient;
 import com.example.pcconfighelpercoursework.api.items.FilterDAO;
 import com.example.pcconfighelpercoursework.api.items.ProductAttributeDAO;
 import com.example.pcconfighelpercoursework.api.items.ProductDAO;
-import com.example.pcconfighelpercoursework.configurator.ConfigurerFragment;
 import com.example.pcconfighelpercoursework.items.*;
-import com.example.pcconfighelpercoursework.utils.ComponentRepository;
 import com.example.pcconfighelpercoursework.utils.FiltersGetCompat;
 import com.example.pcconfighelpercoursework.utils.ItemDecoration;
 import com.example.pcconfighelpercoursework.utils.NavigationData;
@@ -210,11 +208,14 @@ public class CatalogFragment extends Fragment {
                         Log.e("list",Arrays.toString(products.toArray()));
                         fetchItems(categoryId,componentType);
                     } else {
-                        Toast.makeText(getContext(), "Ошибка: " + response.code(), Toast.LENGTH_SHORT).show();
+                        currIndex++;
+                        fetchItems(categoryId,componentType);
                     }
                 }
                 @Override
                 public void onFailure(@NonNull Call<List<ProductDAO>> call, @NonNull Throwable t) {
+                    currIndex++;
+                    fetchItems(categoryId,componentType);
                     Toast.makeText(getContext(), "Ошибка: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                     Log.e("API", "Ошибка запроса", t);
                 }
@@ -223,54 +224,150 @@ public class CatalogFragment extends Fragment {
         private List<Component> fillListFetchItems(int categoryId,List<ProductDAO> list,String componentType){
             Log.e("attr", String.valueOf(list.get(0).getDescription()));
             List<Component> catalogComponentsList = new ArrayList<>();
-            switch (categoryId){
+            switch (categoryId) {
                 case 1:
-                    catalogComponentsList.addAll(list.stream().map(p ->
-                            new Videocard((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes().stream().collect(Collectors.toMap(ProductAttributeDAO::getName,ProductAttributeDAO::getValue)))
-                    ).collect(Collectors.toList()));
-                    return catalogComponentsList;
+                    catalogComponentsList = list.stream()
+                            .filter(p -> !p.getPrices().isEmpty())
+                            .map(p -> new Videocard(
+                                    (int) p.getId(),
+                                    p.getName(),
+                                    p.getDescription(),
+                                    componentType,
+                                    p.getPrices().get(0),
+                                    p.getAttributes().stream()
+                                            .collect(Collectors.toMap(
+                                                    ProductAttributeDAO::getName,
+                                                    ProductAttributeDAO::getValue
+                                            ))
+                            ))
+                                    .collect(Collectors.toList());
+                    break;
 
                 case 2:
-                    catalogComponentsList.addAll(list.stream().map(p ->
-                            new CPU((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes().stream().collect(Collectors.toMap(ProductAttributeDAO::getName,ProductAttributeDAO::getValue)))
-                    ).collect(Collectors.toList()));
-                    return catalogComponentsList;
+                    catalogComponentsList = list.stream()
+                            .filter(p -> !p.getPrices().isEmpty())
+                            .map(p -> new CPU(
+                                    (int) p.getId(),
+                                    p.getName(),
+                                    p.getDescription(),
+                                    componentType,
+                                    p.getPrices().get(0),
+                                    p.getAttributes().stream()
+                                            .collect(Collectors.toMap(
+                                                    ProductAttributeDAO::getName,
+                                                    ProductAttributeDAO::getValue
+                                            ))
+                            ))
+                            .collect(Collectors.toList());
+                    break;
 
                 case 3:
-                    catalogComponentsList.addAll(list.stream().map(p ->
-                            new Motherboard((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes().stream().collect(Collectors.toMap(ProductAttributeDAO::getName,ProductAttributeDAO::getValue)))
-                    ).collect(Collectors.toList()));
-                    return catalogComponentsList;
+                    catalogComponentsList = list.stream()
+                            .filter(p -> !p.getPrices().isEmpty())
+                            .map(p -> new Motherboard(
+                                    (int) p.getId(),
+                                    p.getName(),
+                                    p.getDescription(),
+                                    componentType,
+                                    p.getPrices().get(0),
+                                    p.getAttributes().stream()
+                                            .collect(Collectors.toMap(
+                                                    ProductAttributeDAO::getName,
+                                                    ProductAttributeDAO::getValue
+                                            ))
+                            ))
+                            .collect(Collectors.toList());
+                    break;
 
                 case 4:
-                    catalogComponentsList.addAll(list.stream().map(p ->
-                            new RAM((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes().stream().collect(Collectors.toMap(ProductAttributeDAO::getName,ProductAttributeDAO::getValue)))
-                    ).collect(Collectors.toList()));
-                    return catalogComponentsList;
+                    catalogComponentsList = list.stream()
+                            .filter(p -> !p.getPrices().isEmpty())
+                            .map(p -> new RAM(
+                                    (int) p.getId(),
+                                    p.getName(),
+                                    p.getDescription(),
+                                    componentType,
+                                    p.getPrices().get(0),
+                                    p.getAttributes().stream()
+                                            .collect(Collectors.toMap(
+                                                    ProductAttributeDAO::getName,
+                                                    ProductAttributeDAO::getValue
+                                            ))
+                            ))
+                            .collect(Collectors.toList());
+                    break;
 
                 case 5:
-                    catalogComponentsList.addAll(list.stream().map(p ->
-                            new Cases((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes().stream().collect(Collectors.toMap(ProductAttributeDAO::getName,ProductAttributeDAO::getValue)))
-                    ).collect(Collectors.toList()));
-                    return catalogComponentsList;
+                    catalogComponentsList = list.stream()
+                            .filter(p -> !p.getPrices().isEmpty())
+                            .map(p -> new Cases(
+                                    (int) p.getId(),
+                                    p.getName(),
+                                    p.getDescription(),
+                                    componentType,
+                                    p.getPrices().get(0),
+                                    p.getAttributes().stream()
+                                            .collect(Collectors.toMap(
+                                                    ProductAttributeDAO::getName,
+                                                    ProductAttributeDAO::getValue
+                                            ))
+                            ))
+                            .collect(Collectors.toList());
+                    break;
 
                 case 6:
-                    catalogComponentsList.addAll(list.stream().map(p ->
-                            new PowerSupply((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes().stream().collect(Collectors.toMap(ProductAttributeDAO::getName,ProductAttributeDAO::getValue)))
-                    ).collect(Collectors.toList()));
-                    return catalogComponentsList;
+                    catalogComponentsList = list.stream()
+                            .filter(p -> !p.getPrices().isEmpty())
+                            .map(p -> new PowerSupply(
+                                    (int) p.getId(),
+                                    p.getName(),
+                                    p.getDescription(),
+                                    componentType,
+                                    p.getPrices().get(0),
+                                    p.getAttributes().stream()
+                                            .collect(Collectors.toMap(
+                                                    ProductAttributeDAO::getName,
+                                                    ProductAttributeDAO::getValue
+                                            ))
+                            ))
+                            .collect(Collectors.toList());
+                    break;
 
                 case 7:
-                    catalogComponentsList.addAll(list.stream().map(p ->
-                            new CPUCooler((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes().stream().collect(Collectors.toMap(ProductAttributeDAO::getName,ProductAttributeDAO::getValue)))
-                    ).collect(Collectors.toList()));
-                    return catalogComponentsList;
+                    catalogComponentsList = list.stream()
+                            .filter(p -> !p.getPrices().isEmpty())
+                            .map(p -> new CPUCooler(
+                                    (int) p.getId(),
+                                    p.getName(),
+                                    p.getDescription(),
+                                    componentType,
+                                    p.getPrices().get(0),
+                                    p.getAttributes().stream()
+                                            .collect(Collectors.toMap(
+                                                    ProductAttributeDAO::getName,
+                                                    ProductAttributeDAO::getValue
+                                            ))
+                            ))
+                            .collect(Collectors.toList());
+                    break;
 
                 case 8:
-                    catalogComponentsList.addAll(list.stream().map(p ->
-                            new StorageDevice((int) p.getId(), p.getName(), p.getDescription(), componentType, !p.getPrices().isEmpty() ? p.getPrices().get(0) : 0,p.getAttributes().stream().collect(Collectors.toMap(ProductAttributeDAO::getName,ProductAttributeDAO::getValue)))
-                    ).collect(Collectors.toList()));
-                    return catalogComponentsList;
+                    catalogComponentsList = list.stream()
+                            .filter(p -> !p.getPrices().isEmpty())
+                            .map(p -> new StorageDevice(
+                                    (int) p.getId(),
+                                    p.getName(),
+                                    p.getDescription(),
+                                    componentType,
+                                    p.getPrices().get(0),
+                                    p.getAttributes().stream()
+                                            .collect(Collectors.toMap(
+                                                    ProductAttributeDAO::getName,
+                                                    ProductAttributeDAO::getValue
+                                            ))
+                            ))
+                            .collect(Collectors.toList());
+                    break;
             }
             return catalogComponentsList;
         }
@@ -287,7 +384,6 @@ public class CatalogFragment extends Fragment {
                     }else{
                         Toast.makeText(getContext(),"Убедитесь в подключении к интернету", Toast.LENGTH_LONG);
                     }
-                    //todo сделать определение для обознпчения совместимости
                     break;
                 case 2:
                     if(!products.isEmpty()){
@@ -307,10 +403,11 @@ public class CatalogFragment extends Fragment {
                     .setPopUpTo(R.id.bottom_navigation,false)
                     .build());
         }
-        private void onItemClickListener(@NotNull int productId) {
+        private void onItemClickListener(@NotNull int productId, @NotNull String componentType) {
             NavController navController = ((MainActivity)requireActivity()).getNavController();
             Bundle args = new Bundle();
             args.putInt("product_id", productId);
+            args.putString("product_type", componentType);
             Log.e("onItemClick",args.toString());
             navController.navigate(R.id.productFragment,args);
         }

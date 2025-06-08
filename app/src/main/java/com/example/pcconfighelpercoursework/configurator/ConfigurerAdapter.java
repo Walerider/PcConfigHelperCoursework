@@ -109,7 +109,6 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 selectedViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
                 selectedViewHolder.clearButton.setOnClickListener(v ->{
                     components.set(position,emptyComponents.get(MainActivity.getComponents().get(position).getComponentType()));
-                    //Log.e("components in delete button adapter",Arrays.toString(components.toArray()));
                     if(!MainActivity.checkComponents(components)){
                         MainActivity.fillComponents(components);
                     }
@@ -184,7 +183,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                                     NavigationData.setBoolean("isCreating",false);
                                     Toast.makeText(inflater.getContext(), "Сборка успешно создана!", Toast.LENGTH_SHORT).show();
                                     AssemblyData.setString("name",null);
-
+                                    AssemblyData.clear(inflater.getContext());
                                     NavOptions navOptions = new NavOptions.Builder()
                                             .setPopUpTo(R.id.assemblyChoiceFragment, true) // Очищаем стек до registerFragment
                                             .build();
@@ -209,6 +208,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                                     l.clear();
                                     MainActivity.setComponents(l);
                                     MainActivity.fillComponents(l);
+                                    AssemblyData.clear(inflater.getContext());
                                     notifyDataSetChanged();
                                     NavOptions navOptions = new NavOptions.Builder()
                                             .setPopUpTo(R.id.configurerFragment, true) // Очищаем стек до registerFragment
