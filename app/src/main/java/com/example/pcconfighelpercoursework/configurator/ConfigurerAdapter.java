@@ -126,6 +126,7 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 notSelectedViewHolder.addButton.setOnClickListener(v -> {
                     onAddButtonClickListener.onAddClick(components.get(position), CatalogAdapter.ADD_CONFIG);
                 });
+                notSelectedViewHolder.imageView.setImageResource(notSelectedViewHolder.getIconId(components.get(position).getComponentType(),notSelectedViewHolder.itemView.getContext()));
                 break;
             case SL_TYPE_STORAGE:
                 SelectedViewHolderStorage selectedViewHolderStorage = (SelectedViewHolderStorage) holder;
@@ -275,11 +276,32 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public static class NotSelectedViewHolder extends RecyclerView.ViewHolder {
         final TextView componentType;
         final ImageButton addButton;
-
+        final ImageView imageView;
         NotSelectedViewHolder(View view) {
             super(view);
             componentType = view.findViewById(R.id.productNameTextView);
             addButton = view.findViewById(R.id.addImageButton);
+            imageView = view.findViewById(R.id.iconImageView);
+        }
+        private int getIconId(String componentType,Context context){
+            if(componentType.equals(context.getResources().getString(R.string.videocard))){
+                return R.drawable.videocard_icon;
+            } else if (componentType.equals(context.getResources().getString(R.string.cpu))) {
+                return R.drawable.cpu_icon;
+            }else if (componentType.equals(context.getResources().getString(R.string.cpu_cooler))) {
+                return R.drawable.cooler_icon;
+            }else if (componentType.equals(context.getResources().getString(R.string.pc_case))) {
+                return R.drawable.pc_case_icon;
+            }else if (componentType.equals(context.getResources().getString(R.string.power_supply))) {
+                return R.drawable.psu_icon;
+            }else if (componentType.equals(context.getResources().getString(R.string.motherboard))) {
+                return R.drawable.motherboard_icon;
+            }else if (componentType.equals(context.getResources().getString(R.string.ram))) {
+                return R.drawable.ram_icon;
+            }else if (componentType.equals(context.getResources().getString(R.string.storage_devices))) {
+                return R.drawable.rom_icon;
+            }
+            return 0;
         }
     }
 
