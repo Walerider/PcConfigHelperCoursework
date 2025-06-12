@@ -14,80 +14,64 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
+import com.example.pcconfighelpercoursework.api.items.UserAssemblyDAO;
 import com.example.pcconfighelpercoursework.catalog.CatalogAdapter;
 import com.example.pcconfighelpercoursework.items.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AssemblyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int CATALOG = 0;;
     private final LayoutInflater inflater;
-    private List<Component> components;
-    private Component configurerComponent;
-    private int choice;
-    private CatalogAdapter.OnAddButtonClickListener onAddButtonClickListener;
+    List<UserAssemblyDAO> userAssemblies;
 
-    public AssemblyAdapter(Context context, List<Component> components) {
+    public AssemblyAdapter(Context context, List<UserAssemblyDAO> userAssemblies) {
         this.inflater = LayoutInflater.from(context);
-        this.components = components;
-        this.choice = choice;
-    }
-
-    public AssemblyAdapter(Context context, List<Component> components, Component configurerComponent) {
-        this.inflater = LayoutInflater.from(context);
-        this.components = components;
-        this.choice = choice;
-        this.configurerComponent = configurerComponent;
-        Log.e("constant catalog", String.valueOf(choice));
+        this.userAssemblies = userAssemblies;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        switch (viewType){
+        view = inflater.inflate(R.layout.assembly_adapter_item,parent,false);
+        return new AssemblyAdapter.AssemblyViewHolder(view);
 
-            case CATALOG:
-                view = inflater.inflate(R.layout.catalog_item,parent,false);
-                return new AssemblyAdapter.CatalogViewHolder(view);
-        }
-        return null;
     }
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        switch (holder.getItemViewType()){
-            case CATALOG:
-                CatalogAdapter.CatalogViewHolder catalogViewHolder = (CatalogAdapter.CatalogViewHolder)holder;
-                catalogViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
-                catalogViewHolder.productNameTextView.setText(components.get(position).getName());
-                catalogViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
-                catalogViewHolder.priceTextView.setText("От " + components.get(position).getPrice() + "р");
-                break;
-        }
+        AssemblyAdapter.AssemblyViewHolder assemblyViewHolder = (AssemblyAdapter.AssemblyViewHolder)holder;
+        assemblyViewHolder.assemblyNameTextView.setText(userAssemblies.get(position).getName());
+        String components = "Процессор:\n" + userAssemblies.get(position).getUserAssemblyComponents().stream().filter(ua -> ua.getComponentCategory().equals("Процессор")).findFirst().get().getProductName()
+                + "\nВидеокарта:\n" + userAssemblies.get(position).getUserAssemblyComponents().stream().filter(ua -> ua.getComponentCategory().equals("Видеокарта")).findFirst().get().getProductName() +
+                "\nМатеринская плата:\n" + userAssemblies.get(position).getUserAssemblyComponents().stream().filter(ua -> ua.getComponentCategory().equals("Материнская плата")).findFirst().get().getProductName();
+        assemblyViewHolder.assemblyMainComponentsTextView.setText(components);
+        assemblyViewHolder.caseImageView.setImageResource(R.drawable.ic_launcher_foreground);
+        assemblyViewHolder.priceTextView.setText(userAssemblies.get(position).getPrice() + "р");
+        assemblyViewHolder.itemView.setOnClickListener(v ->{
 
+        });
     }
 
 
     @Override
     public int getItemCount() {
-        return components.size();
-    }
-    @Override
-    public int getItemViewType(int position) {
-        return CATALOG;
+        return userAssemblies.size();
     }
 
-    public static class CatalogViewHolder extends RecyclerView.ViewHolder {
-        public TextView productNameTextView;
-        public TextView productDescriptionTextView;
-        public ImageView imageView;
+
+    public static class AssemblyViewHolder extends RecyclerView.ViewHolder {
+        public TextView assemblyNameTextView;
+        public TextView assemblyMainComponentsTextView;
+        public ImageView caseImageView;
         public TextView priceTextView;
-        CatalogViewHolder(View view){
+        AssemblyViewHolder(View view){
             super(view);
-            productNameTextView = view.findViewById(R.id.productNameTextView);
-            productDescriptionTextView = view.findViewById(R.id.productDescriptionTextView);
-            imageView = view.findViewById(R.id.imageView);
-            priceTextView = view.findViewById(R.id.priceCatalogTextView);
+            assemblyNameTextView = view.findViewById(R.id.assemblyNameTextView);
+            assemblyMainComponentsTextView = view.findViewById(R.id.assemblyMainComponentsTextView);
+            caseImageView = view.findViewById(R.id.caseImageView);
+            priceTextView = view.findViewById(R.id.priceTextView);
         }
     }
 }

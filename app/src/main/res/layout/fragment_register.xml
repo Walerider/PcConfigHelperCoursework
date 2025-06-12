@@ -27,25 +27,27 @@
         android:layout_marginTop="176dp"
         android:layout_marginEnd="24dp"
         android:background="@drawable/edittext_background"
-        android:hint="Enter Your Username"
+        android:hint="Введите логин"
         android:padding="12dp"
         android:textColorHint="#999999"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Новая кнопка для перехода к авторизации -->
     <EditText
         android:id="@+id/emailEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="24dp"
         android:background="@drawable/edittext_background"
-        android:hint="Enter Your Email"
+        android:hint="Введите почту"
         android:padding="12dp"
         android:textColorHint="#999999"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/usernameEditText" />
 
@@ -54,31 +56,50 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="24dp"
         android:background="@drawable/edittext_background"
-        android:hint="Enter Your Password"
+        android:hint="Введите пароль"
+        android:inputType="textPassword"
         android:padding="12dp"
         android:textColorHint="#999999"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/emailEditText" />
+
+    <EditText
+        android:id="@+id/repeatPasswordEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/edittext_background"
+        android:inputType="textPassword"
+        android:hint="Повторите пароль"
+        android:padding="12dp"
+        android:textColorHint="#999999"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
 
     <Button
         android:id="@+id/signupButton"
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="44dp"
         android:layout_marginEnd="30dp"
         android:backgroundTint="?colorSecondary"
+        android:text="Зарегистрироваться"
         android:textColor="?colorPrimaryInverse"
-        android:text="Enter"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/repeatPasswordEditText" />
 
-    <!-- Новая кнопка для перехода к авторизации -->
     <Button
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
@@ -95,5 +116,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/signupButton"
         app:layout_constraintVertical_bias="0.0" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

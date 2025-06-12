@@ -4,6 +4,7 @@ import com.example.pcconfighelpercoursework.api.items.AssemblyPOJO;
 import com.example.pcconfighelpercoursework.api.items.FilterDAO;
 import com.example.pcconfighelpercoursework.api.items.PriceDAO;
 import com.example.pcconfighelpercoursework.api.items.ProductDAO;
+import com.example.pcconfighelpercoursework.api.items.UserAssemblyDAO;
 import com.example.pcconfighelpercoursework.api.items.UserPOJO;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public interface API {
     Call<List<ProductDAO>> getProductsByCategoryFilter(@Path("id") long id, @Body FilterDAO filterRequest);
     @GET("/api/products/price/{id}")
     Call<PriceDAO> getProductPrice(@Path("id") long id);
+    @GET("/api/assemblies/user/{id}")
+    Call<List<UserAssemblyDAO>> getAllAssembliesByUserId(@Path("id") long id);
     @POST("/api/users/create")
     Call<String> registerUser(@Body UserPOJO user);
     @GET("/api/users/user")

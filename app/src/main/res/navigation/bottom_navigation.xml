@@ -68,4 +68,9 @@
         android:name="com.example.pcconfighelpercoursework.catalog.filters.FilterChoiceFragment"
         android:label="fragment_filter_choice"
         tools:layout="@layout/fragment_filter_choice" />
+    <fragment
+        android:id="@+id/assemblyFragment"
+        android:name="com.example.pcconfighelpercoursework.assemblies.AssemblyFragment"
+        android:label="fragment_assembly"
+        tools:layout="@layout/fragment_assembly" />
 </navigation>

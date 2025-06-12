@@ -51,8 +51,8 @@ public class ProfileFragment extends Fragment {
         });
 
         viewBuildsButton.setOnClickListener(v -> {
-           /* NavController navController = Navigation.findNavController(view);
-            navController.navigate(R.id.action_profileFragment_to_buildsFragment);*/
+            NavController navController = Navigation.findNavController(view);
+            navController.navigate(R.id.assemblyFragment);
         });
 
         return view;
