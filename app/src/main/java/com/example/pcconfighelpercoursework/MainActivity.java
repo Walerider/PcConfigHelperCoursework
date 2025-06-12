@@ -79,6 +79,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e("components save", Arrays.toString(components.toArray()));
+        AssemblyData.saveList(components);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         Log.e("components save", Arrays.toString(components.toArray()));

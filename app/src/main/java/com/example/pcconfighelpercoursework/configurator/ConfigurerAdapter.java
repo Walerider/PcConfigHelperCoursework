@@ -20,6 +20,7 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
 import com.example.pcconfighelpercoursework.api.API;
@@ -106,7 +107,14 @@ public class ConfigurerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 selectedViewHolder.productNameTextView.setText(components.get(position).getName());
                 selectedViewHolder.productDescriptionTextView.setText(components.get(position).getDescription());
                 selectedViewHolder.priceCatalogTextView.setText(components.get(position).getPrice() + "р");
-                selectedViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
+                if(components.get(position).getImage() != null){
+                    Log.e("image source",components.get(position).getImage());
+                    Glide.with(selectedViewHolder.itemView)
+                            .load(components.get(position).getImage())
+                            .into(selectedViewHolder.imageView);
+                }else{
+                    selectedViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
+                }
                 selectedViewHolder.clearButton.setOnClickListener(v ->{
                     components.set(position,emptyComponents.get(MainActivity.getComponents().get(position).getComponentType()));
                     if(!MainActivity.checkComponents(components)){

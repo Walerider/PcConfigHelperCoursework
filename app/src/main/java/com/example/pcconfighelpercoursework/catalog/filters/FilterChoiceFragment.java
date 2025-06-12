@@ -145,6 +145,24 @@ public class FilterChoiceFragment extends Fragment {
                 && key.equals("Сокет")){
                     Map<String,Integer> map = new HashMap<>();
                     for (String k : result.get(key).keySet()) {
+                        if(k.contains("ещё")){
+                            k.replace("ещё","");
+                        }
+                        String[] entries = k.split(",\\s*");
+                        for (String e:entries) {
+                            map.merge(e, 1, Integer::sum);
+                        }
+                    }
+                    adapterList.add(new ExpandableItem(key,map,false));
+                    continue;
+                }
+                if(mComponent.getComponentType().equals(getResources().getString(R.string.pc_case))
+                        && key.equals("Форм-фактор совместимых плат")){
+                    Map<String,Integer> map = new HashMap<>();
+                    for (String k : result.get(key).keySet()) {
+                        if(k.contains("ещё")){
+                            k.replace("ещё","");
+                        }
                         String[] entries = k.split(",\\s*");
                         for (String e:entries) {
                             map.merge(e, 1, Integer::sum);

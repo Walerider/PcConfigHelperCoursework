@@ -122,6 +122,9 @@ public class AssemblyFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 recyclerView.setAdapter(new AssemblyAdapter(getContext(),list));
                 recyclerView.setVisibility(View.VISIBLE);
+                if(list.isEmpty()){
+
+                }
                 return;
             }
             progressBar.setVisibility(View.VISIBLE);
@@ -142,7 +145,7 @@ public class AssemblyFragment extends Fragment {
                 @Override
                 public void onFailure(@NonNull Call<List<UserAssemblyDAO>> call, @NonNull Throwable t) {
                     Toast.makeText(getContext(), "Ошибка: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e("API", "Ошибка запроса", t);
+                    currIndex++;
                 }
             });
         }
@@ -176,6 +179,7 @@ public class AssemblyFragment extends Fragment {
                 @Override
                 public void onFailure(@NonNull Call<ProductDAO> call, @NonNull Throwable t) {
                     Toast.makeText(getContext(), "Ошибка: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+
                     Log.e("API", "Ошибка запроса", t);
                 }
             });
