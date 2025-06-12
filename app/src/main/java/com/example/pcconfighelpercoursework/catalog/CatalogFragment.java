@@ -52,6 +52,7 @@ public class CatalogFragment extends Fragment {
     private CatalogAdapter catalogAdapter;
     private RecyclerView catalogRecyclerView;
     TextView toolbarTitleTextView;
+    TextView showTextView;
     Toolbar toolbar;
     ProgressBar progressBar;
     List<Component> products;
@@ -94,6 +95,7 @@ public class CatalogFragment extends Fragment {
         toolbarTitleTextView = view.findViewById(R.id.toolbarTitleTextView);
         toolbar = view.findViewById(R.id.toolbar);
         progressBar = view.findViewById(R.id.progressBar);
+        showTextView = view.findViewById(R.id.showTextView);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         return view;
     }
@@ -179,10 +181,13 @@ public class CatalogFragment extends Fragment {
                 });
                 Log.e("filters list adapter", Arrays.toString(filtersList.toArray()));
                 setupAdapter(filtersList,viewModel);
-                catalogRecyclerView.setAdapter(catalogAdapter);
                 List<Map<String,String>> list = new ArrayList<>();
                 products.stream().forEach(p -> list.add(p.getAttributes()));
                 viewModel.setMapList(list);
+                catalogRecyclerView.setAdapter(catalogAdapter);
+                if(list.isEmpty()){
+                    showTextView.setVisibility(View.VISIBLE);
+                }
                 catalogRecyclerView.setVisibility(View.VISIBLE);
                 return;
             }

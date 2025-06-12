@@ -68,6 +68,7 @@ public class AssemblyFragment extends Fragment {
     private ProgressBar progressBar;
     private TextView assembliesTextView;
     private ImageButton backImageButton;
+    TextView showTextView;
     Component cases = new Component();
     List<UserAssemblyDAO> list;
     public AssemblyFragment() {
@@ -94,6 +95,7 @@ public class AssemblyFragment extends Fragment {
         assembliesTextView = view.findViewById(R.id.assembliesTextView);
         backImageButton = view.findViewById(R.id.backImageButton);
         progressBar = view.findViewById(R.id.progressBar2);
+        showTextView = view.findViewById(R.id.showTextView);
         cases.setComponentType(getContext().getResources().getString(R.string.pc_case));
         backImageButton.setOnClickListener(v ->{
             backByBackStack();
@@ -120,10 +122,12 @@ public class AssemblyFragment extends Fragment {
         public void getAssemblies() {
             if (currIndex >= 1) {
                 progressBar.setVisibility(View.GONE);
-                recyclerView.setAdapter(new AssemblyAdapter(getContext(),list));
-                recyclerView.setVisibility(View.VISIBLE);
+                Log.e("asasaa","asdasdasda");
                 if(list.isEmpty()){
-
+                    showTextView.setVisibility(View.VISIBLE);
+                }else{
+                    recyclerView.setAdapter(new AssemblyAdapter(getContext(),list));
+                    recyclerView.setVisibility(View.VISIBLE);
                 }
                 return;
             }
@@ -139,13 +143,16 @@ public class AssemblyFragment extends Fragment {
                         list.addAll(response.body());
                         getAssemblies();
                     } else {
-                        Toast.makeText(getContext(), "Ошибка: " + response.code(), Toast.LENGTH_SHORT).show();
+                        currIndex++;
+                        getAssemblies();
+                        //Toast.makeText(getContext(), "Ошибка: " + response.code(), Toast.LENGTH_SHORT).show();
                     }
                 }
                 @Override
                 public void onFailure(@NonNull Call<List<UserAssemblyDAO>> call, @NonNull Throwable t) {
-                    Toast.makeText(getContext(), "Ошибка: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "Ошибка: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                     currIndex++;
+                    getAssemblies();
                 }
             });
         }
