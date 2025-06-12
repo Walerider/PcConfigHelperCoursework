@@ -19,6 +19,7 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.NavOptions;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
 import com.example.pcconfighelpercoursework.api.items.ProductAttributeDAO;
@@ -130,16 +131,20 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             case CATALOG:
                 CatalogViewHolder catalogViewHolder = (CatalogViewHolder)holder;
                 catalogViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
+                if(components.get(position-1).getImage() != null){
+                    Log.e("image source",components.get(position-1).getImage());
+                    Glide.with(catalogViewHolder.itemView)
+                            .load(components.get(position-1).getImage())
+                            .into(catalogViewHolder.imageView);
+                }else{
+                    catalogViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
+                }
                 holder.itemView.setOnClickListener(v ->{
                     Log.e("product_id", String.valueOf(components.get(position-1).getId()));
                     onItemClickListener.onItemClick(components.get(position-1).getId(),components.get(position-1).getComponentType());
                 });
                 catalogViewHolder.productNameTextView.setText(components.get(position-1).getName());
                 Log.e("component",components.get(position-1).getName());
-                Log.e("component id ", String.valueOf(components.get(position-1).getId()));
-                Log.e("component price", String.valueOf(components.get(position-1).getPrice()));
-                /*Log.e("component attributes", Arrays.toString(components.get(position-1).getAttributes().toArray()));*/
-                //Log.e("socket",components.get(position-1).getAttributes().stream().filter(attr -> attr.getName().equals("Сокет")).collect(Collectors.toList()).get(0).getValue());
                 catalogViewHolder.productDescriptionTextView.setText(components.get(position-1).getDescription());
                 catalogViewHolder.priceTextView.setText("От " + components.get(position-1).getPrice() + "р");
                 break;
@@ -152,7 +157,13 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 });
 
                 addCatalogViewHolder.productDescriptionTextView.setText(components.get(position-1).getDescription());
-                addCatalogViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
+                if(components.get(position-1).getImage() != null){
+                    Glide.with(addCatalogViewHolder.itemView)
+                            .load(components.get(position-1).getImage())
+                            .into(addCatalogViewHolder.imageView);
+                }else{
+                    addCatalogViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
+                }
                 addCatalogViewHolder.priceTextView.setText("От " + components.get(position-1).getPrice() + "p");
                 addCatalogViewHolder.addButton.setOnClickListener(v -> {
                     Log.e("configurerComponent",configurerComponent.toString());
@@ -174,7 +185,13 @@ public class CatalogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 changeCatalogViewHolder.productNameTextView.setText(components.get(position-1).getName());
                 AssemblyAddCompat.addCompat(components.get(position-1),inflater.getContext().getResources());
                 changeCatalogViewHolder.productDescriptionTextView.setText(components.get(position-1).getDescription());
-                changeCatalogViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
+                if(components.get(position-1).getImage() != null){
+                    Glide.with(changeCatalogViewHolder.itemView)
+                            .load(components.get(position-1).getImage())
+                            .into(changeCatalogViewHolder.imageView);
+                }else{
+                    changeCatalogViewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
+                }
                 changeCatalogViewHolder.priceTextView.setText("От " + components.get(position-1).getPrice() + "p");
                 changeCatalogViewHolder.changeButton.setOnClickListener(v -> {
                     Log.e("configurerComponent",configurerComponent.toString());

@@ -167,7 +167,9 @@ public class CatalogFragment extends Fragment {
         int currIndex = 0;
         public void fetchItems(int categoryId,String componentType) {
             List<ProductAttributeDAO> filtersList = new ArrayList<>();
-            filtersList.addAll(FiltersGetCompat.getFiltersFromShared(mComponent,getResources()));
+            if(mChoice != 0){
+                filtersList.addAll(FiltersGetCompat.getFiltersFromShared(mComponent,getResources()));
+            }
             Log.e("filters list", Arrays.toString(filtersList.toArray()));
             SharedViewModel viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
             if (currIndex >= 1) {
@@ -228,19 +230,23 @@ public class CatalogFragment extends Fragment {
                 case 1:
                     catalogComponentsList = list.stream()
                             .filter(p -> !p.getPrices().isEmpty())
-                            .map(p -> new Videocard(
-                                    (int) p.getId(),
-                                    p.getName(),
-                                    p.getDescription(),
-                                    componentType,
-                                    p.getPrices().get(0),
-                                    p.getAttributes().stream()
-                                            .collect(Collectors.toMap(
-                                                    ProductAttributeDAO::getName,
-                                                    ProductAttributeDAO::getValue
-                                            ))
-                            ))
+                            .map(p ->{
+                                return new Videocard(
+                                        (int) p.getId(),
+                                        p.getName(),
+                                        p.getProductImages().isEmpty() ? null :p.getProductImages().get(0).getSource(),
+                                        p.getDescription(),
+                                        componentType,
+                                        p.getPrices().get(0),
+                                        p.getAttributes().stream()
+                                                .collect(Collectors.toMap(
+                                                        ProductAttributeDAO::getName,
+                                                        ProductAttributeDAO::getValue
+                                                ))
+                                );
+                            })
                                     .collect(Collectors.toList());
+
                     break;
 
                 case 2:
@@ -249,6 +255,7 @@ public class CatalogFragment extends Fragment {
                             .map(p -> new CPU(
                                     (int) p.getId(),
                                     p.getName(),
+                                    p.getProductImages().isEmpty() ? null :p.getProductImages().get(0).getSource(),
                                     p.getDescription(),
                                     componentType,
                                     p.getPrices().get(0),
@@ -267,6 +274,7 @@ public class CatalogFragment extends Fragment {
                             .map(p -> new Motherboard(
                                     (int) p.getId(),
                                     p.getName(),
+                                    p.getProductImages().isEmpty() ? null :p.getProductImages().get(0).getSource(),
                                     p.getDescription(),
                                     componentType,
                                     p.getPrices().get(0),
@@ -285,6 +293,7 @@ public class CatalogFragment extends Fragment {
                             .map(p -> new RAM(
                                     (int) p.getId(),
                                     p.getName(),
+                                    p.getProductImages().isEmpty() ? null :p.getProductImages().get(0).getSource(),
                                     p.getDescription(),
                                     componentType,
                                     p.getPrices().get(0),
@@ -303,6 +312,7 @@ public class CatalogFragment extends Fragment {
                             .map(p -> new Cases(
                                     (int) p.getId(),
                                     p.getName(),
+                                    p.getProductImages().isEmpty() ? null :p.getProductImages().get(0).getSource(),
                                     p.getDescription(),
                                     componentType,
                                     p.getPrices().get(0),
@@ -321,6 +331,7 @@ public class CatalogFragment extends Fragment {
                             .map(p -> new PowerSupply(
                                     (int) p.getId(),
                                     p.getName(),
+                                    p.getProductImages().isEmpty() ? null :p.getProductImages().get(0).getSource(),
                                     p.getDescription(),
                                     componentType,
                                     p.getPrices().get(0),
@@ -339,6 +350,7 @@ public class CatalogFragment extends Fragment {
                             .map(p -> new CPUCooler(
                                     (int) p.getId(),
                                     p.getName(),
+                                    p.getProductImages().isEmpty() ? null :p.getProductImages().get(0).getSource(),
                                     p.getDescription(),
                                     componentType,
                                     p.getPrices().get(0),
@@ -357,6 +369,7 @@ public class CatalogFragment extends Fragment {
                             .map(p -> new StorageDevice(
                                     (int) p.getId(),
                                     p.getName(),
+                                    p.getProductImages().isEmpty() ? null :p.getProductImages().get(0).getSource(),
                                     p.getDescription(),
                                     componentType,
                                     p.getPrices().get(0),

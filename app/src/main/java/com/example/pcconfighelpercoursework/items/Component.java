@@ -45,12 +45,13 @@ public class Component implements Parcelable {
         this.price = price;
     }
 
-    public Component(int id, String name,String description, String componentType, int price,Map<String,String> attributes) {
+    public Component(int id, String name,String image,String description, String componentType, int price,Map<String,String> attributes) {
         this.id = id;
         this.name = name;
         this.componentType = componentType;
         this.description = description;
         this.price = price;
+        this.image = image;
         this.attributes = attributes;
     }
 

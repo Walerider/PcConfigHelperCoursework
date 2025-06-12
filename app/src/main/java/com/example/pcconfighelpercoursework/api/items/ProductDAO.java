@@ -15,13 +15,16 @@ public class ProductDAO {
     private List<Integer> prices;
     @SerializedName("productAttributes")
     private List<ProductAttributeDAO> attributes;
+    @SerializedName("productImages")
+    private List<ProductImageDTO> productImages;
 
-    public ProductDAO(long id, String name, String description, List<Integer> prices, List<ProductAttributeDAO> attributes) {
+    public ProductDAO(long id, String name, String description, List<Integer> prices, List<ProductAttributeDAO> attributes, List<ProductImageDTO> productImages) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.prices = prices;
         this.attributes = attributes;
+        this.productImages = productImages;
     }
 
     public long getId() {
@@ -69,6 +72,14 @@ public class ProductDAO {
 
     public void setAttributes(List<ProductAttributeDAO> attributes) {
         this.attributes = attributes;
+    }
+
+    public List<ProductImageDTO> getProductImages() {
+        return productImages;
+    }
+
+    public void setProductImages(List<ProductImageDTO> productImages) {
+        this.productImages = productImages;
     }
 }
 

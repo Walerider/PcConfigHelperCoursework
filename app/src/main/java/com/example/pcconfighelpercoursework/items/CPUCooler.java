@@ -16,8 +16,8 @@ public class CPUCooler extends Component {
         super(id, name, image, componentType, description, price, selected, attributes);
     }
 
-    public CPUCooler(int id, String name, String description, String componentType, int price, Map<String,String> attributes) {
-        super(id, name, description, componentType, price, attributes);
+    public CPUCooler(int id, String name, String image, String description, String componentType, int price, Map<String, String> attributes) {
+        super(id, name, image, description, componentType, price, attributes);
     }
 
     public CPUCooler(Parcel in) {

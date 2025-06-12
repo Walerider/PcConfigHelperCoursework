@@ -2,6 +2,8 @@ package com.example.pcconfighelpercoursework.product;
 
 import static com.example.pcconfighelpercoursework.R.*;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -22,6 +24,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
 import com.example.pcconfighelpercoursework.api.API;
@@ -47,6 +54,8 @@ import com.example.pcconfighelpercoursework.utils.filters.RamFilters;
 import com.example.pcconfighelpercoursework.utils.filters.StorageDevicesFilters;
 import com.example.pcconfighelpercoursework.utils.filters.VideocardFilters;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,6 +121,7 @@ public class ProductFragment extends Fragment {
         if(id != 0){
             getProduct();
         }
+
         backImageButton.setOnClickListener(v -> {
             backByBackStack();
         });
@@ -144,6 +154,32 @@ public class ProductFragment extends Fragment {
                 nameTextView.setText(c.getName());
                 productNameTextView.setText(c.getName());
                 if(component.getImage() != null){
+                    Glide.with(ProductFragment.this)
+                            .asBitmap()
+                            .load(component.getImage())
+                            .apply(new RequestOptions().format(DecodeFormat.PREFER_ARGB_8888))
+                            .into(new CustomTarget<Bitmap>() {
+                                @Override
+                                public void onResourceReady(@NonNull Bitmap bitmap, Transition<? super Bitmap> transition) {
+
+                                    try (FileOutputStream out = new FileOutputStream("output.png")) {
+                                        bitmap.compress(Bitmap.CompressFormat.PNG, 1000, out);
+                                    } catch (IOException e) {
+                                    }
+                                    Log.e("Transparency", "Transparency");
+                                    if (bitmap.hasAlpha()) {
+                                        Log.e("Transparency", "Transparency here");
+                                    }
+                                    imageView.setImageBitmap(bitmap);
+                                }
+
+                                @Override
+                                public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                }
+                            });
+                }else{
+                    imageView.setImageResource(R.drawable.ic_launcher_foreground);
                 }
                 ProductAdapter adapter = new ProductAdapter(c);
                 recyclerView.setAdapter(adapter);
@@ -167,6 +203,7 @@ public class ProductFragment extends Fragment {
                         c.setId((int) response.body().getId());
                         c.setAttributes(response.body().getAttributes().stream().collect(Collectors.toMap(ProductAttributeDAO::getName,ProductAttributeDAO::getValue)));
                         c.setPrice(response.body().getPrices().get(0));
+                        c.setImage(response.body().getProductImages() != null ? response.body().getProductImages().get(0).getSource() : null);
                         Log.e("API", String.valueOf(c.getAttributes()));
                         //componentRepository.insertComponents(list, categoryId);
                         /*fillListFetchItems(categoryId,list,componentType);*/

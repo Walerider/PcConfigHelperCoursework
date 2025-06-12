@@ -29,8 +29,8 @@ public class CPU extends Component {
         super(componentType);
     }
 
-    public CPU(int id, String name, String description, String componentType, int price, Map<String,String> attributes) {
-        super(id, name, description, componentType, price, attributes);
+    public CPU(int id, String name, String image, String description, String componentType, int price, Map<String, String> attributes) {
+        super(id, name, image, description, componentType, price, attributes);
     }
 
     @Override
