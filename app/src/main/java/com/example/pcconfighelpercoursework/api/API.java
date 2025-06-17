@@ -11,8 +11,10 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -27,6 +29,12 @@ public interface API {
     Call<PriceDAO> getProductPrice(@Path("id") long id);
     @GET("/api/assemblies/user/{id}")
     Call<List<UserAssemblyDAO>> getAllAssembliesByUserId(@Path("id") long id);
+    @GET("/api/assemblies/{id}")
+    Call<UserAssemblyDAO> getAssemblyById(@Path("id") long id);
+    @DELETE("/api/assemblies/{id}")
+    Call<UserAssemblyDAO> deleteAssemblyById(@Path("id") long id);
+    @PUT("/api/assemblies/{id}")
+    Call<UserAssemblyDAO> updateAssemblyById(@Path("id") long id,@Body AssemblyPOJO assembly);
     @POST("/api/users/create")
     Call<String> registerUser(@Body UserPOJO user);
     @GET("/api/users/user")

@@ -25,10 +25,11 @@ public class AssemblyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public static final int CATALOG = 0;;
     private final LayoutInflater inflater;
     List<UserAssemblyDAO> userAssemblies;
-
-    public AssemblyAdapter(Context context, List<UserAssemblyDAO> userAssemblies) {
+    AssemblyClickListener assemblyClickListener;
+    public AssemblyAdapter(Context context, List<UserAssemblyDAO> userAssemblies,AssemblyClickListener assemblyClickListener) {
         this.inflater = LayoutInflater.from(context);
         this.userAssemblies = userAssemblies;
+        this.assemblyClickListener = assemblyClickListener;
     }
 
     @NonNull
@@ -50,7 +51,7 @@ public class AssemblyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         assemblyViewHolder.caseImageView.setImageResource(R.drawable.ic_launcher_foreground);
         assemblyViewHolder.priceTextView.setText(userAssemblies.get(position).getPrice() + "р");
         assemblyViewHolder.itemView.setOnClickListener(v ->{
-
+            assemblyClickListener.onItemClickListener(Math.toIntExact(userAssemblies.get(position).getId()));
         });
     }
 
@@ -73,5 +74,8 @@ public class AssemblyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             caseImageView = view.findViewById(R.id.caseImageView);
             priceTextView = view.findViewById(R.id.priceTextView);
         }
+    }
+    public interface AssemblyClickListener{
+        void onItemClickListener(int id);
     }
 }

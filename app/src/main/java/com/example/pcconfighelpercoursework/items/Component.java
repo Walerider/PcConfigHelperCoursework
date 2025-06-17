@@ -18,6 +18,7 @@ public class Component implements Parcelable {
     private String componentType;
     private String description;
     private int price;
+    private String category;
     private boolean selected;
     private Map<String,String> attributes;
     {
@@ -53,6 +54,14 @@ public class Component implements Parcelable {
         this.price = price;
         this.image = image;
         this.attributes = attributes;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public Component() {
@@ -139,14 +148,16 @@ public class Component implements Parcelable {
 
     @Override
     public String toString() {
-        return "ConfigurerItem{" +
+        return "Component{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", image='" + image + '\'' +
                 ", componentType='" + componentType + '\'' +
-                ", descpription='" + description + '\'' +
+                ", description='" + description + '\'' +
                 ", price=" + price +
+                ", category='" + category + '\'' +
                 ", selected=" + selected +
+                ", attributes=" + attributes +
                 '}';
     }
 

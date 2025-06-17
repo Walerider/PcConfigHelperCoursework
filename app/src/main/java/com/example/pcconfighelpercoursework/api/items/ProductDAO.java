@@ -13,10 +13,22 @@ public class ProductDAO {
     String description;
     @SerializedName("prices")
     private List<Integer> prices;
+    @SerializedName("category")
+    private String categoryName;
     @SerializedName("productAttributes")
     private List<ProductAttributeDAO> attributes;
     @SerializedName("productImages")
     private List<ProductImageDTO> productImages;
+
+    public ProductDAO(long id, String name, String description, List<Integer> prices, String categoryName, List<ProductAttributeDAO> attributes, List<ProductImageDTO> productImages) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.prices = prices;
+        this.categoryName = categoryName;
+        this.attributes = attributes;
+        this.productImages = productImages;
+    }
 
     public ProductDAO(long id, String name, String description, List<Integer> prices, List<ProductAttributeDAO> attributes, List<ProductImageDTO> productImages) {
         this.id = id;
@@ -55,6 +67,14 @@ public class ProductDAO {
         this.prices = prices;
     }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     @Override
     public String toString() {
         return "ProductDAO{" +
@@ -62,7 +82,9 @@ public class ProductDAO {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", prices=" + prices +
+                ", categoryName='" + categoryName + '\'' +
                 ", attributes=" + attributes +
+                ", productImages=" + productImages +
                 '}';
     }
 

@@ -73,4 +73,9 @@
         android:name="com.example.pcconfighelpercoursework.assemblies.AssemblyFragment"
         android:label="fragment_assembly"
         tools:layout="@layout/fragment_assembly" />
+    <fragment
+        android:id="@+id/userAssemblyLookFragment"
+        android:name="com.example.pcconfighelpercoursework.assemblies.UserAssemblyLookFragment"
+        android:label="fragment_user_assembly_look"
+        tools:layout="@layout/fragment_user_assembly_look" />
 </navigation>

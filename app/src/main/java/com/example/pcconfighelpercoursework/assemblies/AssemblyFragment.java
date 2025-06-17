@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -126,7 +127,7 @@ public class AssemblyFragment extends Fragment {
                 if(list.isEmpty()){
                     showTextView.setVisibility(View.VISIBLE);
                 }else{
-                    recyclerView.setAdapter(new AssemblyAdapter(getContext(),list));
+                    recyclerView.setAdapter(new AssemblyAdapter(getContext(),list,AssemblyFragment.this::onAddButtonClickListener));
                     recyclerView.setVisibility(View.VISIBLE);
                 }
                 return;
@@ -175,6 +176,7 @@ public class AssemblyFragment extends Fragment {
                         Log.e("API", response.body().toString());
                         c.setName(response.body().getName());
                         c.setId((int) response.body().getId());
+
                         //componentRepository.insertComponents(list, categoryId);
                         /*fillListFetchItems(categoryId,list,componentType);*/
                         currIndex++;
@@ -272,5 +274,13 @@ public class AssemblyFragment extends Fragment {
                 return Collections.emptySet();
             }
         }
+    }
+    private void onAddButtonClickListener(int assemblyId) {
+        NavController navController = ((MainActivity)requireActivity()).getNavController();
+        Log.e(" assemblies onAddButtonClickListener","penis");
+        Bundle args = new Bundle();
+        args.putInt("assembly_id", assemblyId);
+        navController.navigate(R.id.userAssemblyLookFragment,args,new NavOptions.Builder()
+                .build());
     }
 }

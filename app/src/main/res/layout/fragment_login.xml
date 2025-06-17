@@ -8,7 +8,7 @@
     android:padding="16dp"
     tools:context=".profile.LoginFragment">
 
-    <!-- Центральная цепочка элементов -->
+
 
     <TextView
         android:id="@+id/titleTextView"
@@ -67,12 +67,6 @@
         app:layout_constraintTop_toBottomOf="@id/passwordEditText"
         app:layout_constraintWidth_percent="0.8" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/centerGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="249dp" />
 
     <Button
         android:id="@+id/regButton"
