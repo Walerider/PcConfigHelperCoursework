@@ -4,16 +4,20 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pcconfighelpercoursework.MainActivity;
 import com.example.pcconfighelpercoursework.R;
 import com.example.pcconfighelpercoursework.api.API;
 import com.example.pcconfighelpercoursework.api.APIClient;
@@ -36,6 +40,7 @@ public class UserAssemblyLookFragment extends Fragment {
     TextView assembliesTextView;
     RecyclerView recyclerView;
     ProgressBar progressBar;
+    Button deleteButton;
     int assemblyId;
     public UserAssemblyLookFragment() {
         // Required empty public constructor
@@ -64,6 +69,8 @@ public class UserAssemblyLookFragment extends Fragment {
         assembliesTextView = view.findViewById(R.id.assembliesTextView);
         recyclerView = view.findViewById(R.id.assemblyRecyclerView);
         progressBar = view.findViewById(R.id.progressBar2);
+        deleteButton = view.findViewById(R.id.deleteButton);
+        deleteButton.setOnClickListener(v -> deleteAssembly());
         return view;
     }
 
@@ -74,9 +81,12 @@ public class UserAssemblyLookFragment extends Fragment {
     }
 
     void getAssembly(){
-        new GetAssembly().getAssembly();
+        new InteractAssembly().getAssembly();
     }
-    private class GetAssembly {
+    void deleteAssembly(){
+        new InteractAssembly().deleteAssembly(assemblyId);
+    }
+    private class InteractAssembly {
         private int currIndex = 0;
         private List<Integer> productIds = new ArrayList<>();
         private List<Component> components = new ArrayList<>();
@@ -123,17 +133,42 @@ public class UserAssemblyLookFragment extends Fragment {
                 }
             });
         }
+        public void deleteAssembly(int assemblyId){
+            if(currIndex >= 1){
+                NavController navController = ((MainActivity)requireActivity()).getNavController();
+                Toast.makeText(getContext(), "Сборка удалена", Toast.LENGTH_LONG).show();
+                navController.navigate(R.id.profileFragment,null,new NavOptions.Builder()
+                        .build());
+            }
+            recyclerView.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+            Call<UserAssemblyDAO> call = apiService.deleteAssemblyById(assemblyId);
+            call.enqueue(new Callback<UserAssemblyDAO>() {
+                @Override
+                public void onResponse(@NonNull Call<UserAssemblyDAO> call, @NonNull Response<UserAssemblyDAO> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        currIndex++;
+                        deleteAssembly(assemblyId);
+                    } else {
+                        Toast.makeText(getContext(), "Ошибка удаления", Toast.LENGTH_SHORT).show();
+                    }
+                }
 
+                @Override
+                public void onFailure(@NonNull Call<UserAssemblyDAO> call, @NonNull Throwable t) {
+                    currIndex++;
+                    deleteAssembly(assemblyId);
+                }
+            });
+        }
         public void getAllProducts(List<Integer> productIds) {
             if (components.size() == productIds.size()) {
                 progressBar.setVisibility(View.GONE);
                 recyclerView.setAdapter(new UserAssemblyLookAdapter(ComponentsSorter.sortComponents(components),getContext()));
                 recyclerView.setVisibility(View.VISIBLE);
-                Log.e("components", Arrays.toString(components.toArray()));
                 return;
             }
 
-            // Берём следующий ID продукта
             int productId = productIds.get(components.size());
             Call<ProductDAO> call = apiService.getProductById(productId);
             call.enqueue(new Callback<ProductDAO>() {
@@ -155,7 +190,6 @@ public class UserAssemblyLookFragment extends Fragment {
                         }
                         components.add(component);
 
-                        // Рекурсивно загружаем следующий продукт
                         getAllProducts(productIds);
                     } else {
                         Toast.makeText(getContext(), "Ошибка загрузки товара: " + response.code(), Toast.LENGTH_SHORT).show();

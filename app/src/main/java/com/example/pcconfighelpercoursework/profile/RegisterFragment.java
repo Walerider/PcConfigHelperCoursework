@@ -27,7 +27,7 @@ import retrofit2.Response;
 
 public class RegisterFragment extends Fragment {
 
-    private EditText usernameEditText, emailEditText, passwordEditText;
+    private EditText usernameEditText, emailEditText, passwordEditText,repeatPasswordEditText;
     private Button signupButton, loginButton;
 
     @Override
@@ -40,10 +40,9 @@ public class RegisterFragment extends Fragment {
         passwordEditText = view.findViewById(R.id.passwordEditText);
         signupButton = view.findViewById(R.id.signupButton);
         loginButton = view.findViewById(R.id.loginButton);
-
+        repeatPasswordEditText = view.findViewById(R.id.repeatPasswordEditText);
         signupButton.setOnClickListener(v -> attemptRegistration());
 
-        // Обработчик для кнопки авторизации
         loginButton.setOnClickListener(v -> {
             NavController navController = Navigation.findNavController(view);
 
@@ -81,13 +80,16 @@ public class RegisterFragment extends Fragment {
             passwordEditText.setError("Пароль должен содержать минимум 6 символов");
             return;
         }
-
+        if(!password.equals(repeatPasswordEditText.getText().toString())){
+            passwordEditText.setError("Пароли не совпадают");
+            repeatPasswordEditText.setError("Пароли не совпадают");
+            return;
+        }
         registerUser(username, email, password);
     }
 
     private void registerUser(String username, String email, String password) {
-        // Здесь должна быть реальная логика регистрации
-        // Например, сохранение в SharedPreferences или запрос к API
+
         API apiService = APIClient.getApi();
         UserPOJO user = new UserPOJO(username,email,password);
         Call<String> call = apiService.registerUser(user);
@@ -108,7 +110,7 @@ public class RegisterFragment extends Fragment {
                             .build();
 
                     navController.navigate(
-                            R.id.loginFragment, // ID вашего фрагмента авторизации
+                            R.id.profileFragment, // ID вашего фрагмента авторизации
                             null,
                             navOptions
                     );
@@ -128,7 +130,7 @@ public class RegisterFragment extends Fragment {
                     UserData.setString("username",username);
                     UserData.setString("password",password);
                     navController.navigate(
-                            R.id.loginFragment, // ID вашего фрагмента авторизации
+                            R.id.profileFragment, // ID вашего фрагмента авторизации
                             null,
                             navOptions
                     );
@@ -137,7 +139,6 @@ public class RegisterFragment extends Fragment {
                 Log.e("Retrofit", "Network bug: " + call.isCanceled());
             }
         });
-        // После успешной регистрации:
 
     }
 }

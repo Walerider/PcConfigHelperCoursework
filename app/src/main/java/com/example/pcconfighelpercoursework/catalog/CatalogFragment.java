@@ -103,19 +103,17 @@ public class CatalogFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Component item = mComponent;
         /*fillproducts(item);*/
-        toolbarTitleTextView.setText(item.getComponentType());
-
+        fillproducts(mComponent);
+        toolbarTitleTextView.setText(mComponent.getComponentType());
         Log.e("mChoice", String.valueOf(mChoice));
         Log.e("products length", String.valueOf(products.size()));
-        //todo сделать фильтрацию
-        fillproducts(item);
         MainActivity activity = (MainActivity)this.getActivity();
 
         if(activity.getBottomNavigationView().getSelectedItemId() != R.id.nav_catalog){
@@ -207,7 +205,7 @@ public class CatalogFragment extends Fragment {
                         list.clear();
                         Log.e("API", Arrays.toString(response.body().toArray()));
                         list.addAll(response.body());
-                        Log.e("API", String.valueOf(list.get(0).getPrices().get(0)));
+
                         //componentRepository.insertComponents(list, categoryId);
                         /*fillListFetchItems(categoryId,list,componentType);*/
                         currIndex++;
@@ -390,28 +388,10 @@ public class CatalogFragment extends Fragment {
             return catalogComponentsList;
         }
         private void setupAdapter(List<ProductAttributeDAO> list,SharedViewModel viewModel){
-            switch (mChoice){
-                case 0:
-                    catalogAdapter = new CatalogAdapter(mComponent,getContext(), products ,mChoice,viewModel,list,((MainActivity)requireActivity()).getNavController(), this::onItemClickListener);
-                    break;
-                case 1:
-                    Log.e("choice", String.valueOf(mChoice));
-                    if(!products.isEmpty()){
-                        catalogAdapter = new CatalogAdapter(mComponent,getContext(), products, mChoice,viewModel,list,this::onAddButtonClickListener, mComponent,((MainActivity)requireActivity()).getNavController(), this::onItemClickListener);
-
-                    }else{
-                        Toast.makeText(getContext(),"Убедитесь в подключении к интернету", Toast.LENGTH_LONG);
-                    }
-                    break;
-                case 2:
-                    if(!products.isEmpty()){
-                        catalogAdapter = new CatalogAdapter(mComponent,getContext(), products, mChoice,viewModel,list,this::onAddButtonClickListener, mComponent,((MainActivity)requireActivity()).getNavController(), this::onItemClickListener );
-                    }else{
-                        Toast.makeText(getContext(),"Убедитесь в подключении к интернету", Toast.LENGTH_LONG);
-                    }
-                    break;
-
-
+            if(mChoice == 0){
+                catalogAdapter = new CatalogAdapter(mComponent,getContext(), products ,mChoice,viewModel,list,((MainActivity)requireActivity()).getNavController(), this::onItemClickListener);
+            }else{
+                catalogAdapter = new CatalogAdapter(mComponent,getContext(), products, mChoice,viewModel,list,this::onAddButtonClickListener, mComponent,((MainActivity)requireActivity()).getNavController(), this::onItemClickListener);
             }
         }
         private void onAddButtonClickListener() {

@@ -33,8 +33,6 @@ public class ProfileFragment extends Fragment {
         logoutButton = view.findViewById(R.id.logoutButton);
         viewBuildsButton = view.findViewById(R.id.viewBuildsButton);
         userNameTextView.setText(UserData.getString("username"));
-        Log.e("username", UserData.getString("username"));
-        Log.e("password", UserData.getString("password"));
         logoutButton.setOnClickListener(v -> {
             NavController navController = Navigation.findNavController(view);
             // Создаем NavOptions для очистки back stack
